@@ -16,10 +16,13 @@ private:
     unsigned int minBetweenShiftHours; //Hours the driver needs to rest between shifts
 public:
     void setFromString (std::string &driverString);
+    unsigned int getId () const {return id;};
+    std::string getName () const {return name;};
 
 };
 
-
 std::vector<Driver> readDriversFile ();
+
+void printDrivers (const std::vector<Driver> &drivers);
 
 #endif // __DRIVER_H

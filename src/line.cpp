@@ -10,6 +10,10 @@
 /* We dont care if we change lineString
 */
 
+Line::Line (unsigned int id){
+	this->id = id;
+}
+
 void Line::setFromString (std::string &lineString){
     std::vector<std::string> splitStrings(split(lineString,';'));
 
@@ -70,4 +74,69 @@ std::vector<Line> readLinesFile (){
     fileInputStream.close();
 
 	return lines;
+}
+
+bool lineWithIdExists (const std::vector<Line> &lines, const unsigned int &id){
+	for (unsigned int i=0; i<lines.size(); i++){
+		if (lines.at(i).getId() == id)
+			return true;
+	}
+	return false;
+}
+
+void createLine (std::vector<Line> &lines){
+	unsigned int id, id_tries=0;
+
+	std::cout << "Introduza o ID da linha que pretende criar : ";
+	std::cin >> id;
+
+	while ((lineWithIdExists(lines, id)) && (id_tries<5)){
+		std::cout << "Ja existe uma linha com esse ID, introduza outro : ";
+		std::cin >> id;
+		id_tries++;
+	}
+
+	if (!(id_tries<5)) {
+		std::cout << "Erro! Excedeu o limite de tentativas\n";
+		return;
+	}
+	Line line(id); //Already know we have a valid ID so we are going to create a new line
+
+	unsigned freq;
+	std::vector<std::string> stops;
+	std::vector<unsigned int> timeBetweenStops;
+
+	std::string busStop;
+	unsigned int tmp;
+
+	std::cout << "Introduza a frequencia de circulacao de autocarros : ";
+	std::cin >> freq;
+	line.setFreq(freq);
+
+	std::cin.clear();
+	std::cin.ignore(1000,'\n'); //clean input buffer
+
+	std::cout << "Introduza Nomes das Paragens (Deve introduzir pelo menos 2)\n";
+	while (getline (std::cin, busStop)){
+		stops.push_back(busStop);
+		std::cout << "Para parar de introduzir -> CTRL+Z (Windows) CTRL+D (*Nix)\n";
+	}
+
+	if ((stops.size()<2)){
+		std::cout << "Uma linha deve ter mais de duas paragens!" << std::endl;
+		std::cin.clear(); //Clear EOF flag
+		std::cin.get();
+		return;
+	}
+
+	line.setStops (stops);
+
+	for (unsigned int i=0; i<stops.size()-1 ;i++){
+		std::cout << "Tempo de viagem entre " + stops.at(i) + " e " + stops.at(i+1) + ": ";
+		std::cin >> tmp;
+		timeBetweenStops.push_back(tmp);
+	}
+	line.setTimeBetweenStops(timeBetweenStops);
+
+	lines.push_back (line);
 }

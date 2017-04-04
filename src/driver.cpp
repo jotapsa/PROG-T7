@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <iomanip>
 
 #include "driver.h"
 #include "semprarrolar.h"
@@ -39,6 +40,7 @@ void Driver::setFromString (std::string &driverString){
     inSStream >> minBetweenShiftHours;
 }
 
+
 std::vector<Driver> readDriversFile (){
 	std::ifstream fileInputStream;
 
@@ -62,4 +64,35 @@ std::vector<Driver> readDriversFile (){
     fileInputStream.close();
 
 	return drivers;
+}
+
+int sizeOfBiggestName (const std::vector<Driver> &drivers){
+    unsigned int max = 0;
+    for (unsigned int i=0; i<drivers.size();i++){
+        if (drivers.at(i).getName().size() > max){
+            max = drivers.at(i).getName().size();
+        }
+    }
+    return max;
+}
+
+
+void printDrivers (const std::vector<Driver> &drivers){
+    static unsigned int nDrivers = drivers.size(); // Will be used to format our table;
+    static unsigned int maxLengthName = sizeOfBiggestName (drivers);
+    //Check to see if our drivers list has been updated
+    if (drivers.size () !=  nDrivers){
+        maxLengthName = sizeOfBiggestName (drivers);
+    }
+    std::cout.width(6);
+    std::cout << std::left << "ID";
+    std::cout.width(maxLengthName);
+    std::cout << std::left << "Name" << std::endl;
+    for (unsigned int i= 0; i<drivers.size(); i++){
+        std::cout.width(6);
+        std::cout << std::left << drivers.at(i).getId();
+        std::cout.width(maxLengthName);
+        std::cout << std::left << drivers.at(i).getName() << std::endl;
+    }
+    std::cout << "\n\n\n\n";
 }

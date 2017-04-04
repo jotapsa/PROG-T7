@@ -3,7 +3,7 @@
 COMPILER_TYPE= gnu
 CXX = g++
 CXXFLAGS = -std=c++0x -Wall
- 
+
 PROG = sempre.out
 
 SOURCES = $(wildcard *.cpp)

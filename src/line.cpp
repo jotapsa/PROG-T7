@@ -84,6 +84,15 @@ bool lineWithIdExists (const std::vector<Line> &lines, const unsigned int &id){
 	return false;
 }
 
+// We can do everything we do with lineWithIdExists () with this function so maybe change the code?
+int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
+	for (unsigned int i=0; i<lines.size(); i++){
+		if (lines.at(i).getId() == id)
+			return i;
+	}
+	return -1; //-1 if we didn't find anything
+}
+
 void createLine (std::vector<Line> &lines){
 	unsigned int id, id_tries=0;
 

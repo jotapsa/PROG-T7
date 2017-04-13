@@ -6,13 +6,18 @@
 //=================================
 // forward declared dependencies
 #include "line.h"
+#include "driver.h"
 
 //=================================
 // included dependencies
 #include <vector>
 
 void mainMenu (appState &state);
+
 void manageLineMenu (appState &state, std::vector<Line> &lines);
 void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex);
+void changeLineStopsMenu (std::vector<Line> &lines, unsigned int lineIndex);
+
+void manageDriverMenu (appState &state, std::vector<Driver> &drivers);
 
 #endif // __MENU_H

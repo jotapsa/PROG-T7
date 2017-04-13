@@ -12,9 +12,7 @@ void mainMenu (appState &state){
     std::cout << " 2 - Gestao de condutores.\n";
     std::cout << " 3 - Visualizacao de informacao.\n";
     std::cout << " 4 - Sair.\n";
-    std::cout << " Digite a sua opcao e presse ENTER: ";
-    std::cin >> choice;
-    std::cout << "\n";
+    nextInt (" Digite a sua opcao e presse ENTER: ", choice);
 
     switch (choice) {
         case 1:
@@ -44,8 +42,7 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
     std::cout << " 3 - Remover uma linha.\n";
     std::cout << " 4 - Ver as linhas. \n";
     std::cout << " 5 - Sair para o Menu.\n";
-    std::cout << " Digite a sua opcao e presse ENTER: ";
-    std::cin >> choice;
+    nextInt (" Digite a sua opcao e presse ENTER: ", choice);
 
     switch (choice) {
         case 1:
@@ -78,8 +75,7 @@ void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex){
     std::cout << " 3 - Paragens.\n";
     std::cout << " 4 - Tempo entre Paragens.\n";
     std::cout << " 5 - Voltar.\n";
-    std::cout << " Digite a sua opcao e presse ENTER: ";
-    std::cin >> choice;
+    nextInt (" Digite a sua opcao e presse ENTER: ", choice);
     //choice between 1 and 5
 
     switch (choice) {
@@ -87,16 +83,75 @@ void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex){
           changeLineId (lines, lineIndex);
         break;
         case 2:
-          //changeLineFreq (std::vector<Line> &lines, unsigned int lineIndex);
+          changeLineFreq (lines, lineIndex);
         break;
         case 3:
-          //changeLineStops (std::vector<Line> &lines, unsigned int lineIndex);
+          changeLineStopsMenu (lines, lineIndex);
         break;
         case 4:
-          //changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex);
+          changeLineTimeBetweenStops (lines, lineIndex);
         break;
         case 5:
           return;
+        break;
+        default:
+        break;
+    }
+}
+
+void changeLineStopsMenu (std::vector<Line> &lines, unsigned int lineIndex){
+  int choice;
+
+  clearConsole();
+  std::cout << "*******************************\n";
+  std::cout << " 1 - Adicionar Paragem.\n";
+  std::cout << " 2 - Remover Paragem.\n";
+  std::cout << " 3 - Voltar.\n";
+  nextInt (" Digite a sua opcao e presse ENTER: ", choice);
+  //choice between 1 and 5
+
+  switch (choice) {
+      case 1:
+        //addLineStop (lines, lineIndex);
+      break;
+      case 2:
+        //removeLineStop (lines, lineIndex);
+      break;
+      case 3:
+        return;
+      break;
+      default:
+      break;
+  }
+}
+
+void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
+    int choice;
+
+    clearConsole();
+    std::cout << "*******************************\n";
+    std::cout << " 1 - Criar um condutor.\n";
+    std::cout << " 2 - Editar um condutor.\n";
+    std::cout << " 3 - Remover um condutor.\n";
+    std::cout << " 4 - Ver os condutores. \n";
+    std::cout << " 5 - Sair para o Menu.\n";
+    nextInt (" Digite a sua opcao e presse ENTER: ", choice);
+
+    switch (choice) {
+        case 1:
+          //createDriver (drivers);
+        break;
+        case 2:
+          //editDriverMenu (drivers, getLineIndex(lines));
+        break;
+        case 3:
+          //removeDriver (drivers);
+        break;
+        case 4:
+          printDrivers (drivers);
+        break;
+        case 5:
+          changeState (state, Menu);
         break;
         default:
         break;

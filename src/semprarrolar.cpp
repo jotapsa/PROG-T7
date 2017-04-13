@@ -72,18 +72,16 @@ int main (){
     while (state!=Quit){
         switch (state){
             case Menu:
-                mainMenu(state);
+              mainMenu(state);
             break;
             case ManageLines:
-                manageLineMenu (state, lines);
+              manageLineMenu (state, lines);
             break;
             case ManageDrivers:
-                //
+              manageDriverMenu (state, drivers);
             break;
             case ViewInf:
-                printDrivers (drivers);
-                getchar();
-                changeState (state, Menu);
+							//
             break;
             default:
             break;

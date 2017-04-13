@@ -80,6 +80,9 @@ int sizeOfBiggestName (const std::vector<Driver> &drivers){
 void printDrivers (const std::vector<Driver> &drivers){
     static unsigned int nDrivers = drivers.size(); // Will be used to format our table;
     static unsigned int maxLengthName = sizeOfBiggestName (drivers);
+
+    clearConsole();
+
     //Check to see if our drivers list has been updated
     if (drivers.size () !=  nDrivers){
         maxLengthName = sizeOfBiggestName (drivers);
@@ -94,5 +97,8 @@ void printDrivers (const std::vector<Driver> &drivers){
         std::cout.width(maxLengthName);
         std::cout << std::left << drivers.at(i).getName() << std::endl;
     }
-    std::cout << "\n\n\n\n";
+
+    std::cin.clear();
+    std::cin.ignore(1000,'\n'); //clean input buffer
+    getchar();
 }

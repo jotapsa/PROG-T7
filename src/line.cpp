@@ -76,15 +76,6 @@ std::vector<Line> readLinesFile (){
 	return lines;
 }
 
-bool lineWithIdExists (const std::vector<Line> &lines, const unsigned int &id){
-	for (unsigned int i=0; i<lines.size(); i++){
-		if (lines.at(i).getId() == id)
-			return true;
-	}
-	return false;
-}
-
-// We can do everything we do with lineWithIdExists () with this function so maybe change the code?
 int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
 	for (unsigned int i=0; i<lines.size(); i++){
 		if (lines.at(i).getId() == id)
@@ -107,7 +98,7 @@ void createLine (std::vector<Line> &lines){
         std::cin >> id;
     }
 
-	while ((lineWithIdExists(lines, id)) && (id_tries<5)){
+	while ((linePosInVector(lines, id)!=-1) && (id_tries<5)){
 		std::cout << "Ja existe uma linha com esse ID, introduza outro : ";
 		std::cin >> id;
 		id_tries++;
@@ -193,4 +184,19 @@ void changeLineId (std::vector<Line> &lines, unsigned int lineIndex){
 	}
 
 	lines.at(lineIndex).setId(newId);
+}
+
+void changeLineFreq (std::vector<Line> &lines, unsigned int lineIndex){
+	unsigned int newFreq;
+
+	clearConsole();
+
+	std::cout << "Frequencia atual : " << lines.at(lineIndex).getId()  << std::endl;
+	nextUnsignedInt("Frequencia nova : ", newFreq);
+
+	lines.at(lineIndex).setFreq(newFreq);
+}
+
+void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex){
+
 }

@@ -43,5 +43,7 @@ std::vector<Line> readLinesFile ();
 void createLine (std::vector<Line> &lines);
 unsigned int getLineIndex (const std::vector<Line> &lines);
 void changeLineId (std::vector<Line> &lines, unsigned int lineIndex);
+void changeLineFreq (std::vector<Line> &lines, unsigned int lineIndex);
+void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex);
 
 #endif // __LINE_h

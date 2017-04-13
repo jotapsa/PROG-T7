@@ -12,6 +12,7 @@
 #include <vector>
 
 void mainMenu (appState &state);
-void editLineMenu (appState &state, std::vector<Line> &lines);
+void manageLineMenu (appState &state, std::vector<Line> &lines);
+void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex);
 
 #endif // __MENU_H

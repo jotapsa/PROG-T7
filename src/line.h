@@ -41,5 +41,7 @@ Reads a entire file with the formated input id;freq;[stops];[timeBetweenStops] a
 */
 std::vector<Line> readLinesFile ();
 void createLine (std::vector<Line> &lines);
+unsigned int getLineIndex (const std::vector<Line> &lines);
+void changeLineId (std::vector<Line> &lines, unsigned int lineIndex);
 
 #endif // __LINE_h

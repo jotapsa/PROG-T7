@@ -27,6 +27,40 @@ void changeState (appState &state , appState newState){
     state = newState;
 }
 
+void clearConsole (){
+	/*if (Windows)
+		std::system("cls");
+	else*/
+		std::system("clear");
+}
+
+void nextInt(std::string string, int &number){
+    do{
+        std::cout << string;
+        std::cin >> number;
+        if(std::cin.fail()){
+						std::cin.clear();
+						std::cin.ignore(1000,'\n'); //clean input buffe
+            continue;
+        }
+       return;
+    }while(1);
+}
+
+void nextUnsignedInt(std::string string, unsigned int &number){
+    do{
+        std::cout << string;
+        std::cin >> number;
+        if(std::cin.fail()){
+						std::cin.clear();
+						std::cin.ignore(1000,'\n'); //clean input buffer
+            continue;
+        }
+       return;
+    }while(1);
+}
+
+
 
 int main (){
 
@@ -41,7 +75,7 @@ int main (){
                 mainMenu(state);
             break;
             case ManageLines:
-                editLineMenu (state, lines);
+                manageLineMenu (state, lines);
             break;
             case ManageDrivers:
                 //

@@ -15,7 +15,10 @@ into a vector of strings
 */
 std::vector<std::string> split(const std::string &s, const char &delim);
 
+void clearConsole ();
 void changeState (appState &state , appState newState);
+void nextInt(std::string string, int &number);
+void nextUnsignedInt(std::string string, unsigned int &number);
 
 
 #endif // __SEMPRARROLAR_H

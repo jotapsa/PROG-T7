@@ -15,7 +15,7 @@ Line::Line (unsigned int id){
 }
 
 void Line::setFromString (std::string &lineString){
-    std::vector<std::string> splitStrings(split(lineString,';'));
+  std::vector<std::string> splitStrings(split(lineString,';'));
 
 	std::istringstream inSStream;
 
@@ -94,10 +94,18 @@ int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
 }
 
 void createLine (std::vector<Line> &lines){
-	unsigned int id, id_tries=0;
+	unsigned int id, id_tries=0, n;
 
-	std::cout << "Introduza o ID da linha que pretende criar : ";
+	clearConsole();
+
+	std::cout << "ID: ";
 	std::cin >> id;
+	while(std::cin.fail()) {
+        std::cout << "Error" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(256,'\n');
+        std::cin >> id;
+    }
 
 	while ((lineWithIdExists(lines, id)) && (id_tries<5)){
 		std::cout << "Ja existe uma linha com esse ID, introduza outro : ";
@@ -118,25 +126,29 @@ void createLine (std::vector<Line> &lines){
 	std::string busStop;
 	unsigned int tmp;
 
-	std::cout << "Introduza a frequencia de circulacao de autocarros : ";
+	std::cout << "Frequencia de circulacao: ";
 	std::cin >> freq;
 	line.setFreq(freq);
+
+	std::cout << "Nº Paragens: ";
+	std::cin >> n;
 
 	std::cin.clear();
 	std::cin.ignore(1000,'\n'); //clean input buffer
 
-	std::cout << "Introduza Nomes das Paragens (Deve introduzir pelo menos 2)\n";
-	while (getline (std::cin, busStop)){
-		stops.push_back(busStop);
-		std::cout << "Para parar de introduzir -> CTRL+Z (Windows) CTRL+D (*Nix)\n";
-	}
-
-	if ((stops.size()<2)){
-		std::cout << "Uma linha deve ter mais de duas paragens!" << std::endl;
-		std::cin.clear(); //Clear EOF flag
+	if (n<2){
+		std::cout << "Uma linha deve ter pelo menos duas paragens!" << std::endl;
 		std::cin.get();
 		return;
 	}
+
+	for (unsigned int i=0; i<n; i++){
+		std::cout << stops.size()+1 << "ª Paragem: ";
+		getline (std::cin, busStop);
+		stops.push_back(busStop);
+	}
+
+	std::cin.clear(); //Clear EOF flag
 
 	line.setStops (stops);
 
@@ -148,4 +160,37 @@ void createLine (std::vector<Line> &lines){
 	line.setTimeBetweenStops(timeBetweenStops);
 
 	lines.push_back (line);
+}
+
+
+unsigned int getLineIndex (const std::vector<Line> &lines){
+	unsigned int choice;
+
+	clearConsole();
+	std::cout << "*******************************\n";
+
+	for (unsigned int i=0; i<lines.size(); i++){
+		std::cout << i+1 << " - " << lines.at(i).getId() << std::endl;
+	}
+
+	std::cout << "Opcao: ";
+	std::cin >> choice;
+
+	return choice-1;
+}
+
+void changeLineId (std::vector<Line> &lines, unsigned int lineIndex){
+	unsigned int newId;
+
+	clearConsole();
+
+	std::cout << "ID atual : " << lines.at(lineIndex).getId()  << std::endl;
+	nextUnsignedInt("ID novo : ", newId);
+
+	while (linePosInVector(lines, newId) != -1){
+		std::cout << "Ja existe uma linha com esse ID.\n";
+		nextUnsignedInt("ID novo : ", newId);
+	}
+
+	lines.at(lineIndex).setId(newId);
 }

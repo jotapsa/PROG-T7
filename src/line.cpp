@@ -86,21 +86,12 @@ int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
 
 void createLine (std::vector<Line> &lines){
 	unsigned int id, id_tries=0, n;
-
 	clearConsole();
 
-	std::cout << "ID: ";
-	std::cin >> id;
-	while(std::cin.fail()) {
-        std::cout << "Error" << std::endl;
-        std::cin.clear();
-        std::cin.ignore(256,'\n');
-        std::cin >> id;
-    }
+	nextUnsignedInt ("ID : ", id);
 
 	while ((linePosInVector(lines, id)!=-1) && (id_tries<5)){
-		std::cout << "Ja existe uma linha com esse ID, introduza outro : ";
-		std::cin >> id;
+		nextUnsignedInt ("Ja existe uma linha com esse ID, introduza outro : ", id);
 		id_tries++;
 	}
 
@@ -110,22 +101,17 @@ void createLine (std::vector<Line> &lines){
 	}
 	Line line(id); //Already know we have a valid ID so we are going to create a new line
 
-	unsigned freq;
+	unsigned int freq;
 	std::vector<std::string> stops;
 	std::vector<unsigned int> timeBetweenStops;
 
 	std::string busStop;
 	unsigned int tmp;
 
-	std::cout << "Frequencia de circulacao: ";
-	std::cin >> freq;
+	nextUnsignedInt ("Frequencia de circulacao: ", freq);
 	line.setFreq(freq);
 
-	std::cout << "Nº Paragens: ";
-	std::cin >> n;
-
-	std::cin.clear();
-	std::cin.ignore(1000,'\n'); //clean input buffer
+	nextUnsignedInt ("Nº Paragens: ", n);
 
 	if (n<2){
 		std::cout << "Uma linha deve ter pelo menos duas paragens!" << std::endl;
@@ -144,8 +130,7 @@ void createLine (std::vector<Line> &lines){
 	line.setStops (stops);
 
 	for (unsigned int i=0; i<stops.size()-1 ;i++){
-		std::cout << "Tempo de viagem entre " + stops.at(i) + " e " + stops.at(i+1) + ": ";
-		std::cin >> tmp;
+		nextUnsignedInt ("Tempo de viagem entre " + stops.at(i) + " e " + stops.at(i+1) + ": ", tmp);
 		timeBetweenStops.push_back(tmp);
 	}
 	line.setTimeBetweenStops(timeBetweenStops);
@@ -164,8 +149,7 @@ unsigned int getLineIndex (const std::vector<Line> &lines){
 		std::cout << i+1 << " - " << lines.at(i).getId() << std::endl;
 	}
 
-	std::cout << "Opcao: ";
-	std::cin >> choice;
+	nextUnsignedInt ("Opcao : ", choice);
 
 	return choice-1;
 }

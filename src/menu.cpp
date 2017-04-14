@@ -139,10 +139,10 @@ void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
 
     switch (choice) {
         case 1:
-          //createDriver (drivers);
+          createDriver (drivers);
         break;
         case 2:
-          //editDriverMenu (drivers, getLineIndex(lines));
+          editDriverMenu (drivers, getDriverIndex(drivers));
         break;
         case 3:
           //removeDriver (drivers);
@@ -156,4 +156,41 @@ void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
         default:
         break;
     }
+}
+
+void editDriverMenu (std::vector<Driver> &drivers, unsigned int driverIndex){
+  int choice;
+
+  clearConsole();
+  std::cout << "*******************************\n";
+  std::cout << " 1 - ID.\n";
+  std::cout << " 2 - Nome.\n";
+  std::cout << " 3 - Maximo de horas por turno.\n";
+  std::cout << " 4 - Maximo de horas por semana. \n";
+  std::cout << " 5 - Minimo de horas por descanso. \n";
+  std::cout << " 6 - Voltar.\n";
+  nextInt (" Digite a sua opcao e presse ENTER: ", choice);
+
+  switch (choice) {
+      case 1:
+        //createDriver (drivers);
+      break;
+      case 2:
+        //editDriverMenu (drivers, getDriverIndex(lines));
+      break;
+      case 3:
+        //removeDriver (drivers);
+      break;
+      case 4:
+        //printDrivers (drivers);
+      break;
+      case 5:
+        //changeState (state, Menu);
+      break;
+      case 6:
+        return;
+      break;
+      default:
+      break;
+  }
 }

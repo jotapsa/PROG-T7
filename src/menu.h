@@ -19,5 +19,6 @@ void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex);
 void changeLineStopsMenu (std::vector<Line> &lines, unsigned int lineIndex);
 
 void manageDriverMenu (appState &state, std::vector<Driver> &drivers);
+void editDriverMenu (std::vector<Driver> &drivers, unsigned int driverIndex);
 
 #endif // __MENU_H

@@ -8,6 +8,9 @@
 #include "driver.h"
 #include "semprarrolar.h"
 
+Driver::Driver (unsigned int id){
+  this->id = id;
+}
 
 void Driver::setFromString (std::string &driverString){
     std::vector<std::string> splitStrings(split(driverString,';'));
@@ -97,8 +100,65 @@ void printDrivers (const std::vector<Driver> &drivers){
         std::cout.width(maxLengthName);
         std::cout << std::left << drivers.at(i).getName() << std::endl;
     }
-
-    std::cin.clear();
-    std::cin.ignore(1000,'\n'); //clean input buffer
     getchar();
+}
+
+int driverPosInVector (const std::vector<Driver> &drivers, const unsigned int &id){
+	for (unsigned int i=0; i<drivers.size(); i++){
+		if (drivers.at(i).getId() == id)
+			return i;
+	}
+	return -1; //-1 if we didn't find anything
+}
+
+
+void createDriver (std::vector<Driver> &drivers){
+  unsigned int id, id_tries=0;
+  clearConsole();
+
+  nextUnsignedInt ("ID : ", id);
+
+  while ((driverPosInVector(drivers, id)!=-1) && (id_tries<5)){
+    nextUnsignedInt ("Ja existe um condutor com esse ID, introduza outro : ", id);
+    id_tries++;
+  }
+
+  if (!(id_tries<5)) {
+    std::cout << "Erro! Excedeu o limite de tentativas\n";
+    return;
+  }
+
+  Driver driver(id);
+  std::string name;
+  unsigned int maxShiftHours, maxWeekHours, minBetweenShiftHours;
+
+  std::cout << "Nome : ";
+  getline (std::cin, name);
+  driver.setName (name);
+
+  nextUnsignedInt ("Maximo de horas por turno : ", maxShiftHours);
+  driver.setMaxShiftHours(maxShiftHours);
+
+  nextUnsignedInt ("Maximo de horas por semana : ", maxWeekHours);
+  driver.setMaxWeekHours (maxWeekHours);
+
+  nextUnsignedInt ("Minimo de horas por descanso : ", minBetweenShiftHours);
+  driver.setMinBetweenShiftHours (minBetweenShiftHours);
+
+  drivers.push_back (driver);
+}
+
+
+unsigned int getDriverIndex(const std::vector<Driver> &drivers){
+  unsigned int choice;
+
+  clearConsole();
+  std::cout << "*******************************\n";
+
+  for (unsigned int i=0; i<drivers.size(); i++){
+    std::cout << i+1 << " - " << drivers.at(i).getId() << std::endl;
+  }
+
+  nextUnsignedInt ("Opcao : ", choice);
+  return choice-1;
 }

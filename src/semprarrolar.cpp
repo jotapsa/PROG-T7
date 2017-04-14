@@ -39,11 +39,13 @@ void nextInt(std::string string, int &number){
         std::cout << string;
         std::cin >> number;
         if(std::cin.fail()){
-						std::cin.clear();
-						std::cin.ignore(1000,'\n'); //clean input buffe
-            continue;
+					std::cin.clear();
+					std::cin.ignore(1000,'\n'); //clean input buffer
+          continue;
         }
-       return;
+				std::cin.clear();
+				std::cin.ignore(1000,'\n'); //clean input buffe
+	      return;
     }while(1);
 }
 
@@ -56,7 +58,9 @@ void nextUnsignedInt(std::string string, unsigned int &number){
 						std::cin.ignore(1000,'\n'); //clean input buffer
             continue;
         }
-       return;
+				std::cin.clear();
+				std::cin.ignore(1000,'\n'); //clean input buffe
+	      return;
     }while(1);
 }
 

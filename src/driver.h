@@ -46,4 +46,6 @@ void changeDriverMaxShiftHours (std::vector<Driver> &drivers, unsigned int drive
 void changeDriverMaxWeekHours (std::vector<Driver> &drivers, unsigned int driverIndex);
 void changeDriverMinBetweenShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex);
 
+void removeDriver (std::vector<Driver> &drivers, unsigned int driverIndex);
+
 #endif // __DRIVER_H

@@ -85,7 +85,7 @@ int main (){
               manageDriverMenu (state, drivers);
             break;
             case ViewInf:
-							//
+							
             break;
             default:
             break;

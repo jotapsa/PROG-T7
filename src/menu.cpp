@@ -145,7 +145,7 @@ void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
           editDriverMenu (drivers, getDriverIndex(drivers));
         break;
         case 3:
-          //removeDriver (drivers);
+          removeDriver (drivers, getDriverIndex(drivers));
         break;
         case 4:
           printDrivers (drivers);

@@ -223,3 +223,21 @@ void changeDriverMinBetweenShiftHours (std::vector<Driver> &drivers, unsigned in
 
 	drivers.at(driverIndex).setMinBetweenShiftHours(newMinBetweenShiftHours);
 }
+
+void removeDriver (std::vector<Driver> &drivers, unsigned int driverIndex){
+  char decision;
+
+  clearConsole();
+
+  std::cout << "Quer remover o condutor com ID " << drivers.at(driverIndex).getId()  << " - "<< drivers.at(driverIndex).getName() <<std::endl;
+  std::cout << "Y(y) / N(n)\n";
+  std::cin >> decision;
+
+  std::cin.clear();
+  std::cin.ignore(1000,'\n'); //clean input buffer
+
+  if (decision == 'Y' || decision == 'y'){
+    drivers.erase(drivers.begin() + driverIndex);
+  }
+
+}

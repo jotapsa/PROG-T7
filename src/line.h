@@ -39,7 +39,7 @@ public:
 /*
 Reads a entire file with the formated input id;freq;[stops];[timeBetweenStops] and returns a vector with Line Objects
 */
-std::vector<Line> readLinesFile ();
+std::vector<Line> readLinesFile (std::string linesFile);
 void createLine (std::vector<Line> &lines);
 unsigned int getLineIndex (const std::vector<Line> &lines);
 void changeLineId (std::vector<Line> &lines, unsigned int lineIndex);

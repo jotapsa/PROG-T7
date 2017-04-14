@@ -20,5 +20,8 @@ void changeState (appState &state , appState newState);
 void nextInt(std::string string, int &number);
 void nextUnsignedInt(std::string string, unsigned int &number);
 
+std::string askFilePath ();
+std::string askFilePath (std::string message);
+
 
 #endif // __SEMPRARROLAR_H

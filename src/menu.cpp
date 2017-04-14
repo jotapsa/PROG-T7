@@ -40,8 +40,9 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
     std::cout << " 1 - Criar uma linha.\n";
     std::cout << " 2 - Editar uma linha.\n";
     std::cout << " 3 - Remover uma linha.\n";
-    std::cout << " 4 - Ver as linhas. \n";
-    std::cout << " 5 - Sair para o Menu.\n";
+    std::cout << " 4 - Ver as linhas.\n";
+    std::cout << " 5 - Guardar as linhas.\n";
+    std::cout << " 6 - Sair para o Menu.\n";
     nextInt (" Digite a sua opcao e presse ENTER: ", choice);
 
     switch (choice) {
@@ -58,6 +59,8 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
           //printLines (lines);
         break;
         case 5:
+        break;
+        case 6:
           changeState (state, Menu);
         break;
         default:
@@ -134,7 +137,8 @@ void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
     std::cout << " 2 - Editar um condutor.\n";
     std::cout << " 3 - Remover um condutor.\n";
     std::cout << " 4 - Ver os condutores. \n";
-    std::cout << " 5 - Sair para o Menu.\n";
+    std::cout << " 5 - Guardar os condutores. \n";
+    std::cout << " 6 - Sair para o Menu.\n";
     nextInt (" Digite a sua opcao e presse ENTER: ", choice);
 
     switch (choice) {
@@ -151,6 +155,9 @@ void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
           printDrivers (drivers);
         break;
         case 5:
+          storeDrivers (askFilePath(), drivers);
+        break;
+        case 6:
           changeState (state, Menu);
         break;
         default:

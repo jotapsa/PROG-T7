@@ -35,64 +35,88 @@ void clearConsole (){
 }
 
 void nextInt(std::string string, int &number){
-    do{
-        std::cout << string;
-        std::cin >> number;
-        if(std::cin.fail()){
-					std::cin.clear();
-					std::cin.ignore(1000,'\n'); //clean input buffer
-          continue;
-        }
-				std::cin.clear();
-				std::cin.ignore(1000,'\n'); //clean input buffe
-	      return;
-    }while(1);
+	do{
+		std::cout << string;
+		std::cin >> number;
+		if(std::cin.fail()){
+			std::cin.clear();
+			std::cin.ignore(1000,'\n'); //clean input buffer
+			continue;
+		}
+		std::cin.clear();
+		std::cin.ignore(1000,'\n'); //clean input buffe
+		return;
+	}while(1);
 }
 
 void nextUnsignedInt(std::string string, unsigned int &number){
-    do{
-        std::cout << string;
-        std::cin >> number;
-        if(std::cin.fail()){
-						std::cin.clear();
-						std::cin.ignore(1000,'\n'); //clean input buffer
-            continue;
-        }
-				std::cin.clear();
-				std::cin.ignore(1000,'\n'); //clean input buffe
-	      return;
-    }while(1);
+	do{
+		std::cout << string;
+		std::cin >> number;
+		if(std::cin.fail()){
+			std::cin.clear();
+			std::cin.ignore(1000,'\n'); //clean input buffer
+			continue;
+		}
+		std::cin.clear();
+		std::cin.ignore(1000,'\n'); //clean input buffe
+		return;
+	}while(1);
 }
 
+std::string askFilePath (){
+	std::string filePath;
+	clearConsole();
+
+	std::cout << "Introduza o path do ficheiro\n";
+	getline (std::cin, filePath);
+
+	return filePath;
+}
+
+std::string askFilePath (std::string message){
+	std::string filePath;
+	clearConsole();
+
+	std::cout << message << std::endl;
+	getline (std::cin, filePath);
+
+	return filePath;
+}
 
 
 int main (){
 
-    std::vector<Line> lines = readLinesFile();
-    std::vector<Driver> drivers = readDriversFile ();
+	std::string linesFilePath, driversFilePath;
 
-    appState state = Menu;
+	linesFilePath = askFilePath ("Introduza o path do ficheiro de linhas");
+	driversFilePath = askFilePath ("Introduza o path do ficheiro de condutores");
 
-    while (state!=Quit){
-        switch (state){
-            case Menu:
-              mainMenu(state);
-            break;
-            case ManageLines:
-              manageLineMenu (state, lines);
-            break;
-            case ManageDrivers:
-              manageDriverMenu (state, drivers);
-            break;
-            case ViewInf:
-							
-            break;
-            default:
-            break;
-        }
+	std::vector<Line> lines = readLinesFile(linesFilePath);
+	std::vector<Driver> drivers = readDriversFile (driversFilePath);
 
-    }
+	appState state = Menu;
+
+	while (state!=Quit){
+		switch (state){
+			case Menu:
+			mainMenu(state);
+			break;
+			case ManageLines:
+			manageLineMenu (state, lines);
+			break;
+			case ManageDrivers:
+			manageDriverMenu (state, drivers);
+			break;
+			case ViewInf:
+
+			break;
+			default:
+			break;
+		}
+
+	}
 
 
-    return 0;
+	return 0;
 }

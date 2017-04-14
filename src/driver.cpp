@@ -13,7 +13,7 @@ Driver::Driver (unsigned int id){
 }
 
 void Driver::setFromString (std::string &driverString){
-    std::vector<std::string> splitStrings(split(driverString,';'));
+  std::vector<std::string> splitStrings(split(driverString,';'));
 
 	std::istringstream inSStream;
 
@@ -27,8 +27,7 @@ void Driver::setFromString (std::string &driverString){
 	inSStream >> id;
 
 	//Second element is the name
-	inSStream.str(splitStrings.at(1));
-	inSStream >> name;
+  name = splitStrings.at(1);
 
 	//Maximum hours per shift
 	inSStream.str(splitStrings.at(2));
@@ -44,29 +43,29 @@ void Driver::setFromString (std::string &driverString){
 }
 
 
-std::vector<Driver> readDriversFile (){
-	std::ifstream fileInputStream;
+std::vector<Driver> readDriversFile (std::string driversFile){
+  std::ifstream fileInputStream;
 
-    std::vector<Driver> drivers;
-    std::string driverString;
+  std::vector<Driver> drivers;
+  std::string driverString;
 
-    fileInputStream.open("../input/condutores.txt"); //for linux
-    //fileInputStream.open("..//input//condutores.txt"); //for Windows (i think)
+  fileInputStream.open(driversFile);
+  //"../input/condutores.txt"
 
-    if (!fileInputStream.is_open()){
-        std::cerr << "Input file opening failed.\n";
-        exit(1);
-    }
+  if (!fileInputStream.is_open()){
+    std::cerr << "Input file opening failed.\n";
+    exit(1);
+  }
 
-    Driver driver;
-    while (getline(fileInputStream, driverString)){
-        driver.setFromString(driverString);
-        drivers.push_back (driver);
-    }
+  Driver driver;
+  while (getline(fileInputStream, driverString)){
+    driver.setFromString(driverString);
+    drivers.push_back (driver);
+  }
 
-    fileInputStream.close();
+  fileInputStream.close();
 
-	return drivers;
+  return drivers;
 }
 
 int sizeOfBiggestName (const std::vector<Driver> &drivers){
@@ -240,4 +239,31 @@ void removeDriver (std::vector<Driver> &drivers, unsigned int driverIndex){
     drivers.erase(drivers.begin() + driverIndex);
   }
 
+}
+
+void writeDriverToFile (std::ofstream &fileOutputStream, Driver driver){
+
+  fileOutputStream << driver.getId () << ";";
+  fileOutputStream << driver.getName () << ";";
+  fileOutputStream << driver.getMaxShiftHours () << ";";
+  fileOutputStream << driver.getMaxWeekHours () << ";";
+  fileOutputStream << driver.getMinBetweenShiftHours () << std::endl;
+}
+
+void storeDrivers (std::string filePath, const std::vector<Driver> &drivers){
+  std::ofstream fileOutputStream;
+
+  fileOutputStream.open(filePath);
+  //"../input/condutores.txt"
+
+  if (!fileOutputStream.is_open()){
+    std::cerr << "Output file opening failed.\n";
+    exit(1);
+  }
+
+  for (unsigned int i=0; i<drivers.size(); i++){
+    writeDriverToFile (fileOutputStream, drivers.at(i));
+  }
+
+  fileOutputStream.close();
 }

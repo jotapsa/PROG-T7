@@ -34,7 +34,7 @@ public:
 
 };
 
-std::vector<Driver> readDriversFile ();
+std::vector<Driver> readDriversFile (std::string driversFile);
 
 void printDrivers (const std::vector<Driver> &drivers);
 void createDriver (std::vector<Driver> &drivers);
@@ -47,5 +47,7 @@ void changeDriverMaxWeekHours (std::vector<Driver> &drivers, unsigned int driver
 void changeDriverMinBetweenShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex);
 
 void removeDriver (std::vector<Driver> &drivers, unsigned int driverIndex);
+
+void storeDrivers (std::string filePath, const std::vector<Driver> &drivers);
 
 #endif // __DRIVER_H

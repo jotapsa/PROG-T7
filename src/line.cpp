@@ -51,27 +51,27 @@ void Line::setFromString (std::string &lineString){
 }
 
 
-std::vector<Line> readLinesFile (){
+std::vector<Line> readLinesFile (std::string linesFile){
 	std::ifstream fileInputStream;
 
-    std::vector<Line> lines;
-    std::string lineString;
+	std::vector<Line> lines;
+	std::string lineString;
 
-    fileInputStream.open("../input/linhas.txt"); //for linux
-    //fileInputStream.open("..//input//linhas.txt"); //for Windows (i think)
+	fileInputStream.open(linesFile);
+	//"../input/linhas.txt"
 
-    if (!fileInputStream.is_open()){
-        std::cerr << "Input file opening failed.\n";
-        exit(1);
-    }
+	if (!fileInputStream.is_open()){
+		std::cerr << "Input file opening failed.\n";
+		exit(1);
+	}
 
-    Line line;
-    while (getline(fileInputStream, lineString)){
-        line.setFromString(lineString);
-        lines.push_back (line);
-    }
+	Line line;
+	while (getline(fileInputStream, lineString)){
+		line.setFromString(lineString);
+		lines.push_back (line);
+	}
 
-    fileInputStream.close();
+	fileInputStream.close();
 
 	return lines;
 }

@@ -173,19 +173,19 @@ void editDriverMenu (std::vector<Driver> &drivers, unsigned int driverIndex){
 
   switch (choice) {
       case 1:
-        //createDriver (drivers);
+        changeDriverId (drivers, driverIndex);
       break;
       case 2:
-        //editDriverMenu (drivers, getDriverIndex(lines));
+        changeDriverName (drivers, driverIndex);
       break;
       case 3:
-        //removeDriver (drivers);
+        changeDriverMaxShiftHours (drivers, driverIndex);
       break;
       case 4:
-        //printDrivers (drivers);
+        changeDriverMaxWeekHours (drivers, driverIndex);
       break;
       case 5:
-        //changeState (state, Menu);
+        changeDriverMinBetweenShiftHours (drivers, driverIndex);
       break;
       case 6:
         return;

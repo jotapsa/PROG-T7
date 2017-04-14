@@ -22,8 +22,11 @@ public:
   //getters
   unsigned int getId () const {return id;};
   std::string getName () const {return name;};
+  unsigned int getMaxShiftHours () {return maxShiftHours;};
+  unsigned int getMaxWeekHours () {return maxWeekHours;};
+  unsigned int getMinBetweenShiftHours () {return minBetweenShiftHours;};
   //setters
-  void setID (unsigned int id) {this->id = id;};
+  void setId (unsigned int id) {this->id = id;};
   void setName (std::string name) {this->name = name;};
   void setMaxShiftHours (unsigned int maxShiftHours) {this->maxShiftHours = maxShiftHours;};
   void setMaxWeekHours (unsigned int maxWeekHours) {this->maxWeekHours = maxWeekHours;};
@@ -36,5 +39,11 @@ std::vector<Driver> readDriversFile ();
 void printDrivers (const std::vector<Driver> &drivers);
 void createDriver (std::vector<Driver> &drivers);
 unsigned int getDriverIndex(const std::vector<Driver> &drivers);
+
+void changeDriverId (std::vector<Driver> &drivers, unsigned int driverIndex);
+void changeDriverName (std::vector<Driver> &drivers, unsigned int driverIndex);
+void changeDriverMaxShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex);
+void changeDriverMaxWeekHours (std::vector<Driver> &drivers, unsigned int driverIndex);
+void changeDriverMinBetweenShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex);
 
 #endif // __DRIVER_H

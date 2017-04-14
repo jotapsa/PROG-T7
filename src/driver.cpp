@@ -162,3 +162,64 @@ unsigned int getDriverIndex(const std::vector<Driver> &drivers){
   nextUnsignedInt ("Opcao : ", choice);
   return choice-1;
 }
+
+void changeDriverId (std::vector<Driver> &drivers, unsigned int driverIndex){
+  unsigned int newId;
+
+	clearConsole();
+
+	std::cout << "ID atual : " << drivers.at(driverIndex).getId()  << std::endl;
+	nextUnsignedInt("ID novo : ", newId);
+
+	while (driverPosInVector(drivers, newId) != -1){
+		std::cout << "Ja existe um condutor com esse ID.\n";
+		nextUnsignedInt("ID novo : ", newId);
+	}
+
+	drivers.at(driverIndex).setId(newId);
+}
+
+void changeDriverName (std::vector<Driver> &drivers, unsigned int driverIndex){
+  std::string newName;
+
+	clearConsole();
+
+	std::cout << "Nome atual : " << drivers.at(driverIndex).getName()  << std::endl;
+  std::cout << "Nome novo : ";
+  getline (std::cin, newName);
+
+	drivers.at(driverIndex).setName(newName);
+}
+
+void changeDriverMaxShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex){
+  unsigned int newMaxShiftHours;
+
+	clearConsole();
+
+	std::cout << "Maximo de horas por turno atual : " << drivers.at(driverIndex).getMaxShiftHours()  << std::endl;
+  nextUnsignedInt("Maximo de horas por turno novo : ", newMaxShiftHours);
+
+	drivers.at(driverIndex).setMaxShiftHours(newMaxShiftHours);
+}
+
+void changeDriverMaxWeekHours (std::vector<Driver> &drivers, unsigned int driverIndex){
+  unsigned int newMaxWeekHours;
+
+	clearConsole();
+
+	std::cout << "Maximo de horas por semana atual : " << drivers.at(driverIndex).getMaxWeekHours()  << std::endl;
+  nextUnsignedInt("Maximo de horas por semana novo : ", newMaxWeekHours);
+
+	drivers.at(driverIndex).setMaxWeekHours(newMaxWeekHours);
+}
+
+void changeDriverMinBetweenShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex){
+  unsigned int newMinBetweenShiftHours;
+
+	clearConsole();
+
+	std::cout << "Minimo de horas por descanso atual : " << drivers.at(driverIndex).getMinBetweenShiftHours()  << std::endl;
+  nextUnsignedInt("Minimo de horas por descanso novo : ", newMinBetweenShiftHours);
+
+	drivers.at(driverIndex).setMinBetweenShiftHours(newMinBetweenShiftHours);
+}

@@ -24,6 +24,7 @@ void Driver::setFromString (std::string &driverString){
 
     //Already know the first element is the id
 	inSStream.str(splitStrings.at(0));
+  inSStream.clear();
 	inSStream >> id;
 
 	//Second element is the name
@@ -31,15 +32,18 @@ void Driver::setFromString (std::string &driverString){
 
 	//Maximum hours per shift
 	inSStream.str(splitStrings.at(2));
+  inSStream.clear();
 	inSStream >> maxShiftHours;
-
+  
 	//Maximum hours per week
 	inSStream.str(splitStrings.at(3));
+  inSStream.clear();
 	inSStream >> maxWeekHours;
 
-    //Minimin hours between shifts
-    inSStream.str(splitStrings.at(4));
-    inSStream >> minBetweenShiftHours;
+  //Minimin hours between shifts
+  inSStream.str(splitStrings.at(4));
+  inSStream.clear();
+  inSStream >> minBetweenShiftHours;
 }
 
 

@@ -88,12 +88,17 @@ std::string askFilePath (std::string message){
 int main (){
 
 	std::string linesFilePath, driversFilePath;
-
+	/*
 	linesFilePath = askFilePath ("Introduza o path do ficheiro de linhas");
 	driversFilePath = askFilePath ("Introduza o path do ficheiro de condutores");
+	*/
 
-	std::vector<Line> lines = readLinesFile(linesFilePath);
-	std::vector<Driver> drivers = readDriversFile (driversFilePath);
+	std::vector<Line> lines;
+	//std::vector<Driver> drivers = readDriversFile (driversFilePath);
+	std::vector<Driver> drivers = readDriversFile ("condutores.txt");
+
+	//readLinesFile(linesFilePath, lines, stops);
+	readLinesFile("linhas.txt", lines);
 
 	appState state = Menu;
 

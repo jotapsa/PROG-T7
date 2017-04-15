@@ -6,7 +6,6 @@
 //=================================
 // forward declared dependencies
 
-
 //=================================
 // included dependencies
 #include <vector>
@@ -19,31 +18,45 @@ class Line {
 private:
     unsigned int id;
     unsigned int freq;
-    std::vector<std::string> stops;
+    std::vector<std::string> lineStops;
     std::vector<unsigned int> timeBetweenStops;
 public:
     Line (){}; //Just create the object
     Line (unsigned int id);
-    void setFromString (std::string &lineString); //Pass it by reference, so we don't have to copy anything
+    void setFromString (std::string &lineString);
     //setters
-    void setId (unsigned int id){this->id=id;};
-    void setFreq (unsigned int freq){this->freq=freq;};
-    void setStops (std::vector<std::string> stops){this->stops=stops;};
-    void setTimeBetweenStops (std::vector<unsigned int> timeBetweenStops){this->timeBetweenStops=timeBetweenStops;};
+    void setId (unsigned int id);
+    void setFreq (unsigned int freq);
+    void setStops (std::vector<std::string> stops);
+    void setTimeBetweenStops (std::vector<unsigned int> timeBetweenStops);
     //getters
-    unsigned int getId () const {return id;};
-
+    unsigned int getId () const;
+    unsigned int getFreq () const;
+    std::vector<std::string> getStops () const;
+    //methods
+    //void addStop (Stop* stop);
 };
 
 
 /*
 Reads a entire file with the formated input id;freq;[stops];[timeBetweenStops] and returns a vector with Line Objects
 */
-std::vector<Line> readLinesFile (std::string linesFile);
-void createLine (std::vector<Line> &lines);
+void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines);
+//void createLine (std::vector<Line> &lines);
 unsigned int getLineIndex (const std::vector<Line> &lines);
 void changeLineId (std::vector<Line> &lines, unsigned int lineIndex);
 void changeLineFreq (std::vector<Line> &lines, unsigned int lineIndex);
 void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex);
+void printLines (const std::vector<Line> &lines);
 
 #endif // __LINE_h
+
+/*
+bool sort_linha (Linha i,Linha j) {
+    return (i.ID<j.ID);
+}
+
+void ordenar_linhas(std::vector<Linha> *Linhas){
+    sort(Linhas->begin(),Linhas->end(),sort_linha);
+}
+*/

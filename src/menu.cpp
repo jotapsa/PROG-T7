@@ -47,7 +47,7 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
 
     switch (choice) {
         case 1:
-          createLine (lines);
+          //createLine (lines);
         break;
         case 2:
           editLineMenu (lines, getLineIndex(lines));
@@ -56,7 +56,7 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
           //removeLine (lines);
         break;
         case 4:
-          //printLines (lines);
+          printLines (lines);
         break;
         case 5:
         break;

@@ -7,8 +7,6 @@
 #include "line.h"
 #include "semprarrolar.h"
 
-/* We dont care if we change lineString
-*/
 
 Line::Line (unsigned int id){
 	this->id = id;
@@ -16,10 +14,16 @@ Line::Line (unsigned int id){
 
 void Line::setFromString (std::string &lineString){
   std::vector<std::string> splitStrings(split(lineString,';'));
+	std::vector<std::string> busStop(split(splitStrings.at(2),','));
+
+	//Remover espacos no inicio
+	for (unsigned int i=0; i<busStop.size(); i++){
+		if (busStop.at(i).at(0) == ' '){
+			busStop.at(i).erase (busStop.at(i).begin());
+		}
+	}
 
 	std::istringstream inSStream;
-
-	std::string busStop;
 	unsigned int stopTime;
 
 	//Check the size
@@ -29,36 +33,63 @@ void Line::setFromString (std::string &lineString){
 
     //Already know the first element is the id
 	inSStream.str(splitStrings.at(0));
+	inSStream.clear();
 	inSStream >> id;
 
 	//Second element is the frequency
 	inSStream.str(splitStrings.at(1));
+	inSStream.clear();
 	inSStream >> freq;
 
 	//Stop sequence
-	inSStream.str(splitStrings.at(2));
-	for (unsigned int i=0; i<splitStrings.at(2).size(); i++){
-		inSStream >> busStop;
-		stops.push_back (busStop);
+	lineStops.clear ();
+	for (unsigned int i=0; i<busStop.size(); i++){
+		lineStops.push_back(busStop.at(i));
 	}
 
 	//busStop frequency
+	timeBetweenStops.clear();
 	inSStream.str(splitStrings.at(3));
-	for (unsigned int i=0; i<splitStrings.at(2).size(); i++){
+	inSStream.clear();
+	for (unsigned int i=0; i<busStop.size(); i++){
 		inSStream >> stopTime;
 		timeBetweenStops.push_back (stopTime);
 	}
 }
 
+void Line::setId (unsigned int id){
+	this->id=id;
+}
 
-std::vector<Line> readLinesFile (std::string linesFile){
+void Line::setFreq (unsigned int freq){
+	this->freq=freq;
+}
+
+void Line::setStops (std::vector<std::string> stops){
+	this->lineStops=stops;
+}
+
+void Line::setTimeBetweenStops (std::vector<unsigned int> timeBetweenStops){
+	this->timeBetweenStops=timeBetweenStops;
+}
+
+unsigned int Line::getId () const {
+	return id;
+}
+
+unsigned int Line::getFreq () const{
+	return freq;
+}
+
+std::vector<std::string>  Line::getStops () const{
+	return lineStops;
+}
+
+void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines){
 	std::ifstream fileInputStream;
-
-	std::vector<Line> lines;
 	std::string lineString;
 
-	fileInputStream.open(linesFile);
-	//"../input/linhas.txt"
+	fileInputStream.open(linesFilePath);
 
 	if (!fileInputStream.is_open()){
 		std::cerr << "Input file opening failed.\n";
@@ -72,8 +103,6 @@ std::vector<Line> readLinesFile (std::string linesFile){
 	}
 
 	fileInputStream.close();
-
-	return lines;
 }
 
 int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
@@ -83,7 +112,7 @@ int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
 	}
 	return -1; //-1 if we didn't find anything
 }
-
+/*
 void createLine (std::vector<Line> &lines){
 	unsigned int id, id_tries=0, n;
 	clearConsole();
@@ -136,7 +165,7 @@ void createLine (std::vector<Line> &lines){
 	line.setTimeBetweenStops(timeBetweenStops);
 
 	lines.push_back (line);
-}
+}*/
 
 
 unsigned int getLineIndex (const std::vector<Line> &lines){
@@ -183,4 +212,26 @@ void changeLineFreq (std::vector<Line> &lines, unsigned int lineIndex){
 
 void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex){
 
+}
+
+
+void printLines (const std::vector<Line> &lines){
+	std::vector<std::string> stops;
+	clearConsole();
+
+	std::cout << "*******************************\n\n";
+	for (unsigned int i=0; i<lines.size(); i++){
+		std::cout << "Linha " << lines.at(i).getId() << std::endl;
+		std::cout << "Frequencia : " << lines.at(i).getFreq() << std::endl;
+		stops = lines.at(i).getStops();
+		for (unsigned int j=0; j<stops.size(); j++){
+			if (j!=0){
+				std::cout << " - ";
+			}
+			std::cout << stops.at(j);
+		}
+		std::cout << "\n\n";
+	}
+
+	getchar();
 }

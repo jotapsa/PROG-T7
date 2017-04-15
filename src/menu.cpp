@@ -47,13 +47,13 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
 
     switch (choice) {
         case 1:
-          //createLine (lines);
+          createLine (lines);
         break;
         case 2:
           editLineMenu (lines, getLineIndex(lines));
         break;
         case 3:
-          //removeLine (lines);
+          removeLine (lines, getLineIndex(lines));
         break;
         case 4:
           printLines (lines);

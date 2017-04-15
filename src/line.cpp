@@ -14,13 +14,13 @@ Line::Line (unsigned int id){
 
 void Line::setFromString (std::string &lineString){
   std::vector<std::string> splitStrings(split(lineString,';'));
-	std::vector<std::string> busStop(split(splitStrings.at(2),','));
+	std::vector<std::string> busStops(split(splitStrings.at(2),','));
 	std::vector<std::string> timeStops(split(splitStrings.at(3),','));
 
 	//Remover espacos no inicio
-	for (unsigned int i=0; i<busStop.size(); i++){
-		if (busStop.at(i).at(0) == ' '){
-			busStop.at(i).erase (busStop.at(i).begin());
+	for (unsigned int i=0; i<busStops.size(); i++){
+		if (busStops.at(i).at(0) == ' '){
+			busStops.at(i).erase (busStops.at(i).begin());
 		}
 	}
 	for (unsigned int i=0; i<timeStops.size(); i++){
@@ -49,8 +49,8 @@ void Line::setFromString (std::string &lineString){
 
 	//Stop sequence
 	lineStops.clear ();
-	for (unsigned int i=0; i<busStop.size(); i++){
-		lineStops.push_back(busStop.at(i));
+	for (unsigned int i=0; i<busStops.size(); i++){
+		lineStops.push_back(busStops.at(i));
 	}
 
 	//busStop frequency
@@ -121,7 +121,7 @@ int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
 	}
 	return -1; //-1 if we didn't find anything
 }
-/*
+
 void createLine (std::vector<Line> &lines){
 	unsigned int id, id_tries=0, n;
 	clearConsole();
@@ -174,7 +174,7 @@ void createLine (std::vector<Line> &lines){
 	line.setTimeBetweenStops(timeBetweenStops);
 
 	lines.push_back (line);
-}*/
+}
 
 
 unsigned int getLineIndex (const std::vector<Line> &lines){
@@ -244,6 +244,25 @@ void printLines (const std::vector<Line> &lines){
 
 	getchar();
 }
+
+void removeLine (std::vector<Line> &lines, unsigned int lineIndex){
+  char decision;
+
+  clearConsole();
+
+  std::cout << "Quer remover a linha com ID " << lines.at(lineIndex).getId() <<std::endl;
+  std::cout << "Y(y) / N(n)\n";
+  std::cin >> decision;
+
+  std::cin.clear();
+  std::cin.ignore(1000,'\n'); //clean input buffer
+
+  if (decision == 'Y' || decision == 'y'){
+    lines.erase(lines.begin() + lineIndex);
+  }
+
+}
+
 
 void writeLineToFile (std::ofstream &fileOutputStream, Line line){
 	std::vector<std::string> stops = line.getStops();

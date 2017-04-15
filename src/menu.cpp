@@ -59,6 +59,7 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
           printLines (lines);
         break;
         case 5:
+          storeLines (askFilePath(), lines);
         break;
         case 6:
           changeState (state, Menu);

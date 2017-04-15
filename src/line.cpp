@@ -15,11 +15,17 @@ Line::Line (unsigned int id){
 void Line::setFromString (std::string &lineString){
   std::vector<std::string> splitStrings(split(lineString,';'));
 	std::vector<std::string> busStop(split(splitStrings.at(2),','));
+	std::vector<std::string> timeStops(split(splitStrings.at(3),','));
 
 	//Remover espacos no inicio
 	for (unsigned int i=0; i<busStop.size(); i++){
 		if (busStop.at(i).at(0) == ' '){
 			busStop.at(i).erase (busStop.at(i).begin());
+		}
+	}
+	for (unsigned int i=0; i<timeStops.size(); i++){
+		if (timeStops.at(i).at(0) == ' '){
+			timeStops.at(i).erase (timeStops.at(i).begin());
 		}
 	}
 
@@ -49,9 +55,9 @@ void Line::setFromString (std::string &lineString){
 
 	//busStop frequency
 	timeBetweenStops.clear();
-	inSStream.str(splitStrings.at(3));
-	inSStream.clear();
-	for (unsigned int i=0; i<busStop.size(); i++){
+	for (unsigned int i=0; i<timeStops.size(); i++){
+		inSStream.str(timeStops.at(i));
+		inSStream.clear();
 		inSStream >> stopTime;
 		timeBetweenStops.push_back (stopTime);
 	}
@@ -85,6 +91,10 @@ std::vector<std::string>  Line::getStops () const{
 	return lineStops;
 }
 
+std::vector<unsigned int> Line::getTimeBetweenStops () const{
+	return timeBetweenStops;
+}
+
 void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines){
 	std::ifstream fileInputStream;
 	std::string lineString;
@@ -101,7 +111,6 @@ void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines){
 		line.setFromString(lineString);
 		lines.push_back (line);
 	}
-
 	fileInputStream.close();
 }
 
@@ -234,4 +243,44 @@ void printLines (const std::vector<Line> &lines){
 	}
 
 	getchar();
+}
+
+void writeLineToFile (std::ofstream &fileOutputStream, Line line){
+	std::vector<std::string> stops = line.getStops();
+	std::vector<unsigned int> timeBetweenStops = line.getTimeBetweenStops();
+
+  fileOutputStream << line.getId () << ";";
+  fileOutputStream << line.getFreq () << ";";
+	for(unsigned int i=0; i<stops.size(); i++){
+		if(i!=0){
+			fileOutputStream << ", ";
+		}
+		fileOutputStream << stops.at(i);
+	}
+	fileOutputStream << ";";
+
+	for(unsigned int i=0; i<timeBetweenStops.size(); i++){
+		if(i!=0){
+			fileOutputStream << ",";
+		}
+		fileOutputStream << " " << timeBetweenStops.at(i);
+	}
+	fileOutputStream << std::endl;
+}
+
+void storeLines (std::string filePath, const std::vector<Line> &lines){
+  std::ofstream fileOutputStream;
+
+  fileOutputStream.open(filePath);
+
+  if (!fileOutputStream.is_open()){
+    std::cerr << "Output file opening failed.\n";
+    exit(1);
+  }
+
+  for (unsigned int i=0; i<lines.size(); i++){
+    writeLineToFile (fileOutputStream, lines.at(i));
+  }
+
+  fileOutputStream.close();
 }

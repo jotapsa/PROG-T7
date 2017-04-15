@@ -34,8 +34,10 @@ public:
     unsigned int getFreq () const;
     std::vector<std::string> getStops () const;
     std::vector<unsigned int> getTimeBetweenStops () const;
-    //methods
-    //void addStop (Stop* stop);
+    //
+    void addStop (unsigned int pos);
+    void removeStop (unsigned int pos);
+
 };
 
 
@@ -47,7 +49,8 @@ void createLine (std::vector<Line> &lines);
 unsigned int getLineIndex (const std::vector<Line> &lines);
 void changeLineId (std::vector<Line> &lines, unsigned int lineIndex);
 void changeLineFreq (std::vector<Line> &lines, unsigned int lineIndex);
-void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex);
+void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex);;
+
 void printLines (const std::vector<Line> &lines);
 
 void removeLine (std::vector<Line> &lines, unsigned int lineIndex);

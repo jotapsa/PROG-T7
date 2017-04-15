@@ -112,14 +112,14 @@ void changeLineStopsMenu (std::vector<Line> &lines, unsigned int lineIndex){
   std::cout << " 2 - Remover Paragem.\n";
   std::cout << " 3 - Voltar.\n";
   nextInt (" Digite a sua opcao e presse ENTER: ", choice);
-  //choice between 1 and 5
+  //choice between 1 and 3
 
   switch (choice) {
       case 1:
-        //addLineStop (lines, lineIndex);
+        addLineStopMenu (lines, lineIndex);
       break;
       case 2:
-        //removeLineStop (lines, lineIndex);
+        removeLineStopMenu (lines, lineIndex);
       break;
       case 3:
         return;
@@ -127,6 +127,38 @@ void changeLineStopsMenu (std::vector<Line> &lines, unsigned int lineIndex){
       default:
       break;
   }
+}
+
+void addLineStopMenu (std::vector<Line> &lines, unsigned int lineIndex){
+  std::vector<std::string> stops = lines.at(lineIndex).getStops();
+  unsigned int pos, i;
+
+  clearConsole();
+
+  std::cout << "1 - No inicio da linha\n";
+  for (i=0; i<(stops.size()-1); i++){
+    std::cout << i+2 << " - Entre ";
+    std::cout << stops.at(i) << " e " << stops.at(i+1) << std::endl;
+  }
+  std::cout << i+2 << " - No fim da linha\n";
+  //falta validar que a opcao esta entre 1 e stops.size()
+  nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", pos);
+
+  lines.at(lineIndex).addStop (pos-1);
+}
+
+void removeLineStopMenu (std::vector<Line> &lines, unsigned int lineIndex){
+  std::vector<std::string> stops = lines.at(lineIndex).getStops();
+  unsigned int pos;
+  clearConsole();
+
+  for (unsigned int i=0; i<(stops.size()); i++){
+    std::cout << i+1 << " - "<<  stops.at(i) << std::endl;
+  }
+
+  //falta validar que a opcao esta entre 1 e stops.size()
+  nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", pos);
+  lines.at(lineIndex).removeStop (pos-1);
 }
 
 void manageDriverMenu (appState &state, std::vector<Driver> &drivers){

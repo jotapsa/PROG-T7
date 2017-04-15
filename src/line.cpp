@@ -95,6 +95,44 @@ std::vector<unsigned int> Line::getTimeBetweenStops () const{
 	return timeBetweenStops;
 }
 
+void Line::addStop (unsigned int pos){
+	std::string stopName;
+	unsigned int timeStop;
+
+	std::cout << "Nome da nova paragem: ";
+	getline(std::cin, stopName);
+
+	if (pos != lineStops.size()){
+		std::cout << "Tempo de viagem entre " << stopName << " e " << lineStops.at(pos);
+		nextUnsignedInt (" : ", timeStop);
+		timeBetweenStops.insert(timeBetweenStops.begin()+pos, timeStop);
+	}
+
+	if (pos != 0){
+		std::cout << "Tempo de viagem entre " << lineStops.at(pos-1) << " e " << stopName;
+		nextUnsignedInt (" : ", timeStop);
+		timeBetweenStops.insert(timeBetweenStops.begin()+pos-1, timeStop);
+	}
+
+	if (pos!=0 && pos != lineStops.size()){
+		timeBetweenStops.erase(timeBetweenStops.begin()+pos);
+	}
+
+	lineStops.insert(lineStops.begin()+pos, stopName);
+}
+
+void Line::removeStop (unsigned int pos){
+
+	if (pos == 0 || pos ==(lineStops.size()-1)){
+		timeBetweenStops.erase(timeBetweenStops.begin()+pos-1);
+	}
+	else{
+		timeBetweenStops.at(pos-1) += timeBetweenStops.at(pos);
+		timeBetweenStops.erase(timeBetweenStops.begin()+pos);
+	}
+	lineStops.erase(lineStops.begin()+(pos));
+}
+
 void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines){
 	std::ifstream fileInputStream;
 	std::string lineString;
@@ -226,6 +264,7 @@ void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineInde
 
 void printLines (const std::vector<Line> &lines){
 	std::vector<std::string> stops;
+	std::vector<unsigned int> timeBetweenStops;
 	clearConsole();
 
 	std::cout << "*******************************\n\n";
@@ -238,6 +277,15 @@ void printLines (const std::vector<Line> &lines){
 				std::cout << " - ";
 			}
 			std::cout << stops.at(j);
+		}
+		std::cout << std::endl;
+
+		timeBetweenStops = lines.at(i).getTimeBetweenStops();
+		for (unsigned int j=0; j<timeBetweenStops.size(); j++){
+			if (j!=0){
+				std::cout << " - ";
+			}
+			std::cout  << timeBetweenStops.at(j);
 		}
 		std::cout << "\n\n";
 	}

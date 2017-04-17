@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <algorithm>  //std::sort
 
 #include "driver.h"
 #include "semprarrolar.h"
@@ -116,19 +117,12 @@ int driverPosInVector (const std::vector<Driver> &drivers, const unsigned int &i
 
 
 void createDriver (std::vector<Driver> &drivers){
-  unsigned int id, id_tries=0;
+  unsigned int id;
   clearConsole();
 
   nextUnsignedInt ("ID : ", id);
-
-  while ((driverPosInVector(drivers, id)!=-1) && (id_tries<5)){
+  while (driverPosInVector(drivers, id)!=-1){
     nextUnsignedInt ("Ja existe um condutor com esse ID, introduza outro : ", id);
-    id_tries++;
-  }
-
-  if (!(id_tries<5)) {
-    std::cout << "Erro! Excedeu o limite de tentativas\n";
-    return;
   }
 
   Driver driver(id);
@@ -159,10 +153,12 @@ unsigned int getDriverIndex(const std::vector<Driver> &drivers){
   std::cout << "*******************************\n";
 
   for (unsigned int i=0; i<drivers.size(); i++){
-    std::cout << i+1 << " - " << drivers.at(i).getId() << std::endl;
+    std::cout << i+1 << " - " << drivers.at(i).getId() << ": " << drivers.at(i).getName()<< std::endl;
   }
+  do{
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
+  }while (choice>drivers.size() || choice<1);
 
-  nextUnsignedInt ("Opcao : ", choice);
   return choice-1;
 }
 
@@ -270,4 +266,12 @@ void storeDrivers (std::string filePath, const std::vector<Driver> &drivers){
   }
 
   fileOutputStream.close();
+}
+
+bool driverComp (const Driver &i, const Driver &j) {
+    return (i.getId() < j.getId());
+}
+
+void sortDrivers (std::vector<Driver> &drivers){
+    sort(drivers.begin(), drivers.end(), driverComp);
 }

@@ -50,4 +50,6 @@ void removeDriver (std::vector<Driver> &drivers, unsigned int driverIndex);
 
 void storeDrivers (std::string filePath, const std::vector<Driver> &drivers);
 
+void sortDrivers (std::vector<Driver> &drivers);
+
 #endif // __DRIVER_H

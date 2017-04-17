@@ -23,8 +23,8 @@ private:
 public:
     Line (){}; //Just create the object
     Line (unsigned int id);
-    void setFromString (std::string &lineString);
     //setters
+    void setFromString (std::string &lineString);
     void setId (unsigned int id);
     void setFreq (unsigned int freq);
     void setStops (std::vector<std::string> stops);
@@ -34,7 +34,7 @@ public:
     unsigned int getFreq () const;
     std::vector<std::string> getStops () const;
     std::vector<unsigned int> getTimeBetweenStops () const;
-    //
+    //methods
     void addStop (unsigned int pos);
     void removeStop (unsigned int pos);
 
@@ -61,14 +61,6 @@ std::string getStop (const std::vector<Line> &lines);
 void stopTimeTable (const std::string &stop, const std::vector<Line> &lines);
 void lineTimeTable (const Line &line);
 
-#endif // __LINE_h
+void sortLines (std::vector<Line> &lines);
 
-/*
-bool sort_linha (Linha i,Linha j) {
-    return (i.ID<j.ID);
-}
-
-void ordenar_linhas(std::vector<Linha> *Linhas){
-    sort(Linhas->begin(),Linhas->end(),sort_linha);
-}
-*/
+#endif // __LINE_H

@@ -13,7 +13,7 @@ void mainMenu (appState &state){
   std::cout << " 3 - Visualizacao de informacao.\n";
   std::cout << " 4 - Sair.\n";
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>4 || choice<1);
 
   switch (choice) {
@@ -49,7 +49,9 @@ void mainMenu (appState &state){
 void manageLineMenu (appState &state, std::vector<Line> &lines){
   unsigned int choice;
 
+  sortLines (lines);
   clearConsole();
+
   std::cout << "*******************************\n";
   std::cout << " 1 - Criar uma linha.\n";
   std::cout << " 2 - Editar uma linha.\n";
@@ -58,7 +60,7 @@ void manageLineMenu (appState &state, std::vector<Line> &lines){
   std::cout << " 5 - Guardar as linhas.\n";
   std::cout << " 6 - Sair para o Menu.\n";
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>6 || choice<1);
 
   switch (choice) {
@@ -114,7 +116,7 @@ void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex){
   std::cout << " 4 - Tempo entre Paragens.\n";
   std::cout << " 5 - Voltar.\n";
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>5 || choice<1);
 
   switch (choice) {
@@ -162,7 +164,7 @@ void changeLineStopsMenu (Line &line){
   std::cout << " 2 - Remover Paragem.\n";
   std::cout << " 3 - Voltar.\n";
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>3 || choice<1);
 
   switch (choice) {
@@ -203,7 +205,7 @@ void addLineStopMenu (Line &line){
   std::cout << i+2 << " - No fim da linha\n";
 
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>(stops.size()+1) || choice<1); //(stops.size()+1) because we can add at the end of the line
 
   line.addStop (choice-1);
@@ -220,7 +222,7 @@ void removeLineStopMenu (Line &line){
   }
 
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>stops.size() || choice<1);
   line.removeStop (choice-1);
 }
@@ -228,6 +230,7 @@ void removeLineStopMenu (Line &line){
 void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
   unsigned int choice;
 
+  sortDrivers (drivers);
   clearConsole();
   std::cout << "*******************************\n";
   std::cout << " 1 - Criar um condutor.\n";
@@ -237,7 +240,7 @@ void manageDriverMenu (appState &state, std::vector<Driver> &drivers){
   std::cout << " 5 - Guardar os condutores. \n";
   std::cout << " 6 - Sair para o Menu.\n";
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>6 || choice<1);
 
   switch (choice) {
@@ -294,7 +297,7 @@ void editDriverMenu (std::vector<Driver> &drivers, unsigned int driverIndex){
   std::cout << " 5 - Minimo de horas por descanso. \n";
   std::cout << " 6 - Voltar.\n";
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>6 || choice<1);
 
   switch (choice) {
@@ -350,7 +353,7 @@ void viewInfMenu (appState &state, std::vector<Line> &lines, std::vector<Driver>
   std::cout << " 3 - Percursos.\n";
   std::cout << " 4 - Voltar.\n";
   do{
-    nextUnsignedInt (" Digite a sua opcao e presse ENTER: ", choice);
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
   }while (choice>4 || choice<1);
 
   switch (choice) {

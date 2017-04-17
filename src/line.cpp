@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <algorithm>  //std::sort
 
 #include "line.h"
 #include "time.h"
@@ -162,20 +163,15 @@ int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
 }
 
 void createLine (std::vector<Line> &lines){
-	unsigned int id, id_tries=0, n;
+	unsigned int id, n;
+	
 	clearConsole();
 
 	nextUnsignedInt ("ID : ", id);
-
-	while ((linePosInVector(lines, id)!=-1) && (id_tries<5)){
+	while (linePosInVector(lines, id)!=-1){
 		nextUnsignedInt ("Ja existe uma linha com esse ID, introduza outro : ", id);
-		id_tries++;
 	}
 
-	if (!(id_tries<5)) {
-		std::cout << "Erro! Excedeu o limite de tentativas\n";
-		return;
-	}
 	Line line(id); //Already know we have a valid ID so we are going to create a new line
 
 	unsigned int freq;
@@ -225,8 +221,9 @@ unsigned int getLineIndex (const std::vector<Line> &lines){
 	for (unsigned int i=0; i<lines.size(); i++){
 		std::cout << i+1 << " - " << lines.at(i).getId() << std::endl;
 	}
-
-	nextUnsignedInt ("Opcao : ", choice);
+	do{
+		nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
+	}while (choice>lines.size() || choice<1);
 
 	return choice-1;
 }
@@ -266,6 +263,7 @@ void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineInde
 void printLines (const std::vector<Line> &lines){
 	std::vector<std::string> stops;
 	std::vector<unsigned int> timeBetweenStops;
+
 	clearConsole();
 
 	std::cout << "*******************************\n\n";
@@ -454,4 +452,12 @@ void lineTimeTable (const Line &line){
 
 	getchar ();
 
+}
+
+bool lineComp (const Line &i, const Line &j) {
+    return (i.getId() < j.getId());
+}
+
+void sortLines (std::vector<Line> &lines){
+    sort(lines.begin(), lines.end(), lineComp);
 }

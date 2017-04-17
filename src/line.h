@@ -37,6 +37,7 @@ public:
     //methods
     void addStop (unsigned int pos);
     void removeStop (unsigned int pos);
+    void changeTimeBetweenStops (unsigned int pos);
 
 };
 
@@ -44,7 +45,7 @@ public:
 /*
 Reads a entire file with the formated input id;freq;[stops];[timeBetweenStops] and returns a vector with Line Objects
 */
-void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines);
+std::vector<Line> readLinesFile (const std::string &linesFilePath);
 void createLine (std::vector<Line> &lines);
 unsigned int getLineIndex (const std::vector<Line> &lines);
 void changeLineId (std::vector<Line> &lines, unsigned int lineIndex);
@@ -60,6 +61,7 @@ void storeLines (std::string filePath, const std::vector<Line> &lines);
 std::string getStop (const std::vector<Line> &lines);
 void stopTimeTable (const std::string &stop, const std::vector<Line> &lines);
 void lineTimeTable (const Line &line);
+void routeTimeTable (const std::vector<Line> &lines);
 
 void sortLines (std::vector<Line> &lines);
 

@@ -140,7 +140,7 @@ void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex){
 
     case 4:
     {
-      changeLineTimeBetweenStops (lines, lineIndex);
+      changeLineTimeBetweenStopsMenu (lines.at(lineIndex));
     }
     break;
 
@@ -189,6 +189,24 @@ void changeLineStopsMenu (Line &line){
     default:
     break;
   }
+}
+
+void changeLineTimeBetweenStopsMenu (Line &line){
+  std::vector<std::string> stops = line.getStops();
+  std::vector<unsigned int> timeBetweenStops = line.getTimeBetweenStops();
+  unsigned int choice;
+
+  clearConsole();
+
+  for (unsigned int i=0; i<timeBetweenStops.size(); i++){
+    std::cout << i+1 << " - Entre ";
+    std::cout << stops.at(i) << " e " << stops.at(i+1) <<std::endl;
+  }
+  do{
+    nextUnsignedInt ("Digite a sua opcao e presse ENTER: ", choice);
+  }while (choice>(timeBetweenStops.size()) || choice<1);
+
+  line.changeTimeBetweenStops (choice-1);
 }
 
 void addLineStopMenu (Line &line){
@@ -371,12 +389,11 @@ void viewInfMenu (appState &state, std::vector<Line> &lines, std::vector<Driver>
 
     case 3:
     {
-      //changeDriverMaxShiftHours (drivers, driverIndex);
+      routeTimeTable (lines);
     }
     break;
 
     case 4:
-
     {
       changeState (state, Menu);
     }

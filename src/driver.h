@@ -34,7 +34,7 @@ public:
 
 };
 
-std::vector<Driver> readDriversFile (std::string driversFile);
+std::vector<Driver> readDriversFile (const std::string &driversFilePath);
 
 void printDrivers (const std::vector<Driver> &drivers);
 void createDriver (std::vector<Driver> &drivers);

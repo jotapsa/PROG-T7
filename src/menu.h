@@ -18,6 +18,7 @@ void manageLineMenu (appState &state, std::vector<Line> &lines);
 void editLineMenu (std::vector<Line> &lines, unsigned int lineIndex);
 
 void changeLineStopsMenu (Line &line);
+void changeLineTimeBetweenStopsMenu (Line &line);
 void addLineStopMenu (Line &line);
 void removeLineStopMenu (Line &line);
 

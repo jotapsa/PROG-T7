@@ -48,14 +48,13 @@ void Driver::setFromString (std::string &driverString){
 }
 
 
-std::vector<Driver> readDriversFile (std::string driversFile){
+std::vector<Driver> readDriversFile (const std::string &driversFilePath){
   std::ifstream fileInputStream;
 
   std::vector<Driver> drivers;
   std::string driverString;
 
-  fileInputStream.open(driversFile);
-  //"../input/condutores.txt"
+  fileInputStream.open(driversFilePath);
 
   if (!fileInputStream.is_open()){
     std::cerr << "Input file opening failed.\n";
@@ -67,7 +66,6 @@ std::vector<Driver> readDriversFile (std::string driversFile){
     driver.setFromString(driverString);
     drivers.push_back (driver);
   }
-
   fileInputStream.close();
 
   return drivers;

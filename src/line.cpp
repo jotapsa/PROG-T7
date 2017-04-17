@@ -135,8 +135,20 @@ void Line::removeStop (unsigned int pos){
 	lineStops.erase(lineStops.begin()+(pos));
 }
 
-void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines){
+void Line::changeTimeBetweenStops (unsigned int pos){
+	unsigned int newTime;
+	clearConsole();
+
+	std::cout << "Tempo de viagem entre " << lineStops.at(pos) << " e " << lineStops.at(pos+1) << std::endl;
+	nextUnsignedInt ("Novo tempo de viagem: ", newTime);
+
+	timeBetweenStops.at(pos) = newTime;
+}
+
+std::vector<Line> readLinesFile (const std::string &linesFilePath){
 	std::ifstream fileInputStream;
+
+	std::vector <Line> lines;
 	std::string lineString;
 
 	fileInputStream.open(linesFilePath);
@@ -152,6 +164,8 @@ void readLinesFile (const std::string &linesFilePath, std::vector<Line> &lines){
 		lines.push_back (line);
 	}
 	fileInputStream.close();
+
+	return lines;
 }
 
 int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
@@ -164,7 +178,7 @@ int linePosInVector (const std::vector<Line> &lines, const unsigned int &id){
 
 void createLine (std::vector<Line> &lines){
 	unsigned int id, n;
-	
+
 	clearConsole();
 
 	nextUnsignedInt ("ID : ", id);
@@ -254,11 +268,6 @@ void changeLineFreq (Line &line){
 
 	line.setFreq(newFreq);
 }
-
-void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex){
-
-}
-
 
 void printLines (const std::vector<Line> &lines){
 	std::vector<std::string> stops;
@@ -451,6 +460,67 @@ void lineTimeTable (const Line &line){
 	}
 
 	getchar ();
+
+}
+
+void routeTimeTable (const std::vector<Line> &lines){
+	std::string startStop, endStop;
+	int startIndex, endIndex;
+	unsigned int startTimeGap, timeGap, freq;
+	Time departTime(STARTHOUR, STARTMINUTES), busTime;
+	bool flag=false;
+
+	std::vector<std::string> lineStops;
+	std::vector<unsigned int> timeBetweenStops;
+
+	clearConsole();
+
+	std::cout << "Introduza a paragem de partida\n";
+	getline (std::cin, startStop);
+	std::cout << "Introduza a paragem de chegada\n";
+	getline (std::cin, endStop);
+
+	clearConsole();
+
+	for (unsigned int i=0; i<lines.size(); i++){
+		lineStops = lines.at(i).getStops();
+		timeBetweenStops = lines.at(i).getTimeBetweenStops();
+		freq = lines.at(i).getFreq();
+
+		if (((startIndex = stopInLineStopsIndex(startStop, lineStops)) != -1)
+		&& ((endIndex = stopInLineStopsIndex(endStop, lineStops)) != -1)){
+			flag = true;
+			startTimeGap=0; timeGap=0;
+
+			for (int j=0 ; j< startIndex; j++){
+				startTimeGap += timeBetweenStops.at(j);
+			}
+			for (int j=startIndex; j< endIndex; j++){
+				timeGap += timeBetweenStops.at(j);
+			}
+
+			busTime.addMinutes (timeGap);
+
+			std::cout << "Linha "<< lines.at(i).getId() << std::endl;
+			std::cout << lineStops.at(startIndex) << " - " << lineStops.at(endIndex) << std::endl;
+
+			while (departTime.before(ENDHOUR, ENDMINUTES)){ //while still departing bus
+				busTime.setTime(departTime.getHour(), departTime.getMinutes());
+				busTime.addMinutes (startTimeGap);
+
+				std::cout << busTime.toString () << " - ";
+				busTime.addMinutes (timeGap);
+				std::cout << busTime.toString () << std::endl;
+
+				departTime.addMinutes(freq);
+			}
+		}
+	}
+
+	if (!flag){
+		std::cout << "Nao ha nenhuma linha com esse percurso\n";
+	}
+	getchar();
 
 }
 

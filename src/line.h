@@ -57,6 +57,10 @@ void removeLine (std::vector<Line> &lines, unsigned int lineIndex);
 
 void storeLines (std::string filePath, const std::vector<Line> &lines);
 
+std::string getStop (const std::vector<Line> &lines);
+void stopTimeTable (const std::string &stop, const std::vector<Line> &lines);
+void lineTimeTable (const Line &line);
+
 #endif // __LINE_h
 
 /*

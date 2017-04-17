@@ -8,7 +8,14 @@
 #include <vector>
 #include <string>
 
+#define STARTHOUR 7
+#define STARTMINUTES 0
+
+#define ENDHOUR 20
+#define ENDMINUTES 0
+
 enum appState {Menu, ManageLines, ManageDrivers, ViewInf, Quit};
+
 
 /*Splits a string (passed by reference so we don't have to copy it)
 into a vector of strings

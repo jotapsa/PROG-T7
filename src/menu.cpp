@@ -234,3 +234,33 @@ void editDriverMenu (std::vector<Driver> &drivers, unsigned int driverIndex){
       break;
   }
 }
+
+
+void viewInfMenu (appState &state, std::vector<Line> &lines, std::vector<Driver> &drivers){
+  int choice;
+
+  clearConsole();
+  std::cout << "*******************************\n";
+  std::cout << " 1 - Horarios.\n";
+  std::cout << " 2 - Linhas.\n";
+  std::cout << " 3 - Percursos.\n";
+  std::cout << " 4 - Voltar.\n";
+  nextInt (" Digite a sua opcao e presse ENTER: ", choice);
+
+  switch (choice) {
+      case 1:
+        stopTimeTable (getStop(lines), lines);
+      break;
+      case 2:
+        lineTimeTable (lines.at(getLineIndex(lines)));
+      break;
+      case 3:
+        //changeDriverMaxShiftHours (drivers, driverIndex);
+      break;
+      case 4:
+        changeState (state, Menu);
+      break;
+      default:
+      break;
+  }
+}

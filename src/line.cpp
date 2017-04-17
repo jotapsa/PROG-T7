@@ -351,3 +351,119 @@ void storeLines (std::string filePath, const std::vector<Line> &lines){
 
   fileOutputStream.close();
 }
+
+int stopInLineStopsIndex (const std::string &stop, const std::vector<std::string> &stops){
+	for (unsigned int i=0; i<stops.size(); i++){
+		if (stops.at(i).compare(stop) == 0){
+			return i;
+		}
+	}
+	return -1;
+}
+
+std::string getStop (const std::vector<Line> &lines){
+	std::vector<std::string> stops; //No repetitions
+	std::vector<std::string> lineStops;
+	int choice;
+
+	for (unsigned int i=0; i<lines.size(); i++){
+		lineStops = lines.at(i).getStops();
+		for (unsigned int j=0; j<lineStops.size(); j++){
+			if (stopInLineStopsIndex(lineStops.at(j), stops) == -1 ){
+				stops.push_back(lineStops.at(j));
+			}
+		}
+	}
+
+	clearConsole ();
+
+	for (unsigned int i=0; i<stops.size(); i++){
+		std::cout << i+1 << " - " << stops.at(i) << std::endl;
+	}
+	nextInt ("Escolha uma paragem e presse ENTER: ", choice);
+
+	return stops.at(choice-1);
+}
+
+void stopTimeTable (const std::string &stop, const std::vector<Line> &lines){
+	int index;
+	int hour, minutes, timeGap=0;
+
+	std::vector<std::string> lineStops;
+	std::vector<unsigned int> timeBetweenStops;
+
+	clearConsole();
+
+	for (unsigned int i=0; i<lines.size(); i++){
+		lineStops = lines.at(i).getStops();
+		timeBetweenStops = lines.at(i).getTimeBetweenStops();
+
+		if ((index = stopInLineStopsIndex(stop, lineStops)) != -1){
+			hour = STARTHOUR;
+			minutes = STARTMINUTES;
+			timeGap=0;
+
+			for (int j=0; j<index; j++){
+				timeGap+=timeBetweenStops.at(j);
+			}
+
+			minutes+=timeGap;
+
+			std::cout << lines.at(i).getId() << std::endl;
+			while (hour < ENDHOUR || minutes < ENDMINUTES){
+				while (minutes>=60){
+					hour++;
+					minutes-=60;
+				}
+				std::cout << hour << ":" << minutes <<std::endl;
+				minutes+=lines.at(i).getFreq();
+			}
+		}
+	}
+
+	getchar();
+}
+
+void lineTimeTable (const Line &line){
+	int hour = STARTHOUR, minutes= STARTMINUTES;
+	int busHour , busMinutes;
+
+	std::vector<std::string> lineStops = line.getStops();
+	std::vector<unsigned int> timeBetweenStops = line.getTimeBetweenStops();
+
+	clearConsole();
+
+	for (unsigned int i=0; i<lineStops.size(); i++){
+		if (i!=0){
+			std::cout << " - ";
+		}
+		std::cout << lineStops.at(i);
+	}
+	std::cout << std::endl;
+
+	while (hour< ENDHOUR || minutes < ENDMINUTES){ //while still departing bus
+		busHour = hour;
+		busMinutes = minutes;
+		for (unsigned int i=0; i<lineStops.size(); i++){ //for every stop
+			if (i!=0){
+				std::cout << " - ";
+				busMinutes += timeBetweenStops.at(i-1);
+			}
+			while (busMinutes>=60){
+				busHour++;
+				busMinutes-=60;
+			}
+			std::cout << busHour << ":" << busMinutes;
+		}
+		std::cout << std::endl;
+		minutes += line.getFreq();
+
+		while (minutes>=60){
+			hour++;
+			minutes-=60;
+		}
+	}
+
+	getchar ();
+
+}

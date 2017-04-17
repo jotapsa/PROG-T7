@@ -23,4 +23,5 @@ void removeLineStopMenu (std::vector<Line> &lines, unsigned int lineIndex);
 void manageDriverMenu (appState &state, std::vector<Driver> &drivers);
 void editDriverMenu (std::vector<Driver> &drivers, unsigned int driverIndex);
 
+void viewInfMenu (appState &state, std::vector<Line> &lines, std::vector<Driver> &drivers);
 #endif // __MENU_H

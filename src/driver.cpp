@@ -34,7 +34,7 @@ void Driver::setFromString (std::string &driverString){
 	inSStream.str(splitStrings.at(2));
   inSStream.clear();
 	inSStream >> maxShiftHours;
-  
+
 	//Maximum hours per week
 	inSStream.str(splitStrings.at(3));
   inSStream.clear();
@@ -182,49 +182,49 @@ void changeDriverId (std::vector<Driver> &drivers, unsigned int driverIndex){
 	drivers.at(driverIndex).setId(newId);
 }
 
-void changeDriverName (std::vector<Driver> &drivers, unsigned int driverIndex){
+void changeDriverName (Driver &driver){
   std::string newName;
 
 	clearConsole();
 
-	std::cout << "Nome atual : " << drivers.at(driverIndex).getName()  << std::endl;
+	std::cout << "Nome atual : " << driver.getName()  << std::endl;
   std::cout << "Nome novo : ";
   getline (std::cin, newName);
 
-	drivers.at(driverIndex).setName(newName);
+	driver.setName(newName);
 }
 
-void changeDriverMaxShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex){
+void changeDriverMaxShiftHours (Driver &driver){
   unsigned int newMaxShiftHours;
 
 	clearConsole();
 
-	std::cout << "Maximo de horas por turno atual : " << drivers.at(driverIndex).getMaxShiftHours()  << std::endl;
+	std::cout << "Maximo de horas por turno atual : " << driver.getMaxShiftHours()  << std::endl;
   nextUnsignedInt("Maximo de horas por turno novo : ", newMaxShiftHours);
 
-	drivers.at(driverIndex).setMaxShiftHours(newMaxShiftHours);
+	driver.setMaxShiftHours(newMaxShiftHours);
 }
 
-void changeDriverMaxWeekHours (std::vector<Driver> &drivers, unsigned int driverIndex){
+void changeDriverMaxWeekHours (Driver &driver){
   unsigned int newMaxWeekHours;
 
 	clearConsole();
 
-	std::cout << "Maximo de horas por semana atual : " << drivers.at(driverIndex).getMaxWeekHours()  << std::endl;
+	std::cout << "Maximo de horas por semana atual : " << driver.getMaxWeekHours()  << std::endl;
   nextUnsignedInt("Maximo de horas por semana novo : ", newMaxWeekHours);
 
-	drivers.at(driverIndex).setMaxWeekHours(newMaxWeekHours);
+	driver.setMaxWeekHours(newMaxWeekHours);
 }
 
-void changeDriverMinBetweenShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex){
+void changeDriverMinBetweenShiftHours (Driver &driver){
   unsigned int newMinBetweenShiftHours;
 
 	clearConsole();
 
-	std::cout << "Minimo de horas por descanso atual : " << drivers.at(driverIndex).getMinBetweenShiftHours()  << std::endl;
+	std::cout << "Minimo de horas por descanso atual : " << driver.getMinBetweenShiftHours()  << std::endl;
   nextUnsignedInt("Minimo de horas por descanso novo : ", newMinBetweenShiftHours);
 
-	drivers.at(driverIndex).setMinBetweenShiftHours(newMinBetweenShiftHours);
+	driver.setMinBetweenShiftHours(newMinBetweenShiftHours);
 }
 
 void removeDriver (std::vector<Driver> &drivers, unsigned int driverIndex){

@@ -247,15 +247,15 @@ void changeLineId (std::vector<Line> &lines, unsigned int lineIndex){
 	lines.at(lineIndex).setId(newId);
 }
 
-void changeLineFreq (std::vector<Line> &lines, unsigned int lineIndex){
+void changeLineFreq (Line &line){
 	unsigned int newFreq;
 
 	clearConsole();
 
-	std::cout << "Frequencia atual : " << lines.at(lineIndex).getId()  << std::endl;
+	std::cout << "Frequencia atual : " << line.getFreq()  << std::endl;
 	nextUnsignedInt("Frequencia nova : ", newFreq);
 
-	lines.at(lineIndex).setFreq(newFreq);
+	line.setFreq(newFreq);
 }
 
 void changeLineTimeBetweenStops (std::vector<Line> &lines, unsigned int lineIndex){

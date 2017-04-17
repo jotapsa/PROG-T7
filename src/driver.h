@@ -41,10 +41,10 @@ void createDriver (std::vector<Driver> &drivers);
 unsigned int getDriverIndex(const std::vector<Driver> &drivers);
 
 void changeDriverId (std::vector<Driver> &drivers, unsigned int driverIndex);
-void changeDriverName (std::vector<Driver> &drivers, unsigned int driverIndex);
-void changeDriverMaxShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex);
-void changeDriverMaxWeekHours (std::vector<Driver> &drivers, unsigned int driverIndex);
-void changeDriverMinBetweenShiftHours (std::vector<Driver> &drivers, unsigned int driverIndex);
+void changeDriverName (Driver &driver);
+void changeDriverMaxShiftHours (Driver &driver);
+void changeDriverMaxWeekHours (Driver &driver);
+void changeDriverMinBetweenShiftHours (Driver &driver);
 
 void removeDriver (std::vector<Driver> &drivers, unsigned int driverIndex);
 

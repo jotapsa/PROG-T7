@@ -31,7 +31,8 @@ void clearConsole (){
 	/*if (Windows)
 		std::system("cls");
 	else*/
-		std::system("clear");
+		//std::system("clear");
+	printf("\033c");
 }
 
 void nextInt(std::string string, int &number){

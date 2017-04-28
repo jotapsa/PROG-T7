@@ -25,11 +25,6 @@ bool update_linhas = false;
 bool update_condutores = false;
 
 /*
- Função responsável pela impressão do menu principal e dos respetivos sub-menus.
- */
-
-
-/*
  Função main.
  */
 int main(int argc, const char * argv[]) {

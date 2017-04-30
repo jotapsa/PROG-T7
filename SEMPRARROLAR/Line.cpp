@@ -129,6 +129,8 @@ bool Line::verificarParagem(std::string paragem){
 void verificar_hora(int *time,int *horas,int *minutos){
     *horas = (*time)/60;
     *minutos = (*time)%60;
+    if(*horas >=24)
+        *horas -= 24;
 }
 
 int Line::TempoParagens(int origem,int destino,int sentido){
@@ -156,7 +158,7 @@ void Line::alinharParagem(int origem,int paragem){
 
 
 void Line::imprimirViagem(int origem,int destino,int sentido){
-    int time,hora_paragem,horas,minutos,viagem_completa;
+    int time,hora_paragem,horas,minutos,viagem_completa,hora_saida;
     char hora[7];
     
     for(int s=origem;s!=destino+sentido;s+=sentido){
@@ -196,10 +198,10 @@ void Line::imprimirViagem(int origem,int destino,int sentido){
         std::cout << std::endl;
         time += freq;
         if(sentido==1)
-            hora_paragem = time + 2*viagem_completa;
+            hora_saida = time;
         else
-            hora_paragem = time + viagem_completa;
-        if(hora_paragem > END)
+            hora_saida = time - viagem_completa;
+        if(hora_saida > END)
             break;
     }
 }

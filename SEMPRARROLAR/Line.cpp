@@ -126,12 +126,7 @@ bool Line::verificarParagem(std::string paragem){
     return (std::find(busStopList.begin(),busStopList.end(),paragem) != busStopList.end()) ? true : false;
 }
 
-void verificar_hora(int *time,int *horas,int *minutos){
-    *horas = (*time)/60;
-    *minutos = (*time)%60;
-    if(*horas >=24)
-        *horas -= 24;
-}
+
 
 int Line::TempoParagens(int origem,int destino,int sentido){
     if(sentido==1)
@@ -139,7 +134,6 @@ int Line::TempoParagens(int origem,int destino,int sentido){
     else
         return (int)std::accumulate(timesList.begin() + destino,timesList.begin() + origem,0);
 }
-
 
 
 void Line::alinharParagem(int origem,int paragem){

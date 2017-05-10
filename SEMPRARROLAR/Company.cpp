@@ -548,6 +548,3 @@ void Empresa::atualizarCondutores(){
     }
     file.close();
 }
-
-
-    

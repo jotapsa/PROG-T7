@@ -95,3 +95,10 @@ int imprimir_menu(int menu){
     }
     return 0;
 }
+
+void verificar_hora(int *time,int *horas,int *minutos){
+    *horas = (*time)/60;
+    *minutos = (*time)%60;
+    if(*horas >=24)
+        *horas -= 24;
+}

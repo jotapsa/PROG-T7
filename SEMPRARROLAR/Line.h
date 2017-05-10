@@ -9,8 +9,6 @@
 #include <numeric>
 #include <iomanip>
 #include "semprarrolar.h"
-#define START 7*60
-#define END 22*60
 
 using namespace std;
 

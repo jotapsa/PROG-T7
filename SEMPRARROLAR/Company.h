@@ -8,6 +8,7 @@
 #include "Line.h"
 #include "Driver.h"
 #include "semprarrolar.h"
+#include "Shift.h"
 
 using namespace std;
 

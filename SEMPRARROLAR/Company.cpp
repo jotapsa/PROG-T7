@@ -14,7 +14,7 @@ Empresa::Empresa(string nome, string fichCondutores, string fichLinhas){
     }
     
     while(getline(file,line)){
-        lines.push_back(*new Line(line));
+        lines.push_back(Line(line));
     }
     file.close();
     ordenarLinhas();
@@ -26,7 +26,7 @@ Empresa::Empresa(string nome, string fichCondutores, string fichLinhas){
     }
     
     while(getline(file,line)){
-        drivers.push_back(*new Driver(line));
+        drivers.push_back(Driver(line));
     }
     file.close();
     ordenarCondutores();
@@ -73,21 +73,10 @@ void Empresa::ordenarCondutores(){
 }
 
 void Empresa::imprimirLinhas(){
-    int i=0;
     std::cout << "************************" << " Linhas " << "************************" << std::endl;
     std::cout << std::endl;
     for(Line l : lines){
-        std::cout << "Linha " << l.getId() << std::endl;
-            std::cout << "Frequência = " << l.getFreq() << " minutos" << std::endl;
-            for(std::string s : l.getBusStops()){
-                if(i)
-                    std::cout << " - " << s;
-                else
-                    std::cout << s;
-                i++;
-            }
-            std::cout << std::endl << std::endl;
-        i=0;
+        l.imprimirPerfil();
     }
     wait_for_enter();
 }
@@ -96,12 +85,7 @@ void Empresa::imprimirCondutores(){
     std::cout << "************************" << " Condutores " << "************************" << std::endl;
     std::cout << std::endl;
     for(Driver d : drivers){
-        std::cout << "(" << d.getId() << ") " << d.getName() <<std::endl;
-        std::cout << "Máximo de Horas por Turno: " << d.getMaxHours()/60 << std::endl;
-        std::cout << "Máximo de Horas por Semana: " << d.getMaxWeekWorkingTime()/60 << std::endl;
-        std::cout << "Mínimo de Horas por Descanso: " << d.getMinRestTime()/60 << std::endl;
-        std::cout << "Não tem trabalho atribuído." << std::endl;
-        std::cout << std::endl;
+        d.imprimirPerfil();
     }
     wait_for_enter();
 }
@@ -115,7 +99,7 @@ bool Empresa::verificarLinha(int ID){
 }
 
 int Empresa::novaLinha(bool *changed){
-    Line nova = *new Line();
+    Line *nova = new Line();
     
     int stops,tempo,id;
     std::string paragem;
@@ -129,12 +113,12 @@ int Empresa::novaLinha(bool *changed){
         wait_for_enter();
         return 1;
     }
-    nova.setId(id);
+    nova->setId(id);
     
     do{
         ask_int("Frequência (minutos): ",&tempo);
     }while(tempo <= 0);
-    nova.setFreq(tempo);
+    nova->setFreq(tempo);
     
     do{
         do{
@@ -153,19 +137,19 @@ int Empresa::novaLinha(bool *changed){
         do{
             std::cout << i+1 << "ª Paragem: ";
             getline(std::cin,paragem);
-        }while(paragem.length() <= 0 || nova.verificarParagem(paragem));
-        nova.addStop(paragem);
+        }while(paragem.length() <= 0 || nova->verificarParagem(paragem));
+        nova->addStop(paragem);
     }
     
     for(int i=0;i<stops-1;i++){
         do{
-        ask_int("Tempo entre " + nova.getBusStops().at(i) + " e " + nova.getBusStops().at(i+1) + " (minutos): ",&tempo);
+        ask_int("Tempo entre " + nova->getBusStops().at(i) + " e " + nova->getBusStops().at(i+1) + " (minutos): ",&tempo);
         }while(tempo <= 0);
-        nova.addTime(tempo);
+        nova->addTime(tempo);
     }
     
-    lines.push_back(nova);
-    std::cout << "Linha " << nova.getId() << " adicionada com sucesso!" << std::endl;
+    lines.push_back(*nova);
+    std::cout << "Linha " << nova->getId() << " adicionada com sucesso!" << std::endl;
     *changed = true;
     ordenarLinhas();
     wait_for_enter();
@@ -221,7 +205,7 @@ bool Empresa::verificarCondutor(int ID){
 }
 
 int Empresa::novoCondutor(bool *changed){
-    Driver novo = *new Driver();
+    Driver *novo = new Driver();
     std::string nome;
     int aux;
     std::cout << "************************" << " Novo Condutor " << "************************" << std::endl;
@@ -234,7 +218,7 @@ int Empresa::novoCondutor(bool *changed){
         wait_for_enter();
         return 1;
     }
-    novo.setId(aux);
+    novo->setId(aux);
     
     std::cin.ignore(INT_MAX,'\n');
     
@@ -242,25 +226,25 @@ int Empresa::novoCondutor(bool *changed){
         std::cout << "Nome: ";
         getline(std::cin,nome);
     }while(nome.length() <=0);
-    novo.setName(nome);
+    novo->setName(nome);
     
     do{
         ask_int("Máximo de Horas por Turno: ", &aux);
     }while(aux <= 0);
-    novo.setMaxHours(aux);
+    novo->setMaxHours(aux);
     
     do{
         ask_int("Máximo de Horas por Semana: ", &aux);
     }while(aux <= 0);
-    novo.setMaxWeekWorkingTime(aux);
+    novo->setMaxWeekWorkingTime(aux);
     
     do{
         ask_int("Mínimo de Horas por Descanso: ", &aux);
     }while(aux <= 0);
-    novo.setMinRestTime(aux);
+    novo->setMinRestTime(aux);
     
-    drivers.push_back(novo);
-    std::cout << "Condutor " << novo.getId() << " adicionado com sucesso!" << std::endl;
+    drivers.push_back(*novo);
+    std::cout << "Condutor " << novo->getId() << " adicionado com sucesso!" << std::endl;
     *changed = true;
     ordenarCondutores();
     wait_for_enter();
@@ -325,7 +309,7 @@ int Empresa::alterarCondutor(bool *changed){
                 break;
             case 3:
                 do{
-                    std::cout << "Máximo de Horas por Turno atual -> " << driver->getMaxHours() << std::endl;
+                    std::cout << "Máximo de Horas por Turno atual -> " << driver->getMaxHours()/60 << std::endl;
                     ask_int("Máximo de Horas por Turno -> ", &aux);
                     if(aux > 0){
                         driver->setMaxHours(aux);
@@ -337,7 +321,7 @@ int Empresa::alterarCondutor(bool *changed){
                 break;
             case 4:
                 do{
-                    std::cout << "Máximo de Horas por Semana atual -> " << driver->getMaxWeekWorkingTime() << std::endl;
+                    std::cout << "Máximo de Horas por Semana atual -> " << driver->getMaxWeekWorkingTime()/60 << std::endl;
                     ask_int("Máximo de Horas por Semana -> ", &aux);
                     if(aux > 0){
                         driver->setMaxWeekWorkingTime(aux);
@@ -349,7 +333,7 @@ int Empresa::alterarCondutor(bool *changed){
                 break;
             case 5:
                 do{
-                    std::cout << "Mínimo de Horas por Descanso atual -> " << driver->getMinRestTime() << std::endl;
+                    std::cout << "Mínimo de Horas por Descanso atual -> " << driver->getMinRestTime()/60 << std::endl;
                     ask_int("Mínimo de Horas por Descanso -> ", &aux);
                     if(aux > 0){
                         driver->setMinRestTime(aux);
@@ -555,7 +539,7 @@ void Empresa::gerarTurnos(){
     if(!op)
         return;
     linha = &lines.at(op-1);
-    linha->gerarTurnosSemana(drivers);
+    linha->gerarTurnosSemana(&drivers);
 }
 
 void Empresa::reiniciarTurnos(){
@@ -566,7 +550,7 @@ void Empresa::reiniciarTurnos(){
     if(!op)
         return;
     linha = &lines.at(op-1);
-    linha->reiniciarTurnosSemana(drivers);
+    linha->reiniciarTurnosSemana(&drivers);
 }
 
 void Empresa::imprimirTurnoLinha(){

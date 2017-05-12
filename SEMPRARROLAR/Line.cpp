@@ -55,7 +55,7 @@ Line::Line(string textLine){
     //Shifts With Only Buses
     for(day=0;day<7;day++){
         for(i=START_DAY(day);i< END_DAY(day);i+=freq){
-            shifts.push_back(*new Shift(id,i,i + getTempoTotalViagem()));
+            shifts.push_back(Shift(id,i,i + getTempoTotalViagem()));
         }
     }
     
@@ -63,7 +63,7 @@ Line::Line(string textLine){
     n = (int) ((double) getTempoTotalViagem() / freq + 1.0);
     //Autocarros necessários
     for(i=1;i<=n;i++)
-        buses.push_back(*new Bus(i,id));
+        buses.push_back(Bus(i,id));
     
     for(day=0;day<7;day++){
         bus=1;
@@ -190,7 +190,7 @@ void Line::alinharParagem(int origem,int paragem){
 
 
 void Line::imprimirViagem(int origem,int destino,int sentido){
-    int time,hora_paragem,horas,minutos,viagem_completa,hora_saida;
+    int time,hora_paragem,viagem_completa,hora_saida;
     std::string hora;
     
     for(int s=origem;s!=destino+sentido;s+=sentido){
@@ -425,21 +425,22 @@ int Line::AlterarTempos(){
     return 0;
 }
 
-void Line::gerarTurnosSemana(vector<Driver> drivers){
+void Line::gerarTurnosSemana(vector<Driver> *drivers){
     int n,i,day,viagens_dia,horas_semana,horas_turno,horas_descanso,turno_anterior;
     Shift *s;
+    Driver *d;
     viagens_dia = ((END - BEGIN)*60) / freq;
-    n = (int) ((double) getTempoTotalViagem() / freq + 1.0);
     
-    for(Driver d : drivers){
-        if(d.getMaxHours() < getTempoTotalViagem())
+    for(n=0;n<drivers->size();n++){
+        d = &drivers->at(n);
+        if(d->getMaxHours() < getTempoTotalViagem())
             continue;
-        horas_semana = 0;
+        horas_semana = d->getAtualHours();
         turno_anterior = 0;
         for(day=0;day<7;day++){
             horas_turno = 0;
             horas_descanso = 0;
-            if(horas_semana + getTempoTotalViagem() > d.getMaxWeekWorkingTime())
+            if(horas_semana + getTempoTotalViagem() > d->getMaxWeekWorkingTime())
                 break;
             for(i=0;i<viagens_dia;i++){
                 s = &shifts.at(day*viagens_dia + i);
@@ -450,42 +451,47 @@ void Line::gerarTurnosSemana(vector<Driver> drivers){
                 if(turno_anterior + getTempoTotalViagem() > s->getStartTime())
                     continue;
                 
-                if((horas_turno + getTempoTotalViagem() > d.getMaxHours()) && (horas_descanso < d.getMinRestTime())){
+//                if(!d->estadoCondutor(s->getStartTime(),s->getEndTime()))
+//                    continue;
+                
+                if((horas_turno + getTempoTotalViagem() > d->getMaxHours()) && (horas_descanso < d->getMinRestTime())){
                     horas_descanso += freq;
                     continue;
                 }
-                else if(horas_descanso >= d.getMinRestTime()){
+                else if(horas_descanso >= d->getMinRestTime()){
                     horas_descanso = 0;
                     horas_turno = 0;
                 }
 
-                s->setDriverId(d.getId());
-                d.getShifts().push_back(*s);
+                s->setDriverId(d->getId());
+                d->adicionarTurno(s);
+                d->ordenarTurnos();
                 horas_turno += getTempoTotalViagem();
                 horas_semana += getTempoTotalViagem();
+                d->setAtualHours(horas_semana);
                 turno_anterior = s->getStartTime();
                 
-                if(horas_semana + getTempoTotalViagem() > d.getMaxWeekWorkingTime())
+                if(horas_semana + getTempoTotalViagem() > d->getMaxWeekWorkingTime())
                     break;
                 }
             }
     }
-    std::cout << "Turnos Atribuídos com sucesso!" << std::endl;
+    
+    std::cout << "Turnos da Linha " << id << " atribuídos com sucesso!" << std::endl;
     wait_for_enter();
 }
 
-void Line::reiniciarTurnosSemana(vector<Driver> drivers){
+void Line::reiniciarTurnosSemana(vector<Driver> *drivers){
     int i;
-    for(Shift s : shifts)
-        s.setDriverId(0);
     
-    for(Driver d : drivers){
-        for(i=0;i< d.getShifts().size();i++){
-            if(d.getShifts().at(i).getBusLineId() == id)
-                d.getShifts().erase(d.getShifts().begin() + i);
-        }
+    for(i=0;i<shifts.size();i++)
+        shifts.at(i).setDriverId(0);
+    
+    for(i=0;i< drivers->size();i++){
+        drivers->at(i).removerTurnosLinha(id);
     }
-    std::cout << "Turnos Reiniciados com sucesso!" << std::endl;
+    
+    std::cout << "Turnos da Linha " << id << " reiniciados com sucesso!" << std::endl;
     wait_for_enter();
 }
 
@@ -493,4 +499,18 @@ void Line::imprimirTurno(){
     for(Shift s : shifts)
         std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << " Condutor -> " << s.getDriverId() << std::endl;
     wait_for_enter();
+}
+
+void Line::imprimirPerfil(){
+    int i=0;
+    std::cout << "Linha " << id << std::endl;
+    std::cout << "Frequência = " << freq << " minutos" << std::endl;
+    for(std::string s : busStopList){
+        if(i)
+            std::cout << " - " << s;
+        else
+            std::cout << s;
+        i++;
+    }
+    std::cout << std::endl << std::endl;
 }

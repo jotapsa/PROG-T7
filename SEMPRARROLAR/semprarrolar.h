@@ -40,5 +40,7 @@ int imprimir_menu(int menu);
 
 std::string hora_string(int time);
 
+std::string tempo_string(int time);
+
 std::string DiadaSemana(int time);
 #endif /* semprarrolar_h */

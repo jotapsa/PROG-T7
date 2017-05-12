@@ -42,6 +42,7 @@ Driver::Driver(string textLine){
     maxHours *= 60;
     maxWeekWorkingTime *= 60;
     minRestTime *= 60;
+    atualHours=0;
 }
 
 Driver::Driver(){
@@ -76,6 +77,10 @@ vector<Shift> Driver::getShifts() const{
   return shifts;
 }
 
+unsigned int Driver::getAtualHours() const{
+    return atualHours;
+}
+
 //////////////
 // set methods
 //////////////
@@ -95,6 +100,10 @@ void Driver::setMinRestTime (unsigned int minRestTime) {
     this->minRestTime = minRestTime*60;
 }
 
+void Driver::setAtualHours(unsigned int atualHours){
+    this->atualHours = atualHours;
+}
+
 //////////////
 // other methods
 //////////////
@@ -106,6 +115,121 @@ void Driver::imprimirTurno(){
     }
     
     for(Shift s : shifts)
-        std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << " Condutor -> " << s.getDriverId() << std::endl;
+        std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << "| Linha -> " << s.getBusLineId() << std::endl;
     wait_for_enter();
 }
+
+void Driver::adicionarTurno(Shift *turno){
+    shifts.push_back(*turno);
+}
+
+void Driver::removerTurnosLinha(int idLinha){
+    int i;
+    for(i=(int)shifts.size()-1;i>=0;i--){
+        if(shifts.at(i).getBusLineId() == idLinha){
+            atualHours -= (shifts.at(i).getEndTime() - shifts.at(i).getStartTime());
+            shifts.erase(shifts.begin() + i);
+        }
+    }
+}
+
+void Driver::imprimirPerfil(){
+    std::cout << "(" << id << ") " << name <<std::endl;
+    std::cout << "Máximo de Horas por Turno: " << maxHours/60 << std::endl;
+    std::cout << "Máximo de Horas por Semana: " << maxWeekWorkingTime/60 << std::endl;
+    std::cout << "Mínimo de Horas por Descanso: " << minRestTime/60 << std::endl;
+    std::cout << "Turnos Atribuídos: " << shifts.size() << std::endl;
+    std::cout << "Tempo Por Atribuir : " << tempo_string(maxWeekWorkingTime - atualHours) << std::endl;
+    std::cout << std::endl;
+}
+
+bool Driver::estadoCondutor(int start,int end){
+    int i,turno = end - start,horas_turno=0,horas_descanso=0,turno_atual,turno_anterior=0;
+    bool free = false,trabalho = false, descanso = false;
+    for(i=0;i<shifts.size();i++){
+        //Verificar se os turnos não estao sobrepostos
+        if( std::abs((double)(shifts.at(i).getEndTime() + shifts.at(i).getStartTime()) - (end+start)) < (turno*2)){
+            free = false;
+            return false;
+        }
+            
+        
+        
+//        //ANTES
+//        if(end < shifts.at(i).getStartTime()){
+//            if(i==0){
+//                if(turno + (shifts.at(i).getEndTime() - shifts.at(i).getStartTime() > maxHours)){
+//                    if(shifts.at(i).getStartTime() - end < minRestTime){
+//                        free = false;
+//                        continue;
+//                    }
+//                    else
+//                        free = true;
+//                }
+//            }
+//            else{
+//                
+//                
+//            }
+//        }
+//        
+//        //DEPOIS
+//        if(start > shifts.at(i).getEndTime()){
+//            if(i==shifts.size()-1){
+//                if(turno + (shifts.at(i).getEndTime() - shifts.at(i).getStartTime() > maxHours)){
+//                    if(shifts.at(i).getEndTime() - start < minRestTime){
+//                        free = false;
+//                        continue;
+//                    }
+//                    else
+//                        free = true;
+//                }
+//            }
+//            else{
+//                
+//            }
+//        }
+//        
+//        if(free)
+//            break;
+    }
+    return free;
+}
+
+void Driver::verificarTurnos(){
+    int i,horas_turno=0,horas_descanso=0,turno_atual,turno_anterior=0,turno;
+    bool free = false,trabalho = false, descanso = false;
+    for(i=0;i<shifts.size();i++){
+        turno = shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
+        
+        if(i==0){
+            turno_anterior = shifts.at(i).getEndTime();
+            trabalho = true;
+            horas_turno += turno;
+            if(horas_turno + turno > maxHours){
+                descanso = true;
+            }
+            continue;
+        }
+        else if(i==shifts.size()-1)
+        
+        if((shifts.at(i).getStartTime() - turno_anterior > minRestTime) && descanso){
+            descanso = false;
+            trabalho = true;
+        }
+        
+        trabalho = true;
+        turno_atual = shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
+//        if(horas_turno + turno_atual > maxHours)
+    }
+}
+
+bool Driver::sort_shift (Shift i,Shift j) {
+    return (i.getStartTime() < j.getStartTime());
+}
+
+void Driver::ordenarTurnos(){
+    sort(shifts.begin(),shifts.end(),sort_shift);
+}
+
+

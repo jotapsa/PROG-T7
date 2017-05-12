@@ -116,6 +116,15 @@ std::string hora_string(int time){
     return *new std::string(hora);
 }
 
+std::string tempo_string(int time){
+    int horas,minutos;
+    char hora[7];
+    horas = time/60;
+    minutos = time%60;
+    sprintf(hora, "%02d:%02dh", horas, minutos);
+    return *new std::string(hora);
+}
+
 std::string DiadaSemana(int time){
     int i=0;
     while(time >= 60*24){

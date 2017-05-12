@@ -6,6 +6,7 @@
 #include <sstream>
 #include "Shift.h"
 #include "semprarrolar.h"
+#include <cmath>
 
 
 using namespace std;
@@ -18,6 +19,7 @@ class Driver{
   unsigned int maxWeekWorkingTime;  // maximum number of hours of work in a week
   unsigned int minRestTime;     // minimum number of rest hours between shifts
   vector<Shift> shifts;         // assigned shifts
+    unsigned int atualHours;
  public:
   Driver(string textLine);
   Driver();
@@ -27,7 +29,9 @@ class Driver{
   unsigned int getMaxHours() const;
   unsigned int getMaxWeekWorkingTime() const;
   unsigned int getMinRestTime() const;
+  unsigned int getAtualHours() const;
   vector<Shift> getShifts() const;
+    void setAtualHours(unsigned int atualHours);
 
     // set methods
     void setId (unsigned int id);
@@ -37,4 +41,11 @@ class Driver{
     void setMinRestTime (unsigned int minRestTime);
   // other methods
     void imprimirTurno();
+    void adicionarTurno(Shift *turno);
+    void removerTurnosLinha(int idLinha);
+    void imprimirPerfil();
+    bool estadoCondutor(int start,int end);
+    void verificarTurnos();
+    static bool sort_shift (Shift i,Shift j);
+    void ordenarTurnos();
 };

@@ -28,7 +28,7 @@ bool update_condutores = false;
  Função main.
  */
 int main(int argc, const char * argv[]) {
-    Empresa Company = *new Empresa("Semprarrolar","condutores.txt","linhas.txt");
+    Empresa *Company = new Empresa("Semprarrolar","condutores.txt","linhas.txt");
     int op=0;
     
     printf("\033c");
@@ -39,9 +39,9 @@ int main(int argc, const char * argv[]) {
                 //UPDATE AOS FICHEIROS TXT
                 if(!op){
                     if(update_linhas)
-                        Company.atualizarLinhas();
+                        Company->atualizarLinhas();
                     if(update_condutores)
-                         Company.atualizarCondutores();
+                         Company->atualizarCondutores();
                     return 0;
                 }
                 else
@@ -53,17 +53,17 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        Company.novaLinha(&update_linhas);
+                        Company->novaLinha(&update_linhas);
                         break;
                     case 2:
-                        Company.alterarLinha(&update_linhas);
+                        Company->alterarLinha(&update_linhas);
                         break;
                     case 3:
-                        if(Company.removerLinha(&update_linhas))
+                        if(Company->removerLinha(&update_linhas))
                             printf("\033c");
                         break;
                     case 4:
-                        Company.imprimirLinhas();
+                        Company->imprimirLinhas();
                         break;
                 }
                 break;
@@ -73,16 +73,16 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        Company.novoCondutor(&update_condutores);
+                        Company->novoCondutor(&update_condutores);
                         break;
                     case 2:
-                        Company.alterarCondutor(&update_condutores);
+                        Company->alterarCondutor(&update_condutores);
                         break;
                     case 3:
-                        Company.removerCondutor(&update_condutores);
+                        Company->removerCondutor(&update_condutores);
                         break;
                     case 4:
-                        Company.imprimirCondutores();
+                        Company->imprimirCondutores();
                         break;
                 }
                 break;
@@ -92,10 +92,10 @@ int main(int argc, const char * argv[]) {
                     menu = 0;
                     break;
                 case 1:
-                        Company.gerarTurnos();
+                        Company->gerarTurnos();
                     break;
                 case 2:
-                        Company.reiniciarTurnos();
+                        Company->reiniciarTurnos();
                     break;
                 }
                 break;
@@ -105,10 +105,10 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        Company.imprimirHorarios();
+                        Company->imprimirHorarios();
                         break;
                     case 2:
-                        Company.PercursoParagens();
+                        Company->PercursoParagens();
                         break;
                     case 3:
                         menu = 5;
@@ -120,10 +120,10 @@ int main(int argc, const char * argv[]) {
                         menu = 4;
                         break;
                     case 1:
-                        Company.imprimirTurnoLinha();
+                        Company->imprimirTurnoLinha();
                         break;
                     case 2:
-                        Company.imprimirTurnoCondutor();
+                        Company->imprimirTurnoCondutor();
                         break;
                 }
                 break;

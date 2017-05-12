@@ -50,7 +50,8 @@ class Line{
     int Alterar(bool *changed);
     int AlterarParagem();
     int AlterarTempos();
-    void gerarTurnosSemana(vector<Driver> drivers);
-    void reiniciarTurnosSemana(vector<Driver> drivers);
+    void gerarTurnosSemana(vector<Driver> *drivers);
+    void reiniciarTurnosSemana(vector<Driver> *drivers);
     void imprimirTurno();
+    void imprimirPerfil();
 };

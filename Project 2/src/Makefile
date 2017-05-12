@@ -1,25 +1,25 @@
-# Makefile
+.DEFAULT_GOAL := all
 
-OBJS= Bus.o Shift.o Driver.o Line.o
+COMPILER_TYPE= gnu
+CXX = g++
+CXXFLAGS = -std=c++0x -Wall
 
-all: main
+PROG = sempre.out
 
-main: $(OBJS) main.cpp
-	g++ main.cpp -I. $(OBJS) -o busApp
-
-Bus.o: Bus.cpp
-	g++ -c Bus.cpp
-
-Shift.o: Shift.cpp
-	g++ -c Shift.cpp
-
-Driver.o: Driver.cpp
-	g++ -c Driver.cpp
-
-Line.o: Line.cpp
-	g++ -c Line.cpp
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(SOURCES:.cpp=.o)
 
 
+.PHONY : all
+all : $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(PROG)
+	rm -f $(OBJECTS)
+
+# To obtain object files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# To remove generated files
+.PHONY: clean
 clean:
-	rm -f busApp *.o
-
+	rm -f $(PROG) $(OBJECTS)

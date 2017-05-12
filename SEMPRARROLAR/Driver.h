@@ -7,6 +7,7 @@
 #include "Shift.h"
 #include "semprarrolar.h"
 #include <cmath>
+#include <algorithm>
 
 
 using namespace std;
@@ -45,7 +46,6 @@ class Driver{
     void removerTurnosLinha(int idLinha);
     void imprimirPerfil();
     bool estadoCondutor(int start,int end);
-    void verificarTurnos();
     static bool sort_shift (Shift i,Shift j);
     void ordenarTurnos();
 };

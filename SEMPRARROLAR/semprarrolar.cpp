@@ -65,8 +65,8 @@ int imprimir_menu(int menu){
     switch(menu){
         case 0:
             std::cout << "************************" << " SEMPRARROLAR " << "************************" << std::endl;
-            std::cout << "1 - Gestão de Linhas\n" << "2 - Gestão de Condutores\n" << "3 - Visualização de Informação\n" << "4 - Créditos\n" << "5 - Sair\n";
-            return opcao(1,5,1);
+            std::cout << "1 - Gestão de Linhas\n" << "2 - Gestão de Condutores\n" << "3 - Gestão de Turnos\n" << "4 - Visualização de Informação\n" << "5 - Créditos\n" << "6 - Sair\n";
+            return opcao(1,6,1);
         case 1:
             std::cout << "************************" << " Gestão de Linhas " << "************************" << std::endl;
             std::cout << "1 - Criar Linha\n" << "2 - Alterar Linha\n" << "3 - Remover Linha\n" << "4 - Lista de Linhas\n" << "5 - Voltar\n";
@@ -76,11 +76,20 @@ int imprimir_menu(int menu){
             std::cout << "1 - Criar Condutor\n" << "2 - Alterar Condutor\n" << "3 - Remover Condutor\n" << "4 - Lista de Condutores\n" << "5 - Voltar\n";
             return opcao(1,5,1);
         case 3:
-            std::cout << "************************" << " Visualização de Informação " << "************************" << std::endl;
-            //            std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Trabalho Condutor\n" << "4 - Voltar\n";
-            std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Voltar\n";
+            std::cout << "************************" << " Gestão de Turnos " << "************************" << std::endl;
+            std::cout << "1 - Gerar Turnos para Linha\n" << "2 - Reiniciar Turnos de Linha\n" << "3 - Voltar\n";
             return opcao(1,3,1);
         case 4:
+            std::cout << "************************" << " Visualização de Informação " << "************************" << std::endl;
+            //            std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Trabalho Condutor\n" << "4 - Voltar\n";
+            std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Turnos\n" << "4 - Voltar\n";
+            return opcao(1,4,1);
+        case 5:
+            std::cout << "************************" << " Turnos " << "************************" << std::endl;
+            std::cout << "1 - Linha\n" << "2 - Condutor\n" << "3 - Voltar\n";
+            return opcao(1,3,1);
+            break;
+        case 6:
             creditos.open("README.txt",std::ios::in);
             if(!creditos.is_open()){
                 std::cout << "File not found!" << std::endl;
@@ -96,9 +105,40 @@ int imprimir_menu(int menu){
     return 0;
 }
 
-void verificar_hora(int *time,int *horas,int *minutos){
-    *horas = (*time)/60;
-    *minutos = (*time)%60;
-    if(*horas >=24)
-        *horas -= 24;
+std::string hora_string(int time){
+    int horas,minutos;
+    char hora[7];
+    while(time >= 60*24)
+        time -= 60*24;
+    horas = time/60;
+    minutos = time%60;
+    sprintf(hora, "%02d:%02dh", horas, minutos);
+    return *new std::string(hora);
+}
+
+std::string DiadaSemana(int time){
+    int i=0;
+    while(time >= 60*24){
+        i++;
+        time -= 60*24;
+    }
+    
+    switch(i){
+        case 0:
+            return "Segunda-feira";
+        case 1:
+            return "Terça-feira";
+        case 2:
+            return "Quarta-feira";
+        case 3:
+            return "Quinta-feira";
+        case 4:
+            return "Sexta-feira";
+        case 5:
+            return "Sábado";
+        case 6:
+            return "Domingo";
+        default:
+            return "";
+    }
 }

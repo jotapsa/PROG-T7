@@ -97,9 +97,9 @@ void Empresa::imprimirCondutores(){
     std::cout << std::endl;
     for(Driver d : drivers){
         std::cout << "(" << d.getId() << ") " << d.getName() <<std::endl;
-        std::cout << "Máximo de Horas por Turno: " << d.getMaxHours() << std::endl;
-        std::cout << "Máximo de Horas por Semana: " << d.getMaxWeekWorkingTime() << std::endl;
-        std::cout << "Mínimo de Horas por Descanso: " << d.getMinRestTime() << std::endl;
+        std::cout << "Máximo de Horas por Turno: " << d.getMaxHours()/60 << std::endl;
+        std::cout << "Máximo de Horas por Semana: " << d.getMaxWeekWorkingTime()/60 << std::endl;
+        std::cout << "Mínimo de Horas por Descanso: " << d.getMinRestTime()/60 << std::endl;
         std::cout << "Não tem trabalho atribuído." << std::endl;
         std::cout << std::endl;
     }
@@ -283,7 +283,6 @@ int Empresa::alterarCondutor(bool *changed){
     Driver *driver;
     std::string nome;
     
-    std::cout << "************************" << " Alterar Condutor " << "************************" << std::endl;
     do {
         i=displayCondutores();
         op = opcao(1,i,1);
@@ -374,7 +373,6 @@ int Empresa::alterarCondutor(bool *changed){
 
 int Empresa::removerCondutor(bool *changed){
     int op=0,i;
-    std::cout << "************************" << " Remover Condutor " << "************************" << std::endl;
     i = displayCondutores();
     op = opcao(1,i,0);
     if(!op)
@@ -543,8 +541,53 @@ void Empresa::atualizarCondutores(){
     }
     
     for(Driver d : drivers){
-        file << d.getId() << " ; " << d.getName() << " ; " << d.getMaxHours() << " ; " << d.getMaxWeekWorkingTime() << " ; " << d.getMinRestTime();
+        file << d.getId() << " ; " << d.getName() << " ; " << (int)(d.getMaxHours()/60) << " ; " << (int)(d.getMaxWeekWorkingTime()/60) << " ; " << (int)(d.getMinRestTime()/60);
         file << std::endl;
     }
     file.close();
 }
+
+void Empresa::gerarTurnos(){
+    int i,op;
+    Line *linha;
+    i = displayLinhas("Linhas");
+    op = opcao(1,i,0);
+    if(!op)
+        return;
+    linha = &lines.at(op-1);
+    linha->gerarTurnosSemana(drivers);
+}
+
+void Empresa::reiniciarTurnos(){
+    int i,op;
+    Line *linha;
+    i = displayLinhas("Linhas");
+    op = opcao(1,i,0);
+    if(!op)
+        return;
+    linha = &lines.at(op-1);
+    linha->reiniciarTurnosSemana(drivers);
+}
+
+void Empresa::imprimirTurnoLinha(){
+    int i,op;
+    Line *linha;
+    i = displayLinhas("Linhas");
+    op = opcao(1,i,1);
+    if(!op)
+        return;
+    linha = &lines.at(op-1);
+    linha->imprimirTurno();
+}
+
+void Empresa::imprimirTurnoCondutor(){
+    int i,op;
+    Driver *condutor;
+    i = displayCondutores();
+    op = opcao(1,i,1);
+    if(!op)
+        return;
+    condutor = &drivers.at(op-1);
+    condutor->imprimirTurno();
+}
+

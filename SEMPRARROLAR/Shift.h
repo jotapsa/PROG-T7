@@ -15,7 +15,7 @@ class Shift{
   unsigned int endTime;   
 
  public:
-  Shift(unsigned int busLineId, unsigned int driverId, unsigned int busNumber, unsigned int startTime, unsigned int endTime);
+  Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime);
   // get methdos
   unsigned int getBusLineId() const;
   unsigned int getDriverId() const;

@@ -15,11 +15,15 @@
 #include <cstdlib>
 #include <sstream>
 #include <cstdio>
+#include <string>
 
-#define START 7*60
-#define END 22*60
-#define START_DAY(x) (7*60) + (24*60*x)
-#define END_DAY(x) (22*60) + (24*60*x)
+#define BEGIN 7
+#define END 22
+#define START_TIME BEGIN*60
+#define END_TIME END*60
+#define START_DAY(x) (BEGIN*60) + (24*60*x)
+#define END_DAY(x) (END*60) + (24*60*x)
+#define DAY 60*24
 
 void wait_for_enter();
 
@@ -34,5 +38,7 @@ std::vector<std::string> split(const std::string &s, const char &delim);
  */
 int imprimir_menu(int menu);
 
-void verificar_hora(int *time,int *horas,int *minutos);
+std::string hora_string(int time);
+
+std::string DiadaSemana(int time);
 #endif /* semprarrolar_h */

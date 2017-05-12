@@ -9,6 +9,9 @@
 #include <numeric>
 #include <iomanip>
 #include "semprarrolar.h"
+#include "Bus.h"
+#include "Driver.h"
+#include "Shift.h"
 
 using namespace std;
 
@@ -18,6 +21,8 @@ class Line{
   unsigned int freq;
   vector<string> busStopList;
   vector<int> timesList;
+  vector<Bus> buses;
+  vector<Shift> shifts;
  public:
   Line(string textLine);
   Line();
@@ -26,7 +31,10 @@ class Line{
     unsigned int getFreq() const;
   vector<string> getBusStops() const;
   vector<int> getTimings() const;
-    int getIndexParagem(std::string paragem);
+    int getIndexParagem(std::string paragem) const;
+    int getBusStopsSize() const;
+    vector<Bus> getBuses() const;
+    int getTempoTotalViagem();
   // set methods
     void setId(unsigned int ID);
     void setFreq(unsigned int Freq);
@@ -42,4 +50,7 @@ class Line{
     int Alterar(bool *changed);
     int AlterarParagem();
     int AlterarTempos();
+    void gerarTurnosSemana(vector<Driver> drivers);
+    void reiniciarTurnosSemana(vector<Driver> drivers);
+    void imprimirTurno();
 };

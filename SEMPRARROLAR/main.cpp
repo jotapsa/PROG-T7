@@ -88,6 +88,19 @@ int main(int argc, const char * argv[]) {
                 break;
             case 3:
                 switch(op){
+                case 0:
+                    menu = 0;
+                    break;
+                case 1:
+                        Company.gerarTurnos();
+                    break;
+                case 2:
+                        Company.reiniciarTurnos();
+                    break;
+                }
+                break;
+            case 4:
+                switch(op){
                     case 0:
                         menu = 0;
                         break;
@@ -97,9 +110,24 @@ int main(int argc, const char * argv[]) {
                     case 2:
                         Company.PercursoParagens();
                         break;
+                    case 3:
+                        menu = 5;
                 }
                 break;
-            case 4:
+            case 5:
+                switch(op){
+                    case 0:
+                        menu = 4;
+                        break;
+                    case 1:
+                        Company.imprimirTurnoLinha();
+                        break;
+                    case 2:
+                        Company.imprimirTurnoCondutor();
+                        break;
+                }
+                break;
+            case 6:
                 wait_for_enter();
                 menu = 0;
                 break;

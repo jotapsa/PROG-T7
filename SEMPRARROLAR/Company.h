@@ -9,6 +9,7 @@
 #include "Driver.h"
 #include "semprarrolar.h"
 #include "Shift.h"
+#include "Bus.h"
 
 using namespace std;
 
@@ -50,5 +51,9 @@ class Empresa{
     int PercursoParagens();
     void atualizarLinhas();
     void atualizarCondutores();
+    void gerarTurnos();
+    void reiniciarTurnos();
+    void imprimirTurnoLinha();
+    void imprimirTurnoCondutor();
 };
 

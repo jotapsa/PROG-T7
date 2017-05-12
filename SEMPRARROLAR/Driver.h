@@ -36,5 +36,5 @@ class Driver{
     void setMaxWeekWorkingTime (unsigned int maxWeekWorkingTime);
     void setMinRestTime (unsigned int minRestTime);
   // other methods
-
+    void imprimirTurno();
 };

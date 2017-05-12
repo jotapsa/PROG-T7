@@ -144,7 +144,7 @@ void Driver::imprimirPerfil(){
 }
 
 bool Driver::estadoCondutor(int start,int end){
-    int i,turno = end - start,horas_turno=0,turno_atual,turno_proximo=0;
+    int i,horas_turno=0,turno_atual,turno_proximo=0;
     bool ok = true;
     std::cout << "Testando ... " << hora_string(start) << " <-> " << hora_string(end) << std::endl;
     

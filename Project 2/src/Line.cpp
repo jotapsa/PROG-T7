@@ -448,11 +448,12 @@ void Line::gerarTurnosSemana(vector<Driver> *drivers){
                 if(s->getDriverId() != 0)
                     continue;
                 
-                if(turno_anterior > s->getStartTime())
+                if(turno_anterior > s->getStartTime()){
                     continue;
+                }
                 
-                if(!d->estadoCondutor(s->getStartTime(),s->getEndTime()))
-                    continue;
+//                if(!d->estadoCondutor(s->getStartTime(),s->getEndTime()))
+//                    continue;
                 
                 if((horas_turno + getTempoTotalViagem() > d->getMaxHours()) && (horas_descanso < d->getMinRestTime())){
                     horas_descanso += freq;

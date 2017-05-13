@@ -54,7 +54,7 @@ class Driver{
   // other methods
   void printShift();
   void addShift(Shift *shift);
-  void removeShifts(int idLinha);
+  void removeShifts(unsigned int idLinha);
   void printDriver();
   static bool sort_shift (Shift i,Shift j);
   void sortShifts();

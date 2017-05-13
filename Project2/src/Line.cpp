@@ -482,7 +482,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
 
           //Can we fit a shift in his schedule?
           flag = true;
-          for (unsigned int k=restStart; k<restEnd; k++){
+          for (int k=restStart; k<restEnd; k++){
             if (workTime.at(k)){
               flag = false;
               break; //not necessary but this way we dont need to run the rest of the (now) pointless for loop
@@ -508,12 +508,11 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
 }
 
 void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
-    int i;
 
-    for(i=0;i<shifts.size();i++)
+    for(unsigned int i=0;i<shifts.size();i++)
         shifts.at(i).setDriverId(0);
 
-    for(i=0;i< drivers->size();i++){
+    for(unsigned int i=0;i< drivers->size();i++){
         drivers->at(i).removeShifts(id);
     }
 

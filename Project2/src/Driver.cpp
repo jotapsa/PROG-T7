@@ -139,9 +139,8 @@ void Driver::addShift(Shift *shift){
     }
 }
 
-void Driver::removeShifts(int idLinha){
-    int i;
-    for(i=(int)shifts.size()-1;i>=0;i--){
+void Driver::removeShifts(unsigned int idLinha){
+    for(unsigned int i=shifts.size()-1;i>=0;i--){
         if(shifts.at(i).getBusLineId() == idLinha){
             workHours -= (shifts.at(i).getEndTime() - shifts.at(i).getStartTime());
             shifts.erase(shifts.begin() + i);

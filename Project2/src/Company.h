@@ -1,32 +1,40 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <fstream>
-#include "Line.h"
+//=================================
+// include guard
+#ifndef __COMPANY_H
+#define __COMPANY_H
+
+//=================================
+// forward declared dependencies
 #include "Driver.h"
-#include "semprarrolar.h"
-#include "Shift.h"
-#include "Bus.h"
+#include "Line.h"
+
+//=================================
+// included dependencies
+#include <iostream>
+#include <vector>
+#include <string>
 
 using namespace std;
 
-class Empresa{
+class Company{
  private:
   string nome;
   vector<Driver> drivers;
   vector<Line> lines;
     string fichCondutores,fichLinhas;
  public:
-    Empresa(string nome, string fichCondutores, string fichLinhas);
-  // metodos get
+    Company(string nome, string fichCondutores, string fichLinhas);
+
+  // get methods
   string getNome() const;
     vector<Line> getLines() const;
     vector<Driver> getDrivers() const;
-  // metodos set
-  // outros metodos
+
+  // set methods
+
+  // other methods
   void distribuiServico(); // funcao que implementa a afectacao de servico
     static bool sort_linha (Line i,Line j);
     void ordenarLinhas();
@@ -34,7 +42,7 @@ class Empresa{
     void ordenarCondutores();
     void imprimirLinhas();
     void imprimirCondutores();
-    bool verificarLinha(int ID);
+    bool checkForLine(unsigned int ID);
     int novaLinha(bool *changed);
     int displayLinhas(std::string Title);
     int alterarLinha(bool *changed);
@@ -57,3 +65,4 @@ class Empresa{
     void imprimirTurnoCondutor();
 };
 
+#endif

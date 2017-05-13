@@ -1,7 +1,6 @@
 #include "Shift.h"
 
 Shift::Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime){
-  
   // INITIALISATION CODE GOES IN HERE
     this->busLineId = busLineId;
     this->startTime = startTime;
@@ -9,7 +8,7 @@ Shift::Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTim
     this->driverId = 0;
 }
 
-// metodos get
+// get methods
 unsigned int Shift::getBusLineId() const{
   return busLineId;
 }
@@ -33,27 +32,22 @@ unsigned int Shift::getEndTime() const{
 // set methods
 //////////////
 
-unsigned int Shift::setBusLineId(unsigned int busLineId){
+void Shift::setBusLineId(unsigned int busLineId){
   this->busLineId = busLineId;
-    return 0;
 }
 
-unsigned int Shift::setDriverId(unsigned int driverId){
+void Shift::setDriverId(unsigned int driverId){
   this->driverId = driverId;
-    return 0;
 }
 
-unsigned int Shift::setBusOrderNumber(unsigned int busOrderNumber){
+void Shift::setBusOrderNumber(unsigned int busOrderNumber){
   this->busOrderNumber = busOrderNumber;
-    return 0;
 }
 
-unsigned int Shift::setStartTime(unsigned int startTime){
+void Shift::setStartTime(unsigned int startTime){
   this->startTime = startTime;
-    return 0;
 }
 
-unsigned int Shift::setEndTime(unsigned int endTime){
+void Shift::setEndTime(unsigned int endTime){
   this->endTime = endTime;
-    return 0;
 }

@@ -1,7 +1,16 @@
+#include <limits.h> //INT_MAX
+//#include <map>
+#include <algorithm> //sort
+#include <iomanip> //setw
+#include <fstream>
+#include "semprarrolar.h"
+#include "Shift.h"
+#include "Bus.h"
+
 #include "Company.h"
 
 
-Empresa::Empresa(string nome, string fichCondutores, string fichLinhas){
+Company::Company(string nome, string fichCondutores, string fichLinhas){
     this->nome = nome;
     this->fichCondutores = fichCondutores;
     this->fichLinhas = fichLinhas;
@@ -12,19 +21,19 @@ Empresa::Empresa(string nome, string fichCondutores, string fichLinhas){
         std::cout << "File not found!" << std::endl;
         return ;
     }
-    
+
     while(getline(file,line)){
         lines.push_back(Line(line));
     }
     file.close();
     ordenarLinhas();
-    
+
     file.open(fichCondutores,std::ios::in);
     if(!file.is_open()){
         std::cout << "File not found!" << std::endl;
         return;
     }
-    
+
     while(getline(file,line)){
         drivers.push_back(Driver(line));
     }
@@ -35,15 +44,15 @@ Empresa::Empresa(string nome, string fichCondutores, string fichLinhas){
 ////////////////////////////////
 // metodos get
 ///////////////////////////////
-string Empresa::getNome() const{
+string Company::getNome() const{
   return nome;
 }
 
-vector<Line> Empresa::getLines() const{
+vector<Line> Company::getLines() const{
     return lines;
 }
 
-vector<Driver> Empresa::getDrivers() const{
+vector<Driver> Company::getDrivers() const{
     return drivers;
 }
 
@@ -54,25 +63,25 @@ vector<Driver> Empresa::getDrivers() const{
 ////////////////////////////
 // outros metodos
 ///////////////////////////
-void Empresa::distribuiServico(){
+void Company::distribuiServico(){
 }
 
-bool Empresa::sort_linha (Line i,Line j) {
+bool Company::sort_linha (Line i,Line j) {
     return (i.getId() < j.getId());
 }
 
-void Empresa::ordenarLinhas(){
+void Company::ordenarLinhas(){
     sort(lines.begin(),lines.end(),sort_linha);
 }
 
-bool Empresa::sort_condutor (Driver i,Driver j) {
+bool Company::sort_condutor (Driver i,Driver j) {
     return (i.getId() < j.getId());
 }
-void Empresa::ordenarCondutores(){
+void Company::ordenarCondutores(){
     sort(drivers.begin(),drivers.end(),sort_condutor);
 }
 
-void Empresa::imprimirLinhas(){
+void Company::imprimirLinhas(){
     std::cout << "************************" << " Linhas " << "************************" << std::endl;
     std::cout << std::endl;
     for(Line l : lines){
@@ -81,7 +90,7 @@ void Empresa::imprimirLinhas(){
     wait_for_enter();
 }
 
-void Empresa::imprimirCondutores(){
+void Company::imprimirCondutores(){
     std::cout << "************************" << " Condutores " << "************************" << std::endl;
     std::cout << std::endl;
     for(Driver d : drivers){
@@ -90,64 +99,64 @@ void Empresa::imprimirCondutores(){
     wait_for_enter();
 }
 
-bool Empresa::verificarLinha(int ID){
+bool Company::checkForLine(unsigned int id){
     for(Line l : lines){
-        if(ID == l.getId())
+        if(id == l.getId())
             return true;
     }
     return false;
 }
 
-int Empresa::novaLinha(bool *changed){
+int Company::novaLinha(bool *changed){
     Line *nova = new Line();
-    
+
     int stops,tempo,id;
     std::string paragem;
     std::cout << "************************" << " Nova Linha " << "************************" << std::endl;
     do{
         ask_int("ID: ",&id);
     }while(id <= 0);
-    
-    if(verificarLinha(id)){
+
+    if(checkForLine(id)){
         std::cout << "Linha " << id << " já existe!" << std::endl;
         wait_for_enter();
         return 1;
     }
     nova->setId(id);
-    
+
     do{
         ask_int("Frequência (minutos): ",&tempo);
     }while(tempo <= 0);
     nova->setFreq(tempo);
-    
+
     do{
         do{
             ask_int("Nº de Paragens: ",&stops);
         }while(stops <= 0);
-    
+
         if(stops < 2){
             std::cout << "Uma linha tem no mínimo 2 paragens!" << std::endl;
             wait_for_enter();
         }
     }while(stops < 2);
-    
+
     std::cin.ignore(INT_MAX,'\n');
-    
+
     for(int i=0;i<stops;i++){
         do{
             std::cout << i+1 << "ª Paragem: ";
             getline(std::cin,paragem);
-        }while(paragem.length() <= 0 || nova->verificarParagem(paragem));
+        }while(paragem.length() <= 0 || nova->checkStop(paragem));
         nova->addStop(paragem);
     }
-    
+
     for(int i=0;i<stops-1;i++){
         do{
         ask_int("Tempo entre " + nova->getBusStops().at(i) + " e " + nova->getBusStops().at(i+1) + " (minutos): ",&tempo);
         }while(tempo <= 0);
         nova->addTime(tempo);
     }
-    
+
     lines.push_back(*nova);
     std::cout << "Linha " << nova->getId() << " adicionada com sucesso!" << std::endl;
     *changed = true;
@@ -156,7 +165,7 @@ int Empresa::novaLinha(bool *changed){
     return 0;
 }
 
-int Empresa::displayLinhas(std::string Title){
+int Company::displayLinhas(std::string Title){
     int i=1;
     std::cout << "************************ " << Title << " ************************" << std::endl;
     for(Line l : lines){
@@ -167,7 +176,7 @@ int Empresa::displayLinhas(std::string Title){
     return i;
 }
 
-int Empresa::alterarLinha(bool *changed){
+int Company::alterarLinha(bool *changed){
     int i,op=0,mod=0;
     do {
         ordenarLinhas();
@@ -182,13 +191,13 @@ int Empresa::alterarLinha(bool *changed){
 
 }
 
-int Empresa::removerLinha(bool *changed){
+int Company::removerLinha(bool *changed){
     int op,i;
     i = displayLinhas("Remover Linha");
     op = opcao(1,i,0);
     if(!op)
         return 1;
-    
+
     lines.erase(lines.begin() + (op-1));
     std::cout << "Linha removida com sucesso!" << std::endl;
     *changed = true;
@@ -196,7 +205,7 @@ int Empresa::removerLinha(bool *changed){
     return 0;
 }
 
-bool Empresa::verificarCondutor(int ID){
+bool Company::verificarCondutor(int ID){
     for(Driver d : drivers){
         if(ID == d.getId())
             return true;
@@ -204,7 +213,7 @@ bool Empresa::verificarCondutor(int ID){
     return false;
 }
 
-int Empresa::novoCondutor(bool *changed){
+int Company::novoCondutor(bool *changed){
     Driver *novo = new Driver();
     std::string nome;
     int aux;
@@ -212,37 +221,37 @@ int Empresa::novoCondutor(bool *changed){
     do{
         ask_int("ID: ", &aux);
     }while(aux <= 0);
-    
+
     if(verificarCondutor(aux)){
         std::cout << "Condutor " << aux << " já existe!" << std::endl;
         wait_for_enter();
         return 1;
     }
     novo->setId(aux);
-    
+
     std::cin.ignore(INT_MAX,'\n');
-    
+
     do{
         std::cout << "Nome: ";
         getline(std::cin,nome);
     }while(nome.length() <=0);
     novo->setName(nome);
-    
+
     do{
         ask_int("Máximo de Horas por Turno: ", &aux);
     }while(aux <= 0);
     novo->setMaxHours(aux);
-    
+
     do{
         ask_int("Máximo de Horas por Semana: ", &aux);
     }while(aux <= 0);
     novo->setMaxWeekWorkingTime(aux);
-    
+
     do{
         ask_int("Mínimo de Horas por Descanso: ", &aux);
     }while(aux <= 0);
     novo->setMinRestTime(aux);
-    
+
     drivers.push_back(*novo);
     std::cout << "Condutor " << novo->getId() << " adicionado com sucesso!" << std::endl;
     *changed = true;
@@ -251,7 +260,7 @@ int Empresa::novoCondutor(bool *changed){
     return 0;
 }
 
-int Empresa::displayCondutores(){
+int Company::displayCondutores(){
     int i=1;
     std::cout << "************************" << " Condutores " << "************************" << std::endl;
     for(Driver d : drivers){
@@ -262,25 +271,25 @@ int Empresa::displayCondutores(){
     return i;
 }
 
-int Empresa::alterarCondutor(bool *changed){
+int Company::alterarCondutor(bool *changed){
     int i=1,op=0,aux,parametro;
     Driver *driver;
     std::string nome;
-    
+
     do {
         i=displayCondutores();
         op = opcao(1,i,1);
         if(!op)
             return 1;
         driver = &drivers.at(op-1);
-        
+
         std::cout << "************************" << " " << driver->getName() << " (" << driver->getId() << ") " << "************************" << std::endl;
         std::cout << "1 - ID\n" << "2 - Nome\n" << "3 - Máximo de Horas por Turno\n" << "4 - Máximo de Horas por Semana\n" << "5 - Mínimo de Horas por Descanso\n" << "6 - Voltar\n";
-        
+
         parametro = opcao(1,6,1);
         if(!parametro)
             continue;
-        
+
         switch(parametro){
             case 1:
                 do{
@@ -355,13 +364,13 @@ int Empresa::alterarCondutor(bool *changed){
 
 }
 
-int Empresa::removerCondutor(bool *changed){
+int Company::removerCondutor(bool *changed){
     int op=0,i;
     i = displayCondutores();
     op = opcao(1,i,0);
     if(!op)
         return 1;
-    
+
     drivers.erase(drivers.begin() + (op-1));
     std::cout << "Condutor removido com sucesso!" << std::endl;
     *changed = true;
@@ -369,7 +378,7 @@ int Empresa::removerCondutor(bool *changed){
     return 0;
 }
 
-int Empresa::imprimirHorarios(){
+int Company::imprimirHorarios(){
     int op,i;
     do{
         std::cout << "************************" << " Horários " << "************************" << std::endl;
@@ -383,8 +392,8 @@ int Empresa::imprimirHorarios(){
                 op = opcao(1,i,1);
                 if(!op)
                     return 1;
-                
-                lines.at(op-1).HorarioLinha();
+
+                lines.at(op-1).lineSchedule();
                 break;
             case 2:
                 HorarioParagem();
@@ -404,12 +413,12 @@ void ordenar_paragens(std::vector<std::string> *Paragens){
     sort(Paragens->begin(),Paragens->end(),sort_paragem);
 }
 
-int Empresa::HorarioParagem(){
+int Company::HorarioParagem(){
     std::vector<std::string> Paragens;
     std::vector<Line> LinhasParagem;
     int i=1,op=0,indice = 0;
     std::string paragem;
-    
+
     for(Line l : lines){
         for(int i=0;i<l.getBusStops().size();i++){
             if(std::find(Paragens.begin(),Paragens.end(),l.getBusStops().at(i)) == Paragens.end())
@@ -417,7 +426,7 @@ int Empresa::HorarioParagem(){
         }
     }
     ordenar_paragens(&Paragens);
-    
+
     std::cout << "************************" << " Paragens " << "************************" << std::endl;
     for(std::string s : Paragens){
         std::cout << i << " - " << s << std::endl;
@@ -428,72 +437,72 @@ int Empresa::HorarioParagem(){
     if(!op)
         return 1;
     paragem = Paragens.at(op-1);
-    
+
     for(Line l : lines){
-        if(l.verificarParagem(paragem))
+        if(l.checkStop(paragem))
             LinhasParagem.push_back(l);
     }
-    
+
     for(Line l : LinhasParagem){
         //SENTIDO FIRST -> LAST
         std::cout << "************************" << " Linha " << l.getId() << " " << "************************" << std::endl;
         std::cout << std::endl;
         std::cout << std::setw(20) << "Sentido " << l.getBusStops().at(0) << " -> " << l.getBusStops().at(l.getBusStops().size()-1) << std::endl;
         std::cout << std::endl;
-        
+
         indice = l.getIndexParagem(paragem);
-        
-        l.imprimirViagem(indice,(int)l.getBusStops().size()-1,1);
+
+        l.printTrip(indice,(int)l.getBusStops().size()-1,1);
         std::cout << std::endl;
-        
+
         //SENTIDO LAST -> FIRST
         std::cout << "************************" << " Linha " << l.getId() << " " << "************************" << std::endl;
         std::cout << std::endl;
         std::cout << std::setw(20) << "Sentido " << l.getBusStops().at(l.getBusStops().size()-1) << " -> " << l.getBusStops().at(0) << std::endl;
         std::cout << std::endl;
-        
-        l.imprimirViagem(indice,0,-1);
+
+        l.printTrip(indice,0,-1);
         std::cout << std::endl;
     }
     wait_for_enter();
     return 0;
 }
 
-int Empresa::PercursoParagens(){
+int Company::PercursoParagens(){
     int sentido,a=0,b = 0;
     std::vector<Line> LinhasPercurso;
     std::string origem,destino;
-    
+
     std::cout << "Origem: ";
     getline(std::cin,origem);
     std::cout << "Destino: ";
     getline(std::cin,destino);
-    
+
     for(Line l : lines){
-        if(l.verificarParagem(origem) && l.verificarParagem(destino))
+        if(l.checkStop(origem) && l.checkStop(destino))
             LinhasPercurso.push_back(l);
     }
-    
+
     if(!LinhasPercurso.size()){
         std::cout << "Não existe nenhum percurso entre " << origem << " e " << destino << "!\n";
     }
-    
+
     for(Line l : LinhasPercurso){
         std::cout << std::endl;
         //SENTIDO ORIGEM -> DESTINO
         a = (int) l.getIndexParagem(origem);
         b = (int) l.getIndexParagem(destino);
         sentido = a < b ? 1 : -1;
-        
+
         std::cout << "*****************" << " Linha " << l.getId() << " -> " << l.TempoParagens(a,b,sentido) << " minutos "<< "************************" << std::endl;
-        
-        l.imprimirViagem(a, b, sentido);
+
+        l.printTrip(a, b, sentido);
     }
     wait_for_enter();
     return 0;
 }
 
-void Empresa::atualizarLinhas(){
+void Company::atualizarLinhas(){
     int i;
     fstream file;
     file.open(fichLinhas,std::ios::out | std::ios::trunc);
@@ -501,13 +510,13 @@ void Empresa::atualizarLinhas(){
         std::cout << "File not found!" << std::endl;
         return;
     }
-    
+
     for(Line l : lines){
         file << l.getId() << " ; " << l.getFreq() << " ; ";
         for(i=0;i < l.getBusStops().size()-2;i++)
             file << l.getBusStops().at(i) << ", ";
         file << l.getBusStops().at(i) << "; ";
-        
+
         for(i=0;i < l.getTimings().size()-1;i++)
             file << l.getTimings().at(i) << ", ";
         file << l.getTimings().at(i);
@@ -516,14 +525,14 @@ void Empresa::atualizarLinhas(){
     file.close();
 }
 
-void Empresa::atualizarCondutores(){
+void Company::atualizarCondutores(){
     fstream file;
     file.open(fichCondutores,std::ios::out | std::ios::trunc);
     if(!file.is_open()){
         std::cout << "File not found!" << std::endl;
         return;
     }
-    
+
     for(Driver d : drivers){
         file << d.getId() << " ; " << d.getName() << " ; " << (int)(d.getMaxHours()/60) << " ; " << (int)(d.getMaxWeekWorkingTime()/60) << " ; " << (int)(d.getMinRestTime()/60);
         file << std::endl;
@@ -531,7 +540,7 @@ void Empresa::atualizarCondutores(){
     file.close();
 }
 
-void Empresa::gerarTurnos(){
+void Company::gerarTurnos(){
     int i,op;
     Line *linha;
     i = displayLinhas("Linhas");
@@ -539,10 +548,10 @@ void Empresa::gerarTurnos(){
     if(!op)
         return;
     linha = &lines.at(op-1);
-    linha->gerarTurnosSemana(&drivers);
+    linha->generateWeekShifts(&drivers);
 }
 
-void Empresa::reiniciarTurnos(){
+void Company::reiniciarTurnos(){
     int i,op;
     Line *linha;
     i = displayLinhas("Linhas");
@@ -553,7 +562,7 @@ void Empresa::reiniciarTurnos(){
     linha->reiniciarTurnosSemana(&drivers);
 }
 
-void Empresa::imprimirTurnoLinha(){
+void Company::imprimirTurnoLinha(){
     int i,op;
     Line *linha;
     i = displayLinhas("Linhas");
@@ -564,7 +573,7 @@ void Empresa::imprimirTurnoLinha(){
     linha->imprimirTurno();
 }
 
-void Empresa::imprimirTurnoCondutor(){
+void Company::imprimirTurnoCondutor(){
     int i,op;
     Driver *condutor;
     i = displayCondutores();
@@ -574,4 +583,3 @@ void Empresa::imprimirTurnoCondutor(){
     condutor = &drivers.at(op-1);
     condutor->imprimirTurno();
 }
-

@@ -23,7 +23,7 @@ void Driver::setFromString (std::string &driverString){
 		//error
 	}
 
-    //Already know the first element is the id
+  //Already know the first element is the id
 	inSStream.str(splitStrings.at(0));
   inSStream.clear();
 	inSStream >> id;

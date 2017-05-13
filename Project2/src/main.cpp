@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  Projeto
-//
-//  Created by Bernardo Barbosa and Joao Sa.
-//  Copyright © 2017 Bernardo Barbosa & Joao Sa. All rights reserved.
-//
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -28,9 +20,9 @@ bool update_condutores = false;
  Função main.
  */
 int main(int argc, const char * argv[]) {
-    Empresa *Company = new Empresa("Semprarrolar","condutores.txt","linhas.txt");
+    Company *company = new Company("Semprarrolar","condutores.txt","linhas.txt");
     int op=0;
-    
+
     printf("\033c");
     while(1){
         op = imprimir_menu(menu);
@@ -39,9 +31,9 @@ int main(int argc, const char * argv[]) {
                 //UPDATE AOS FICHEIROS TXT
                 if(!op){
                     if(update_linhas)
-                        Company->atualizarLinhas();
+                        company->atualizarLinhas();
                     if(update_condutores)
-                         Company->atualizarCondutores();
+                         company->atualizarCondutores();
                     return 0;
                 }
                 else
@@ -53,17 +45,17 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        Company->novaLinha(&update_linhas);
+                        company->novaLinha(&update_linhas);
                         break;
                     case 2:
-                        Company->alterarLinha(&update_linhas);
+                        company->alterarLinha(&update_linhas);
                         break;
                     case 3:
-                        if(Company->removerLinha(&update_linhas))
+                        if(company->removerLinha(&update_linhas))
                             printf("\033c");
                         break;
                     case 4:
-                        Company->imprimirLinhas();
+                        company->imprimirLinhas();
                         break;
                 }
                 break;
@@ -73,16 +65,16 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        Company->novoCondutor(&update_condutores);
+                        company->novoCondutor(&update_condutores);
                         break;
                     case 2:
-                        Company->alterarCondutor(&update_condutores);
+                        company->alterarCondutor(&update_condutores);
                         break;
                     case 3:
-                        Company->removerCondutor(&update_condutores);
+                        company->removerCondutor(&update_condutores);
                         break;
                     case 4:
-                        Company->imprimirCondutores();
+                        company->imprimirCondutores();
                         break;
                 }
                 break;
@@ -92,10 +84,10 @@ int main(int argc, const char * argv[]) {
                     menu = 0;
                     break;
                 case 1:
-                        Company->gerarTurnos();
+                        company->gerarTurnos();
                     break;
                 case 2:
-                        Company->reiniciarTurnos();
+                        company->reiniciarTurnos();
                     break;
                 }
                 break;
@@ -105,10 +97,10 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        Company->imprimirHorarios();
+                        company->imprimirHorarios();
                         break;
                     case 2:
-                        Company->PercursoParagens();
+                        company->PercursoParagens();
                         break;
                     case 3:
                         menu = 5;
@@ -120,10 +112,10 @@ int main(int argc, const char * argv[]) {
                         menu = 4;
                         break;
                     case 1:
-                        Company->imprimirTurnoLinha();
+                        company->imprimirTurnoLinha();
                         break;
                     case 2:
-                        Company->imprimirTurnoCondutor();
+                        company->imprimirTurnoCondutor();
                         break;
                 }
                 break;

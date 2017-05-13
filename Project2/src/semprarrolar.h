@@ -1,20 +1,17 @@
-//
-//  semprarrolar.hpp
-//  SEMPRARROLAR
-//
-//  Created by Bernardo Barbosa on 27/04/17.
-//  Copyright © 2017 Bernardo Barbosa. All rights reserved.
-//
+#pragma once
 
-#ifndef semprarrolar_h
-#define semprarrolar_h
+//=================================
+// include guard
+#ifndef __SEMPRARROLAR_H
+#define __SEMPRARROLAR_H
 
-#include <iostream>
+//=================================
+// forward declared dependencies
+
+
+//=================================
+// included dependencies
 #include <vector>
-#include <fstream>
-#include <cstdlib>
-#include <sstream>
-#include <cstdio>
 #include <string>
 
 #define BEGIN 7
@@ -24,6 +21,8 @@
 #define START_DAY(x) (BEGIN*60) + (24*60*x)
 #define END_DAY(x) (END*60) + (24*60*x)
 #define DAY 60*24
+
+#define TOTAL_TIME 60*24*7
 
 void wait_for_enter();
 
@@ -43,4 +42,6 @@ std::string hora_string(int time);
 std::string tempo_string(int time);
 
 std::string DiadaSemana(int time);
-#endif /* semprarrolar_h */
+
+
+#endif // __SEMPRARROLAR_H

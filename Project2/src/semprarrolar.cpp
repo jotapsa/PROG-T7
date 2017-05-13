@@ -6,6 +6,15 @@
 //  Copyright © 2017 Bernardo Barbosa. All rights reserved.
 //
 
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <cstdlib>
+#include <sstream>
+#include <cstdio>
+#include <string>
+#include <limits.h> //INT_MAX
+
 #include "semprarrolar.h"
 
 void wait_for_enter(){
@@ -36,7 +45,7 @@ int opcao(int menor,int maior,int clear){
         ask_int("Opção: ",&op);
     }while(op < menor || op > maior);
     std::cin.ignore(INT_MAX,'\n');
-    
+
     if(clear)
         printf("\033c");
     if(op == maior)
@@ -47,13 +56,13 @@ int opcao(int menor,int maior,int clear){
 std::vector<std::string> split(const std::string &s, const char &delim){
     std::vector<std::string> splitStrings;
     std::istringstream inSStream(s);
-    
+
     std::string partX;
-    
+
     while (getline(inSStream, partX, delim)) {
         splitStrings.push_back (partX);
     }
-    
+
     return splitStrings;
 }
 
@@ -61,7 +70,7 @@ int imprimir_menu(int menu){
     std::fstream creditos;
     std::string s;
     printf("\033c");
-    
+
     switch(menu){
         case 0:
             std::cout << "************************" << " SEMPRARROLAR " << "************************" << std::endl;
@@ -131,7 +140,7 @@ std::string DiadaSemana(int time){
         i++;
         time -= 60*24;
     }
-    
+
     switch(i){
         case 0:
             return "Segunda-feira";

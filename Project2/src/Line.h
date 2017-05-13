@@ -1,58 +1,68 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <fstream>
-#include <cstring>
-#include <numeric>
-#include <iomanip>
-#include "semprarrolar.h"
+//=================================
+// include guard
+#ifndef __LINE_H
+#define __LINE_H
+
+//=================================
+// forward declared dependencies
 #include "Bus.h"
-#include "Driver.h"
 #include "Shift.h"
+#include "Driver.h"
+
+//=================================
+// included dependencies
+#include <vector>
+#include <string>
+
 
 using namespace std;
 
 class Line{
- private:
+private:
   unsigned int id;
   unsigned int freq;
   vector<string> busStopList;
   vector<int> timesList;
   vector<Bus> buses;
   vector<Shift> shifts;
-  int shift_time;
- public:
+  unsigned int shiftTime;
+
+public:
   Line(string textLine);
   Line();
+
   // metodos get
   unsigned int getId() const;
-    unsigned int getFreq() const;
+  unsigned int getFreq() const;
   vector<string> getBusStops() const;
   vector<int> getTimings() const;
-    int getIndexParagem(std::string paragem) const;
-    int getBusStopsSize() const;
-    vector<Bus> getBuses() const;
-    int getTempoTotalViagem();
+  int getIndexParagem(std::string stop) const;
+  int getBusStopsSize() const;
+  vector<Bus> getBuses() const;
+  int getShiftTime();
+
   // set methods
-    void setId(unsigned int ID);
-    void setFreq(unsigned int Freq);
+  void setId(unsigned int ID);
+  void setFreq(unsigned int Freq);
+
   // other methods
-    void addStop (std::string paragem,unsigned int pos);
-    void addStop (std::string paragem);
-    void addTime (int time);
-    bool verificarParagem(std::string paragem);
-    int TempoParagens(int origem,int destino,int sentido);
-    void alinharParagem(int origem,int paragem);
-    void imprimirViagem(int origem,int destino,int sentido);
-    void HorarioLinha();
-    int Alterar(bool *changed);
-    int AlterarParagem();
-    int AlterarTempos();
-    void gerarTurnosSemana(vector<Driver> *drivers);
-    void reiniciarTurnosSemana(vector<Driver> *drivers);
-    void imprimirTurno();
-    void imprimirPerfil();
+  void addStop (std::string stop,unsigned int pos);
+  void addStop (std::string stop);
+  void addTime (int time);
+  bool checkStop(std::string stop);
+  int TempoParagens(int origem,int destino,int sentido);
+  void alinharParagem(int origem,int stop);
+  void printTrip(unsigned int origem,unsigned int destino, int sentido);
+  void lineSchedule();
+  int Alterar(bool *changed);
+  int AlterarParagem();
+  int AlterarTempos();
+  void generateWeekShifts(vector<Driver> *drivers);
+  void reiniciarTurnosSemana(vector<Driver> *drivers);
+  void imprimirTurno();
+  void imprimirPerfil();
 };
+
+#endif

@@ -466,9 +466,10 @@ int Company::stopSchedule(){
 }
 
 int Company::searchTrip(){
-    int sentido,a=0,b = 0;
+    int direction,direction2,a=0,b = 0,c,d,trips=0;
     std::vector<Line> LinhasOrigem,LinhasDestino,LinhasDiretas;
-    std::string origem,destino;
+    std::string origem,destino,trip;
+    //std::map<std::string, int> trips;
 
     std::cout << "Origem: ";
     getline(std::cin,origem);
@@ -478,41 +479,61 @@ int Company::searchTrip(){
     for(Line l : lines){
         if(l.checkStop(origem))
             LinhasOrigem.push_back(l);
-        if(l.checkStop(destino))
-            LinhasDestino.push_back(l);
         if(l.checkStop(origem) && l.checkStop(destino))
             LinhasDiretas.push_back(l);
     }
 
     if(!LinhasOrigem.size()){
-        std::cout << "Não existe nenhuma linha com a paragem '" << origem << "' !\n";
+        std::cout << "Não existe nenhuma linha com a paragem '" << origem << "'!\n";
         wait_for_enter();
         return 0;
     }
 
-    if(!LinhasDestino.size()){
-        std::cout << "Não existe nenhuma linha com a paragem '" << destino << "' !\n";
-        wait_for_enter();
-        return 0;
-    }
-
-    if(!LinhasDiretas.size()){
-        //Procurar por possíveis trajetos entre 2 linhas
-    }
-    else{
+    //Linhas Diretas
+    if((unsigned int) LinhasDiretas.size()){
       for(Line l : LinhasDiretas){
           std::cout << std::endl;
           //SENTIDO ORIGEM -> DESTINO
           a = (int) l.getIndexParagem(origem);
           b = (int) l.getIndexParagem(destino);
-          sentido = a < b ? 1 : -1;
+          direction = a < b ? 1 : -1;
 
-          std::cout << "*****************" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,sentido) << " minutos "<< "************************" << std::endl;
+          std::cout << "*****************" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,direction) << " minutos "<< "************************" << std::endl;
 
-          l.printTrip(a, b, sentido);
+          l.printTrip(a, b, direction);
+          trips++;
+          //trips.insert(std::pair<std::string,int>(,l.tripTime(a,b,direction)))
       }
     }
-    
+
+    //Multi-Linha
+    for(Line o : LinhasOrigem){
+      for(std::string s : o.getBusStops()){
+        for(Line l : lines){
+          if(l.getId() == o.getId())
+            continue;
+          if(l.checkStop(s) && l.checkStop(destino)){
+            //SENTIDO A -> B
+            a = (int) o.getIndexParagem(origem);
+            b = (int) o.getIndexParagem(s);
+            direction = a < b ? 1 : -1;
+            //l.printTrip(a, b, sentido);
+
+            //SENTIDO B -> C
+            c = (int) l.getIndexParagem(s);
+            d = (int) l.getIndexParagem(destino);
+            direction2 = a < b ? 1 : -1;
+
+            std::cout << "****" << " Linha " << o.getId() << " -> " << o.tripTime(a,b,direction) << " minutos ";
+            std::cout << " + " << " Linha " <<  l.getId() << " -> " << l.tripTime(c,d,direction2) << " minutos " << "****";
+            //l.printTrip(a, b, sentido);
+            trips++;
+          }
+        }
+      }
+    }
+    if(!trips)
+      std::cout << "Não existe nenhum percurso possível entre " << origem << " e " << destino << "!\n";
     wait_for_enter();
     return 0;
 }
@@ -528,7 +549,7 @@ void Company::updateLines(){
 
     for(Line l : lines){
         file << l.getId() << " ; " << l.getFreq() << " ; ";
-        for(i=0;i < l.getBusStops().size()-2;i++)
+        for(i=0;i < l.getBusStops().size()-1;i++)
             file << l.getBusStops().at(i) << ", ";
         file << l.getBusStops().at(i) << "; ";
 

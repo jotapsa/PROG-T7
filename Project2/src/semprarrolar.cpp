@@ -39,18 +39,21 @@ void ask_int(std::string string, int *number){
     }while(1);
 }
 
-int option(int menor,int maior,int clear){
-    int op;
-    do{
-        ask_int("Opção: ",&op);
-    }while(op < menor || op > maior);
-    std::cin.ignore(INT_MAX,'\n');
+int option(int menor,int maior,bool clear){
+  int op;
 
-    if(clear)
-        printf("\033c");
-    if(op == maior)
-        return 0;
-    return op;
+  do{
+    ask_int("Opção: ",&op);
+  }while(op < menor || op > maior);
+  std::cin.ignore(INT_MAX,'\n');
+
+  if(clear){
+    printf("\033c");
+  }
+  if(op == maior){
+    return 0;
+  }
+  return op;
 }
 
 std::vector<std::string> split(const std::string &s, const char &delim){

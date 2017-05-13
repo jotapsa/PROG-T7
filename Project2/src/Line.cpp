@@ -93,10 +93,6 @@ int Line::getIndexParagem(std::string stop) const{
     return (int) std::distance(busStopList.begin(), std::find(busStopList.begin(), busStopList.end(), stop));
 }
 
-int Line::getBusStopsSize() const{
-    return (int)busStopList.size();
-}
-
 vector<Bus> Line::getBuses() const{
     return buses;
 }
@@ -128,7 +124,7 @@ void Line::createShifts(){
   shifts.clear();
 
   //Shift time of Line
-  shiftTime = (unsigned int) (tripTime(0, getBusStopsSize()-1, 1)*2);
+  shiftTime = tripTime(0, busStopList.size(), 1)*2;
 
   //Shifts With Only Times and LineId
   for(day=0;day<7;day++){
@@ -189,11 +185,14 @@ bool Line::checkStop(std::string stop){
 }
 
 
-int Line::tripTime(int origem,int destino,int sentido){
-    if(sentido==1)
-        return (int)std::accumulate(timesList.begin() + origem,timesList.begin() + destino,0);
-    else
-        return (int)std::accumulate(timesList.begin() + destino,timesList.begin() + origem,0);
+unsigned int Line::tripTime(unsigned int origin,unsigned int destiny,unsigned int way){
+  //Wich way are we going ?
+  if(way==1){
+    return std::accumulate(timesList.begin() + origin,timesList.begin() + destiny,0);
+  }
+  else{
+    return std::accumulate(timesList.begin() + destiny,timesList.begin() + origin,0);
+  }
 }
 
 
@@ -288,7 +287,7 @@ int Line::change(bool *changed,vector<Driver> *drivers){
         std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
         std::cout << "1 - ID\n" << "2 - Frequência\n" << "3 - Paragens\n" << "4 - Tempo entre Paragens\n" << "5 - Voltar\n";
 
-        op = option(1,5,1);
+        op = option(1,5, true);
         if(!op)
             break;
 
@@ -352,7 +351,7 @@ int Line::changeStops(){
         i=1;
         std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
         std::cout << "1 - Adicionar Paragem\n" << "2 - Mudar Nome de Paragem\n" << "3 - Remover Paragem\n" << "4 - Voltar\n";
-        op = option(1,4,1);
+        op = option(1,4, true);
         if(!op)
             return 1;
 
@@ -369,7 +368,7 @@ int Line::changeStops(){
                 i++;
 
                 std::cout << i << " - " << "Voltar" << std::endl;
-                stop = option(1,i,0);
+                stop = option(1,i, false);
                 if(!stop)
                     continue;
 
@@ -386,7 +385,7 @@ int Line::changeStops(){
                     i++;
                 }
                 std::cout << i << " - " << "Voltar" << std::endl;
-                stop = option(1,i,0);
+                stop = option(1,i, false);
                 if(!stop)
                     continue;
 
@@ -409,7 +408,7 @@ int Line::changeStops(){
                     i++;
                 }
                 std::cout << i << " - " << "Voltar" << std::endl;
-                stop = option(1,i,0);
+                stop = option(1,i, false);
                 if(!stop)
                     continue;
 
@@ -438,7 +437,7 @@ int Line::changeTimes(){
         i++;
     }
     std::cout << i << " - " << "Voltar" << std::endl;
-    op = option(1,i,0);
+    op = option(1,i, false);
     if(!op){
         printf("\033c");
         return 1;
@@ -491,9 +490,12 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
 
           if (flag){
             shift->setDriverId(driver->getId());
+
             driver->addShift(shift);
             driver->sortShifts();
             driver->setWorkHours(workHours+shiftTime);
+            //and update our local var workHours
+            workHours = driver->getWorkHours();
           }
         }
       }

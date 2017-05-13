@@ -39,7 +39,6 @@ public:
   vector<string> getBusStops() const;
   vector<int> getTimings() const;
   int getIndexParagem(std::string stop) const;
-  int getBusStopsSize() const;
   vector<Bus> getBuses() const;
   int getShiftTime();
 
@@ -53,7 +52,7 @@ public:
   void addStop (std::string stop);
   void addTime (int time);
   bool checkStop(std::string stop);
-  int tripTime(int origem,int destino,int sentido);
+  unsigned int tripTime(unsigned int origin,unsigned int destiny,unsigned int way);
   void alignStop(int origem,int stop);
   void printTrip(unsigned int origem,unsigned int destino, int sentido);
   void lineSchedule();

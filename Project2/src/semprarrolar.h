@@ -28,7 +28,7 @@ void wait_for_enter();
 
 void ask_int(std::string string, int *number);
 
-int option(int menor,int maior,int clear);
+int option(int menor,int maior,bool clear);
 
 std::vector<std::string> split(const std::string &s, const char &delim);
 

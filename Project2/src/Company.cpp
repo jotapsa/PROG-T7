@@ -179,7 +179,7 @@ int Company::changeLine(bool *changed){
         ordenarLinhas();
         mod=0;
         i = displayLines("Alterar Linha");
-        op = option(1,i,1);
+        op = option(1,i, true);
         if(!op)
             return 1;
         lines.at(op-1).change(changed,&drivers);
@@ -191,7 +191,7 @@ int Company::changeLine(bool *changed){
 int Company::removeLine(bool *changed){
     int op,i;
     i = displayLines("Remover Linha");
-    op = option(1,i,0);
+    op = option(1,i, false);
     if(!op)
         return 1;
 
@@ -275,7 +275,7 @@ int Company::changeDriver(bool *changed){
 
     do {
         i=displayDrivers();
-        op = option(1,i,1);
+        op = option(1,i, true);
         if(!op)
             return 1;
         driver = &drivers.at(op-1);
@@ -283,7 +283,7 @@ int Company::changeDriver(bool *changed){
         std::cout << "************************" << " " << driver->getName() << " (" << driver->getId() << ") " << "************************" << std::endl;
         std::cout << "1 - ID\n" << "2 - Nome\n" << "3 - Máximo de Horas por Turno\n" << "4 - Máximo de Horas por Semana\n" << "5 - Mínimo de Horas por Descanso\n" << "6 - Voltar\n";
 
-        parametro = option(1,6,1);
+        parametro = option(1,6, true);
         if(!parametro)
             continue;
 
@@ -364,7 +364,7 @@ int Company::changeDriver(bool *changed){
 int Company::removeDriver(bool *changed){
     int op=0,i;
     i = displayDrivers();
-    op = option(1,i,0);
+    op = option(1,i, false);
     if(!op)
         return 1;
 
@@ -380,13 +380,13 @@ int Company::printSchedules(){
     do{
         std::cout << "************************" << " Horários " << "************************" << std::endl;
         std::cout << "1 - Linha\n" << "2 - Paragem\n" << "3 - Voltar\n";
-        op = option(1,3,1);
+        op = option(1,3, true);
         if(!op)
             return 1;
         switch(op){
             case 1:
                 i = displayLines("Linhas");
-                op = option(1,i,1);
+                op = option(1,i, true);
                 if(!op)
                     return 1;
 
@@ -430,7 +430,7 @@ int Company::stopSchedule(){
         i++;
     }
     std::cout << i << " - " << "Voltar" << std::endl;
-    op = option(1,i,1);
+    op = option(1,i, true);
     if(!op)
         return 1;
     paragem = Paragens.at(op-1);
@@ -580,7 +580,7 @@ void Company::generateShifts(){
     int i,op;
     Line *linha;
     i = displayLines("Linhas");
-    op = option(1,i,0);
+    op = option(1,i, true);
     if(!op)
         return;
     linha = &lines.at(op-1);
@@ -591,7 +591,7 @@ void Company::resetShifts(){
     int i,op;
     Line *linha;
     i = displayLines("Linhas");
-    op = option(1,i,0);
+    op = option(1,i, false);
     if(!op)
         return;
     linha = &lines.at(op-1);
@@ -599,27 +599,34 @@ void Company::resetShifts(){
 }
 
 void Company::printShifts(){
-    int op;
-      std::cout << "************************" << " Turnos " << "************************" << std::endl;
-      std::cout << "1 - Linha\n" << "2 - Condutor\n" << "3 - Voltar\n";
-      op = option(1,3,1);
-      if(!op)
-        return;
-        switch(op){
-          case 1:
-              printLineShift();
-              break;
-          case 2:
-              printDriverShift();
-              break;
-        }
+  int op;
+  std::cout << "************************" << " Turnos " << "************************" << std::endl;
+  std::cout << "1 - Linha\n" << "2 - Condutor\n" << "3 - Voltar\n";
+
+  op = option(1,3, true);
+
+  if(!op){
+    return;
+  }
+
+  switch(op){
+    case 1:{
+      printLineShift();
+    }
+    break;
+
+    case 2:{
+      printDriverShift();
+    }
+    break;
+  }
 }
 
 void Company::printLineShift(){
     int i,op;
     Line *linha;
     i = displayLines("Linhas");
-    op = option(1,i,1);
+    op = option(1,i, true);
     if(!op)
         return;
     linha = &lines.at(op-1);
@@ -630,7 +637,7 @@ void Company::printDriverShift(){
     int i,op;
     Driver *condutor;
     i = displayDrivers();
-    op = option(1,i,1);
+    op = option(1,i, true);
     if(!op)
         return;
     condutor = &drivers.at(op-1);

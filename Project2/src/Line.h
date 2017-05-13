@@ -23,6 +23,7 @@ class Line{
   vector<int> timesList;
   vector<Bus> buses;
   vector<Shift> shifts;
+  int shift_time;
  public:
   Line(string textLine);
   Line();

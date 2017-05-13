@@ -464,7 +464,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
     //Can he work this shift?
     if (driver->getMaxHours() >= shiftTime){
       //If he has time
-      for (unsigned int j=0; (((workHours+shiftTime)<driver->getMaxWeekWorkingTime()) && (j<shifts.size())); j++){
+      for (unsigned int j=0; (((workHours+shiftTime)<=driver->getMaxWeekWorkingTime()) && (j<shifts.size())); j++){
         shift = &shifts.at(j);
 
         if (!shift->getDriverId()){

@@ -467,7 +467,7 @@ int Company::stopSchedule(){
 
 int Company::searchTrip(){
     int sentido,a=0,b = 0;
-    std::vector<Line> LinhasPercurso;
+    std::vector<Line> LinhasOrigem,LinhasDestino,LinhasDiretas;
     std::string origem,destino;
 
     std::cout << "Origem: ";
@@ -476,25 +476,43 @@ int Company::searchTrip(){
     getline(std::cin,destino);
 
     for(Line l : lines){
+        if(l.checkStop(origem))
+            LinhasOrigem.push_back(l);
+        if(l.checkStop(destino))
+            LinhasDestino.push_back(l);
         if(l.checkStop(origem) && l.checkStop(destino))
-            LinhasPercurso.push_back(l);
+            LinhasDiretas.push_back(l);
     }
 
-    if(!LinhasPercurso.size()){
-        std::cout << "Não existe nenhum percurso entre " << origem << " e " << destino << "!\n";
+    if(!LinhasOrigem.size()){
+        std::cout << "Não existe nenhuma linha com a paragem '" << origem << "' !\n";
+        wait_for_enter();
+        return 0;
     }
 
-    for(Line l : LinhasPercurso){
-        std::cout << std::endl;
-        //SENTIDO ORIGEM -> DESTINO
-        a = (int) l.getIndexParagem(origem);
-        b = (int) l.getIndexParagem(destino);
-        sentido = a < b ? 1 : -1;
-
-        std::cout << "*****************" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,sentido) << " minutos "<< "************************" << std::endl;
-
-        l.printTrip(a, b, sentido);
+    if(!LinhasDestino.size()){
+        std::cout << "Não existe nenhuma linha com a paragem '" << destino << "' !\n";
+        wait_for_enter();
+        return 0;
     }
+
+    if(!LinhasDiretas.size()){
+        //Procurar por possíveis trajetos entre 2 linhas
+    }
+    else{
+      for(Line l : LinhasDiretas){
+          std::cout << std::endl;
+          //SENTIDO ORIGEM -> DESTINO
+          a = (int) l.getIndexParagem(origem);
+          b = (int) l.getIndexParagem(destino);
+          sentido = a < b ? 1 : -1;
+
+          std::cout << "*****************" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,sentido) << " minutos "<< "************************" << std::endl;
+
+          l.printTrip(a, b, sentido);
+      }
+    }
+    
     wait_for_enter();
     return 0;
 }

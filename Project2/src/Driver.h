@@ -54,11 +54,10 @@ class Driver{
   // other methods
   void printShift();
   void addShift(Shift *shift);
-  void removerTurnosLinha(int idLinha);
+  void removeShifts(int idLinha);
   void printDriver();
-  bool estadoCondutor(int start,int end);
   static bool sort_shift (Shift i,Shift j);
-  void ordenarTurnos();
+  void sortShifts();
 };
 
 #endif

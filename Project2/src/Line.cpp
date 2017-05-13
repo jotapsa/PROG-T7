@@ -15,7 +15,6 @@
 
 
 Line::Line(string textLine){
-    int i,day,viagens_dia,bus,n;
     std::vector<std::string> splitStrings(split(textLine,';'));
     std::vector<std::string> busStops(split(splitStrings.at(2),','));
     std::vector<std::string> timeStops(split(splitStrings.at(3),','));
@@ -65,32 +64,7 @@ Line::Line(string textLine){
         timesList.push_back (stopTime);
     }
 
-    shiftTime = TempoParagens(0, getBusStopsSize()-1, 1)*2;
-
-    //Shifts With Only Buses
-    for(day=0;day<7;day++){
-        for(i=START_DAY(day);i< END_DAY(day);i+=freq){
-            shifts.push_back(Shift(id,i,i + shiftTime));
-        }
-    }
-
-    viagens_dia = ((END - BEGIN)*60) / freq;
-    n = (int) ((double) shiftTime / freq + 1.0);
-    //Autocarros necessários
-    for(i=1;i<=n;i++)
-        buses.push_back(Bus(i,id));
-
-    for(day=0;day<7;day++){
-        bus=1;
-        for(i=0;i<viagens_dia;i++){
-            shifts.at(day*viagens_dia + i).setBusOrderNumber(bus);
-            buses.at(bus-1).getSchedule().push_back(shifts.at(day*viagens_dia + i));
-            bus++;
-            if(bus>=n)
-                bus = 1;
-        }
-    }
-
+    createShifts();
 }
 
 Line::Line(){}
@@ -120,7 +94,7 @@ int Line::getIndexParagem(std::string stop) const{
 }
 
 int Line::getBusStopsSize() const{
-    return (int) busStopList.size();
+    return (int)busStopList.size();
 }
 
 vector<Bus> Line::getBuses() const{
@@ -146,6 +120,41 @@ void Line::setFreq(unsigned int Freq){
 ////////////////
 // other methods
 ////////////////
+
+void Line::createShifts(){
+  int i,day,viagens_dia,bus,n;
+
+  //Reset Shifts vector
+  shifts.clear();
+
+  //Shift time of Line
+  shiftTime = (unsigned int) (tripTime(0, getBusStopsSize()-1, 1)*2);
+
+  //Shifts With Only Times and LineId
+  for(day=0;day<7;day++){
+      for(i=START_DAY(day);i< END_DAY(day);i+=freq){
+          shifts.push_back(Shift(id,i,i + shiftTime));
+      }
+  }
+
+  viagens_dia = ((END - BEGIN)*60) / freq;
+  n = (int) ((double) shiftTime / freq + 1.0);
+
+  //minimum buses
+  for(i=1;i<=n;i++)
+      buses.push_back(Bus(i,id));
+
+  for(day=0;day<7;day++){
+      bus=1;
+      for(i=0;i<viagens_dia;i++){
+          shifts.at(day*viagens_dia + i).setBusOrderNumber(bus);
+          buses.at(bus-1).getSchedule().push_back(shifts.at(day*viagens_dia + i));
+          bus++;
+          if(bus>=n)
+              bus = 1;
+      }
+  }
+}
 
 void Line::addStop (std::string stop,unsigned int pos){
     int timeStop;
@@ -180,7 +189,7 @@ bool Line::checkStop(std::string stop){
 }
 
 
-int Line::TempoParagens(int origem,int destino,int sentido){
+int Line::tripTime(int origem,int destino,int sentido){
     if(sentido==1)
         return (int)std::accumulate(timesList.begin() + origem,timesList.begin() + destino,0);
     else
@@ -188,7 +197,7 @@ int Line::TempoParagens(int origem,int destino,int sentido){
 }
 
 
-void Line::alinharParagem(int origem,int stop){
+void Line::alignStop(int origem,int stop){
     int espaco;
     if(busStopList.at(stop).length() < 6)
         espaco = 6;
@@ -208,12 +217,12 @@ void Line::printTrip(unsigned int origem,unsigned int destino, int sentido){
     std::string hora;
 
     for(unsigned int s=origem;s!=destino+sentido;s+=sentido){
-        alinharParagem(origem,s);
+        alignStop(origem,s);
         std::cout << busStopList.at(s);
     }
     std::cout << std::endl;
 
-    viagem_completa = TempoParagens(0, (int)busStopList.size()-1, 1);
+    viagem_completa = tripTime(0, (int)busStopList.size()-1, 1);
 
     if(sentido==1)
         time = START_TIME;
@@ -222,11 +231,11 @@ void Line::printTrip(unsigned int origem,unsigned int destino, int sentido){
 
     while(1){
         if(sentido==1)
-            hora_stop = time + TempoParagens(0, origem, 1);
+            hora_stop = time + tripTime(0, origem, 1);
         else
-            hora_stop = time + TempoParagens(origem, (int)busStopList.size()-1, 1);
-        hora = hora_string(hora_stop);
-        alinharParagem(origem,origem);
+            hora_stop = time + tripTime(origem, (int)busStopList.size()-1, 1);
+        hora = hour_string(hora_stop);
+        alignStop(origem,origem);
         std::cout << hora;
         for(unsigned int j=origem;j!=destino;j+=sentido){
             if( (j==timesList.size() && sentido==1) || (j==0 && sentido==-1) )
@@ -235,8 +244,8 @@ void Line::printTrip(unsigned int origem,unsigned int destino, int sentido){
                 hora_stop += timesList.at(j);
             else
                 hora_stop += timesList.at(j+sentido);
-            hora = hora_string(hora_stop);
-            alinharParagem(origem,j+sentido);
+            hora = hour_string(hora_stop);
+            alignStop(origem,j+sentido);
             std::cout << hora;
         }
         std::cout << std::endl;
@@ -273,13 +282,13 @@ void Line::lineSchedule(){
     wait_for_enter();
 }
 
-int Line::Alterar(bool *changed){
+int Line::change(bool *changed,vector<Driver> *drivers){
     int op,aux,mod = 1;
     do{
         std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
         std::cout << "1 - ID\n" << "2 - Frequência\n" << "3 - Paragens\n" << "4 - Tempo entre Paragens\n" << "5 - Voltar\n";
 
-        op = opcao(1,5,1);
+        op = option(1,5,1);
         if(!op)
             break;
 
@@ -314,10 +323,10 @@ int Line::Alterar(bool *changed){
                 }while(1);
                 break;
             case 3:
-                mod = AlterarParagem();
+                mod = changeStops();
                 break;
             case 4:
-                mod = AlterarTempos();
+                mod = changeTimes();
                 break;
             default:
                 break;
@@ -325,15 +334,16 @@ int Line::Alterar(bool *changed){
         if(!mod){
             std::cout << "Linha " << id << " alterada com sucesso!" << std::endl;
             *changed = true;
-            //reiniciarTurnosSemana();
-            //generateWeekShifts();
+            //Reconstruct schedules
+            resetWeekShifts(drivers,0);
+            createShifts();
             wait_for_enter();
         }
     }while(op);
     return 0;
 }
 
-int Line::AlterarParagem(){
+int Line::changeStops(){
     int i=1,op=0,stop,pos;
     std::string nome;
 
@@ -342,7 +352,7 @@ int Line::AlterarParagem(){
         i=1;
         std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
         std::cout << "1 - Adicionar Paragem\n" << "2 - Mudar Nome de Paragem\n" << "3 - Remover Paragem\n" << "4 - Voltar\n";
-        op = opcao(1,4,1);
+        op = option(1,4,1);
         if(!op)
             return 1;
 
@@ -359,7 +369,7 @@ int Line::AlterarParagem(){
                 i++;
 
                 std::cout << i << " - " << "Voltar" << std::endl;
-                stop = opcao(1,i,0);
+                stop = option(1,i,0);
                 if(!stop)
                     continue;
 
@@ -376,7 +386,7 @@ int Line::AlterarParagem(){
                     i++;
                 }
                 std::cout << i << " - " << "Voltar" << std::endl;
-                stop = opcao(1,i,0);
+                stop = option(1,i,0);
                 if(!stop)
                     continue;
 
@@ -399,7 +409,7 @@ int Line::AlterarParagem(){
                     i++;
                 }
                 std::cout << i << " - " << "Voltar" << std::endl;
-                stop = opcao(1,i,0);
+                stop = option(1,i,0);
                 if(!stop)
                     continue;
 
@@ -420,7 +430,7 @@ int Line::AlterarParagem(){
     return 0;
 }
 
-int Line::AlterarTempos(){
+int Line::changeTimes(){
     int i=1,op=0,tempo;
     std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
     for(int j=0;j<busStopList.size()-1;j++){
@@ -428,7 +438,7 @@ int Line::AlterarTempos(){
         i++;
     }
     std::cout << i << " - " << "Voltar" << std::endl;
-    op = opcao(1,i,0);
+    op = option(1,i,0);
     if(!op){
         printf("\033c");
         return 1;
@@ -482,7 +492,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
           if (flag){
             shift->setDriverId(driver->getId());
             driver->addShift(shift);
-            driver->ordenarTurnos();
+            driver->sortShifts();
             driver->setWorkHours(workHours+shiftTime);
           }
         }
@@ -494,23 +504,25 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
   wait_for_enter();
 }
 
-void Line::resetWeekShifts(vector<Driver> *drivers){
+void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
     int i;
 
     for(i=0;i<shifts.size();i++)
         shifts.at(i).setDriverId(0);
 
     for(i=0;i< drivers->size();i++){
-        drivers->at(i).removerTurnosLinha(id);
+        drivers->at(i).removeShifts(id);
     }
 
     std::cout << "Turnos da Linha " << id << " reiniciados com sucesso!" << std::endl;
-    wait_for_enter();
+    if(wait)
+      wait_for_enter();
 }
 
 void Line::printShift(){
+  std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
     for(Shift s : shifts){
-        std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber();
+        std::cout << DayofWeek(s.getStartTime()) << " -> " << hour_string(s.getStartTime()) << " <-> " << hour_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber();
         if(s.getDriverId() == 0)
           std::cout << "| Sem Condutor" << std::endl;
         else

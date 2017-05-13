@@ -28,7 +28,7 @@ void wait_for_enter();
 
 void ask_int(std::string string, int *number);
 
-int opcao(int menor,int maior,int clear);
+int option(int menor,int maior,int clear);
 
 std::vector<std::string> split(const std::string &s, const char &delim);
 
@@ -37,11 +37,11 @@ std::vector<std::string> split(const std::string &s, const char &delim);
  */
 int printMenu(int menu);
 
-std::string hora_string(int time);
+std::string hour_string(int time);
 
-std::string tempo_string(int time);
+std::string time_string(int time);
 
-std::string DiadaSemana(int time);
+std::string DayofWeek(int time);
 
 
 #endif // __SEMPRARROLAR_H

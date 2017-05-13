@@ -39,7 +39,7 @@ void ask_int(std::string string, int *number){
     }while(1);
 }
 
-int opcao(int menor,int maior,int clear){
+int option(int menor,int maior,int clear){
     int op;
     do{
         ask_int("Opção: ",&op);
@@ -75,24 +75,24 @@ int printMenu(int menu){
         case 0:
             std::cout << "************************" << " SEMPRARROLAR " << "************************" << std::endl;
             std::cout << "1 - Gestão de Linhas\n" << "2 - Gestão de Condutores\n" << "3 - Gestão de Turnos\n" << "4 - Visualização de Informação\n" << "5 - Créditos\n" << "6 - Sair\n";
-            return opcao(1,6,1);
+            return option(1,6,1);
         case 1:
             std::cout << "************************" << " Gestão de Linhas " << "************************" << std::endl;
             std::cout << "1 - Criar Linha\n" << "2 - Alterar Linha\n" << "3 - Remover Linha\n" << "4 - Lista de Linhas\n" << "5 - Voltar\n";
-            return opcao(1,5,1);
+            return option(1,5,1);
         case 2:
             std::cout << "************************" << " Gestão de Condutores " << "************************" << std::endl;
             std::cout << "1 - Criar Condutor\n" << "2 - Alterar Condutor\n" << "3 - Remover Condutor\n" << "4 - Lista de Condutores\n" << "5 - Voltar\n";
-            return opcao(1,5,1);
+            return option(1,5,1);
         case 3:
             std::cout << "************************" << " Gestão de Turnos " << "************************" << std::endl;
             std::cout << "1 - Gerar Turnos para Linha\n" << "2 - Reiniciar Turnos de Linha\n" << "3 - Voltar\n";
-            return opcao(1,3,1);
+            return option(1,3,1);
         case 4:
             std::cout << "************************" << " Visualização de Informação " << "************************" << std::endl;
             //            std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Trabalho Condutor\n" << "4 - Voltar\n";
             std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Turnos\n" << "4 - Voltar\n";
-            return opcao(1,4,1);
+            return option(1,4,1);
         case 5:
             creditos.open("README.txt",std::ios::in);
             if(!creditos.is_open()){
@@ -109,7 +109,7 @@ int printMenu(int menu){
     return 0;
 }
 
-std::string hora_string(int time){
+std::string hour_string(int time){
     int horas,minutos;
     char hora[7];
     while(time >= 60*24)
@@ -120,7 +120,7 @@ std::string hora_string(int time){
     return *new std::string(hora);
 }
 
-std::string tempo_string(int time){
+std::string time_string(int time){
     int horas,minutos;
     char hora[7];
     horas = time/60;
@@ -129,7 +129,7 @@ std::string tempo_string(int time){
     return *new std::string(hora);
 }
 
-std::string DiadaSemana(int time){
+std::string DayofWeek(int time){
     int i=0;
     while(time >= 60*24){
         i++;

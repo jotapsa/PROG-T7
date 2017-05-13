@@ -119,14 +119,14 @@ void Driver::setWorkHours(unsigned int workHours){
 // other methods
 //////////////
 void Driver::printShift(){
-    if(shifts.size() == 0){
+  std::cout << "************************ " << "(" << id << ") " << name << " ************************" << std::endl;
+    if((unsigned int) shifts.size() == 0){
         std::cout << "Não tem turnos atribuídos!" << std::endl;
         wait_for_enter();
         return;
     }
-    std::cout << "************************ " << "(" << id << ") " << name << " ************************" << std::endl;
     for(Shift s : shifts)
-        std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << "| Linha -> " << s.getBusLineId() << std::endl;
+        std::cout << DayofWeek(s.getStartTime()) << " -> " << hour_string(s.getStartTime()) << " <-> " << hour_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << "| Linha -> " << s.getBusLineId() << std::endl;
     wait_for_enter();
 }
 
@@ -139,7 +139,7 @@ void Driver::addShift(Shift *shift){
     }
 }
 
-void Driver::removerTurnosLinha(int idLinha){
+void Driver::removeShifts(int idLinha){
     int i;
     for(i=(int)shifts.size()-1;i>=0;i--){
         if(shifts.at(i).getBusLineId() == idLinha){
@@ -155,131 +155,14 @@ void Driver::printDriver(){
     std::cout << "Máximo de Horas por Semana: " << maxWeekWorkingTime/60 << std::endl;
     std::cout << "Mínimo de Horas por Descanso: " << minRestTime/60 << std::endl;
     std::cout << "Turnos Atribuídos: " << shifts.size() << std::endl;
-    std::cout << "Tempo Por Atribuir : " << tempo_string(maxWeekWorkingTime - workHours) << std::endl;
+    std::cout << "Tempo Por Atribuir : " << time_string(maxWeekWorkingTime - workHours) << std::endl;
     std::cout << std::endl;
-}
-
-bool Driver::estadoCondutor(int start,int end){
-    int i,horas_turno=0,turno_atual,turno_proximo=0;
-    bool ok = true;
-    std::cout << "Testando ... " << hora_string(start) << " <-> " << hora_string(end) << std::endl;
-
-    Shift teste = Shift(0,start,end);
-    shifts.push_back(teste);
-    ordenarTurnos();
-
-    for(i=0;i<shifts.size();i++){
-        //Verificar limites do condutor
-        turno_atual = shifts.at(i).getEndTime() + shifts.at(i).getStartTime();
-        horas_turno += turno_atual;
-        if(i!= shifts.size()-1){
-
-            turno_proximo = shifts.at(i+1).getEndTime() + shifts.at(i+1).getStartTime();
-
-            if(horas_turno + turno_proximo > maxHours){
-                horas_turno = 0;
-                if(shifts.at(i+1).getStartTime() - shifts.at(i).getEndTime() < minRestTime){
-                    ok = false;
-                    std::cout << "falso" << hora_string(start) << " <-> " << hora_string(end) << std::endl;
-                    break;
-                }
-                else
-                    ok = true;
-            }
-        }
-    }
-    for(i=0;shifts.at(i).getBusLineId() != 0;i++){}
-    shifts.erase(shifts.begin() + i);
-    std::cout << "Valor -> " << ok << std::endl;
-    return ok;
-
-
-//        if(i==0){
-//            if(end < shifts.at(i).getStartTime()){
-//                if(turno + (shifts.at(i).getEndTime() - shifts.at(i).getStartTime()) > maxHours){
-//                    if(shifts.at(i).getStartTime() - end < minRestTime){
-//                        free = false;
-//                        horas_turno = shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
-//                    }
-//                    else{
-//                        free = true;
-//                        horas_turno += turno + shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
-//                    }
-//                }
-//                else{
-//                    free = true;
-//                    horas_turno += turno + shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
-//                }
-//            }
-//        }
-//        else if(i==shifts.size()-1){
-//            if(start > shifts.at(i).getEndTime()){
-//                if(turno + (shifts.at(i).getEndTime() - shifts.at(i).getStartTime()) > maxHours){
-//                        if(start - shifts.at(i).getEndTime() < minRestTime){
-//                            free = false;
-//                            horas_turno = shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
-//                        }
-//                        else{
-//                            free = true;
-//                            horas_turno += turno + shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
-//                        }
-//                }
-//                else{
-//                    free = true;
-//                    horas_turno += turno + shifts.at(i).getEndTime() - shifts.at(i).getStartTime();
-//                }
-//            }
-//        }
-//        else{
-//
-//
-//        }
-
-
-//        //ANTES
-//        if(end < shifts.at(i).getStartTime()){
-//            if(i==0){
-//                if(turno + (shifts.at(i).getEndTime() - shifts.at(i).getStartTime() > maxHours)){
-//                    if(shifts.at(i).getStartTime() - end < minRestTime){
-//                        free = false;
-//                        continue;
-//                    }
-//                    else
-//                        free = true;
-//                }
-//            }
-//            else{
-//
-//
-//            }
-//        }
-//
-//        //DEPOIS
-//        if(start > shifts.at(i).getEndTime()){
-//            if(i==shifts.size()-1){
-//                if(turno + (shifts.at(i).getEndTime() - shifts.at(i).getStartTime() > maxHours)){
-//                    if(shifts.at(i).getEndTime() - start < minRestTime){
-//                        free = false;
-//                        continue;
-//                    }
-//                    else
-//                        free = true;
-//                }
-//            }
-//            else{
-//
-//            }
-//        }
-//
-//        if(free)
-//            break;
-//    }
 }
 
 bool Driver::sort_shift (Shift i,Shift j) {
     return (i.getStartTime() < j.getStartTime());
 }
 
-void Driver::ordenarTurnos(){
+void Driver::sortShifts(){
     sort(shifts.begin(),shifts.end(),sort_shift);
 }

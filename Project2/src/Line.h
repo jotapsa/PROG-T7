@@ -48,19 +48,20 @@ public:
   void setFreq(unsigned int Freq);
 
   // other methods
+  void createShifts();
   void addStop (std::string stop,unsigned int pos);
   void addStop (std::string stop);
   void addTime (int time);
   bool checkStop(std::string stop);
-  int TempoParagens(int origem,int destino,int sentido);
-  void alinharParagem(int origem,int stop);
+  int tripTime(int origem,int destino,int sentido);
+  void alignStop(int origem,int stop);
   void printTrip(unsigned int origem,unsigned int destino, int sentido);
   void lineSchedule();
-  int Alterar(bool *changed);
-  int AlterarParagem();
-  int AlterarTempos();
   void generateWeekShifts(vector<Driver> *drivers);
-  void resetWeekShifts(vector<Driver> *drivers);
+  void resetWeekShifts(vector<Driver> *drivers,int wait);
+  int change(bool *changed,vector<Driver> *drivers);
+  int changeStops();
+  int changeTimes();
   void printShift();
   void printLine();
 };

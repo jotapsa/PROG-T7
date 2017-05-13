@@ -1,12 +1,13 @@
 #include <limits.h> //INT_MAX
-//#include <map>
+#include <map>
 #include <algorithm> //sort
 #include <iomanip> //setw
 #include <fstream>
 #include "semprarrolar.h"
 #include "Shift.h"
 #include "Bus.h"
-
+#include <utility>
+#include <sstream>
 #include "Company.h"
 
 
@@ -466,10 +467,11 @@ int Company::stopSchedule(){
 }
 
 int Company::searchTrip(){
-    int direction,direction2,a=0,b = 0,c,d,trips=0;
+    int direction,direction2,a=0,b = 0,c,d,tripsFound=0;
     std::vector<Line> LinhasOrigem,LinhasDestino,LinhasDiretas;
-    std::string origem,destino,trip;
-    //std::map<std::string, int> trips;
+    std::string origem,destino;
+    std::stringstream trip;
+    std::map<int, std::string> trips;
 
     std::cout << "Origem: ";
     getline(std::cin,origem);
@@ -498,10 +500,13 @@ int Company::searchTrip(){
           b = (int) l.getIndexParagem(destino);
           direction = a < b ? 1 : -1;
 
-          std::cout << "*****************" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,direction) << " minutos "<< "************************" << std::endl;
+          trip << "*****************" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,direction) << " minutos "<< "************************" << std::endl;
 
-          l.printTrip(a, b, direction);
-          trips++;
+          //l.printTrip(a, b, direction);
+          tripsFound++;
+          trips[l.tripTime(a,b,direction)] = std::string(trip.str());
+          trip.str();
+          trip.clear();
           //trips.insert(std::pair<std::string,int>(,l.tripTime(a,b,direction)))
       }
     }
@@ -524,16 +529,27 @@ int Company::searchTrip(){
             d = (int) l.getIndexParagem(destino);
             direction2 = a < b ? 1 : -1;
 
-            std::cout << "****" << " Linha " << o.getId() << " -> " << o.tripTime(a,b,direction) << " minutos ";
-            std::cout << " + " << " Linha " <<  l.getId() << " -> " << l.tripTime(c,d,direction2) << " minutos " << "****";
+            if(o.tripTime(a,b,direction) && l.tripTime(c,d,direction2)){
+              trip << "****" << " Linha " << o.getId() << " -> " << o.tripTime(a,b,direction) << " minutos ";
+              trip << " + " << " Linha " <<  l.getId() << " -> " << l.tripTime(c,d,direction2) << " minutos " << "****";
+              tripsFound++;
+              trips[o.tripTime(a,b,direction) + l.tripTime(c,d,direction2)] = std::string(trip.str());
+              trip.str();
+              trip.clear();
+            }
             //l.printTrip(a, b, sentido);
-            trips++;
           }
         }
       }
     }
-    if(!trips)
+    if(!tripsFound)
       std::cout << "Não existe nenhum percurso possível entre " << origem << " e " << destino << "!\n";
+    else{
+      for( map<int,std::string>::iterator ii=trips.begin(); ii!=trips.end(); ++ii){
+       std::cout << (*ii).second << std::endl;
+   }
+
+    }
     wait_for_enter();
     return 0;
 }

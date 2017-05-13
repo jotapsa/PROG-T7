@@ -63,9 +63,6 @@ vector<Driver> Company::getDrivers() const{
 ////////////////////////////
 // outros metodos
 ///////////////////////////
-void Company::distribuiServico(){
-}
-
 bool Company::sort_linha (Line i,Line j) {
     return (i.getId() < j.getId());
 }
@@ -81,20 +78,20 @@ void Company::ordenarCondutores(){
     sort(drivers.begin(),drivers.end(),sort_condutor);
 }
 
-void Company::imprimirLinhas(){
+void Company::printLines(){
     std::cout << "************************" << " Linhas " << "************************" << std::endl;
     std::cout << std::endl;
     for(Line l : lines){
-        l.imprimirPerfil();
+        l.printShift();
     }
     wait_for_enter();
 }
 
-void Company::imprimirCondutores(){
+void Company::printDrivers(){
     std::cout << "************************" << " Condutores " << "************************" << std::endl;
     std::cout << std::endl;
     for(Driver d : drivers){
-        d.imprimirPerfil();
+        d.printShift();
     }
     wait_for_enter();
 }
@@ -107,7 +104,7 @@ bool Company::checkForLine(unsigned int id){
     return false;
 }
 
-int Company::novaLinha(bool *changed){
+int Company::newLine(bool *changed){
     Line *nova = new Line();
 
     int stops,tempo,id;
@@ -165,7 +162,7 @@ int Company::novaLinha(bool *changed){
     return 0;
 }
 
-int Company::displayLinhas(std::string Title){
+int Company::displayLines(std::string Title){
     int i=1;
     std::cout << "************************ " << Title << " ************************" << std::endl;
     for(Line l : lines){
@@ -176,12 +173,12 @@ int Company::displayLinhas(std::string Title){
     return i;
 }
 
-int Company::alterarLinha(bool *changed){
+int Company::changeLine(bool *changed){
     int i,op=0,mod=0;
     do {
         ordenarLinhas();
         mod=0;
-        i = displayLinhas("Alterar Linha");
+        i = displayLines("Alterar Linha");
         op = opcao(1,i,1);
         if(!op)
             return 1;
@@ -191,9 +188,9 @@ int Company::alterarLinha(bool *changed){
 
 }
 
-int Company::removerLinha(bool *changed){
+int Company::removeLine(bool *changed){
     int op,i;
-    i = displayLinhas("Remover Linha");
+    i = displayLines("Remover Linha");
     op = opcao(1,i,0);
     if(!op)
         return 1;
@@ -205,7 +202,7 @@ int Company::removerLinha(bool *changed){
     return 0;
 }
 
-bool Company::verificarCondutor(int ID){
+bool Company::checkForDriver(int ID){
     for(Driver d : drivers){
         if(ID == d.getId())
             return true;
@@ -213,7 +210,7 @@ bool Company::verificarCondutor(int ID){
     return false;
 }
 
-int Company::novoCondutor(bool *changed){
+int Company::newDriver(bool *changed){
     Driver *novo = new Driver();
     std::string nome;
     int aux;
@@ -222,7 +219,7 @@ int Company::novoCondutor(bool *changed){
         ask_int("ID: ", &aux);
     }while(aux <= 0);
 
-    if(verificarCondutor(aux)){
+    if(checkForDriver(aux)){
         std::cout << "Condutor " << aux << " já existe!" << std::endl;
         wait_for_enter();
         return 1;
@@ -260,7 +257,7 @@ int Company::novoCondutor(bool *changed){
     return 0;
 }
 
-int Company::displayCondutores(){
+int Company::displayDrivers(){
     int i=1;
     std::cout << "************************" << " Condutores " << "************************" << std::endl;
     for(Driver d : drivers){
@@ -271,13 +268,13 @@ int Company::displayCondutores(){
     return i;
 }
 
-int Company::alterarCondutor(bool *changed){
+int Company::changeDriver(bool *changed){
     int i=1,op=0,aux,parametro;
     Driver *driver;
     std::string nome;
 
     do {
-        i=displayCondutores();
+        i=displayDrivers();
         op = opcao(1,i,1);
         if(!op)
             return 1;
@@ -299,7 +296,7 @@ int Company::alterarCondutor(bool *changed){
                         std::cout << "ID tem de ser positivo!" << std::endl << std::endl;
                         continue;
                     }
-                    else if(!verificarCondutor(aux)){
+                    else if(!checkForDriver(aux)){
                         driver->setId(aux);
                         break;
                     }
@@ -364,9 +361,9 @@ int Company::alterarCondutor(bool *changed){
 
 }
 
-int Company::removerCondutor(bool *changed){
+int Company::removeDriver(bool *changed){
     int op=0,i;
-    i = displayCondutores();
+    i = displayDrivers();
     op = opcao(1,i,0);
     if(!op)
         return 1;
@@ -378,7 +375,7 @@ int Company::removerCondutor(bool *changed){
     return 0;
 }
 
-int Company::imprimirHorarios(){
+int Company::printSchedules(){
     int op,i;
     do{
         std::cout << "************************" << " Horários " << "************************" << std::endl;
@@ -388,7 +385,7 @@ int Company::imprimirHorarios(){
             return 1;
         switch(op){
             case 1:
-                i = displayLinhas("Linhas");
+                i = displayLines("Linhas");
                 op = opcao(1,i,1);
                 if(!op)
                     return 1;
@@ -396,7 +393,7 @@ int Company::imprimirHorarios(){
                 lines.at(op-1).lineSchedule();
                 break;
             case 2:
-                HorarioParagem();
+                stopSchedule();
                 break;
             default:
                 break;
@@ -413,7 +410,7 @@ void ordenar_paragens(std::vector<std::string> *Paragens){
     sort(Paragens->begin(),Paragens->end(),sort_paragem);
 }
 
-int Company::HorarioParagem(){
+int Company::stopSchedule(){
     std::vector<std::string> Paragens;
     std::vector<Line> LinhasParagem;
     int i=1,op=0,indice = 0;
@@ -468,7 +465,7 @@ int Company::HorarioParagem(){
     return 0;
 }
 
-int Company::PercursoParagens(){
+int Company::searchTrip(){
     int sentido,a=0,b = 0;
     std::vector<Line> LinhasPercurso;
     std::string origem,destino;
@@ -502,7 +499,7 @@ int Company::PercursoParagens(){
     return 0;
 }
 
-void Company::atualizarLinhas(){
+void Company::updateLines(){
     int i;
     fstream file;
     file.open(fichLinhas,std::ios::out | std::ios::trunc);
@@ -525,7 +522,7 @@ void Company::atualizarLinhas(){
     file.close();
 }
 
-void Company::atualizarCondutores(){
+void Company::updateDrivers(){
     fstream file;
     file.open(fichCondutores,std::ios::out | std::ios::trunc);
     if(!file.is_open()){
@@ -540,10 +537,10 @@ void Company::atualizarCondutores(){
     file.close();
 }
 
-void Company::gerarTurnos(){
+void Company::generateShifts(){
     int i,op;
     Line *linha;
-    i = displayLinhas("Linhas");
+    i = displayLines("Linhas");
     op = opcao(1,i,0);
     if(!op)
         return;
@@ -551,35 +548,52 @@ void Company::gerarTurnos(){
     linha->generateWeekShifts(&drivers);
 }
 
-void Company::reiniciarTurnos(){
+void Company::resetShifts(){
     int i,op;
     Line *linha;
-    i = displayLinhas("Linhas");
+    i = displayLines("Linhas");
     op = opcao(1,i,0);
     if(!op)
         return;
     linha = &lines.at(op-1);
-    linha->reiniciarTurnosSemana(&drivers);
+    linha->resetWeekShifts(&drivers);
 }
 
-void Company::imprimirTurnoLinha(){
+void Company::printShifts(){
+    int op;
+      std::cout << "************************" << " Turnos " << "************************" << std::endl;
+      std::cout << "1 - Linha\n" << "2 - Condutor\n" << "3 - Voltar\n";
+      op = opcao(1,3,1);
+      if(!op)
+        return;
+        switch(op){
+          case 1:
+              printLineShift();
+              break;
+          case 2:
+              printDriverShift();
+              break;
+        }
+}
+
+void Company::printLineShift(){
     int i,op;
     Line *linha;
-    i = displayLinhas("Linhas");
+    i = displayLines("Linhas");
     op = opcao(1,i,1);
     if(!op)
         return;
     linha = &lines.at(op-1);
-    linha->imprimirTurno();
+    linha->printShift();
 }
 
-void Company::imprimirTurnoCondutor(){
+void Company::printDriverShift(){
     int i,op;
     Driver *condutor;
-    i = displayCondutores();
+    i = displayDrivers();
     op = opcao(1,i,1);
     if(!op)
         return;
     condutor = &drivers.at(op-1);
-    condutor->imprimirTurno();
+    condutor->printShift();
 }

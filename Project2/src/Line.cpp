@@ -494,7 +494,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
   wait_for_enter();
 }
 
-void Line::reiniciarTurnosSemana(vector<Driver> *drivers){
+void Line::resetWeekShifts(vector<Driver> *drivers){
     int i;
 
     for(i=0;i<shifts.size();i++)
@@ -508,13 +508,18 @@ void Line::reiniciarTurnosSemana(vector<Driver> *drivers){
     wait_for_enter();
 }
 
-void Line::imprimirTurno(){
-    for(Shift s : shifts)
-        std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << " Condutor -> " << s.getDriverId() << std::endl;
+void Line::printShift(){
+    for(Shift s : shifts){
+        std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber();
+        if(s.getDriverId() == 0)
+          std::cout << "| Sem Condutor" << std::endl;
+        else
+          std::cout << "| Condutor -> " << s.getDriverId() << std::endl;
+      }
     wait_for_enter();
 }
 
-void Line::imprimirPerfil(){
+void Line::printLine(){
     int i=0;
     std::cout << "Linha " << id << std::endl;
     std::cout << "Frequência = " << freq << " minutos" << std::endl;

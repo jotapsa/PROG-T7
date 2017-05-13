@@ -52,10 +52,10 @@ class Driver{
   void setWorkHours(unsigned int workHours);
 
   // other methods
-  void imprimirTurno();
+  void printShift();
   void addShift(Shift *shift);
   void removerTurnosLinha(int idLinha);
-  void imprimirPerfil();
+  void printDriver();
   bool estadoCondutor(int start,int end);
   static bool sort_shift (Shift i,Shift j);
   void ordenarTurnos();

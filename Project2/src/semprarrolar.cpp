@@ -66,7 +66,7 @@ std::vector<std::string> split(const std::string &s, const char &delim){
     return splitStrings;
 }
 
-int imprimir_menu(int menu){
+int printMenu(int menu){
     std::fstream creditos;
     std::string s;
     printf("\033c");
@@ -94,11 +94,6 @@ int imprimir_menu(int menu){
             std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Turnos\n" << "4 - Voltar\n";
             return opcao(1,4,1);
         case 5:
-            std::cout << "************************" << " Turnos " << "************************" << std::endl;
-            std::cout << "1 - Linha\n" << "2 - Condutor\n" << "3 - Voltar\n";
-            return opcao(1,3,1);
-            break;
-        case 6:
             creditos.open("README.txt",std::ios::in);
             if(!creditos.is_open()){
                 std::cout << "File not found!" << std::endl;

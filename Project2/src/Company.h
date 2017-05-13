@@ -35,34 +35,34 @@ class Company{
   // set methods
 
   // other methods
-  void distribuiServico(); // funcao que implementa a afectacao de servico
     static bool sort_linha (Line i,Line j);
     void ordenarLinhas();
     static bool sort_condutor (Driver i,Driver j);
     void ordenarCondutores();
-    void imprimirLinhas();
-    void imprimirCondutores();
+    void printLines();
+    void printDrivers();
     bool checkForLine(unsigned int ID);
-    int novaLinha(bool *changed);
-    int displayLinhas(std::string Title);
-    int alterarLinha(bool *changed);
-    int removerLinha(bool *changed);
-    bool verificarCondutor(int ID);
-    int novoCondutor(bool *changed);
-    int displayCondutores();
-    int alterarCondutor(bool *changed);
-    int removerCondutor(bool *changed);
-    int imprimirHorarios();
+    int newLine(bool *changed);
+    int displayLines(std::string Title);
+    int changeLine(bool *changed);
+    int removeLine(bool *changed);
+    bool checkForDriver(int ID);
+    int newDriver(bool *changed);
+    int displayDrivers();
+    int changeDriver(bool *changed);
+    int removeDriver(bool *changed);
+    int printSchedules();
     static bool sort_paragem (std::string i,std::string j);
     void ordenarParagens();
-    int HorarioParagem();
-    int PercursoParagens();
-    void atualizarLinhas();
-    void atualizarCondutores();
-    void gerarTurnos();
-    void reiniciarTurnos();
-    void imprimirTurnoLinha();
-    void imprimirTurnoCondutor();
+    int stopSchedule();
+    int searchTrip();
+    void updateLines();
+    void updateDrivers();
+    void generateShifts();
+    void resetShifts();
+    void printShifts();
+    void printLineShift();
+    void printDriverShift();
 };
 
 #endif

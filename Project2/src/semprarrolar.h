@@ -35,7 +35,7 @@ std::vector<std::string> split(const std::string &s, const char &delim);
 /*
  Função responsável pela impressão do menu principal e dos respetivos sub-menus.
  */
-int imprimir_menu(int menu);
+int printMenu(int menu);
 
 std::string hora_string(int time);
 

@@ -60,9 +60,9 @@ public:
   int AlterarParagem();
   int AlterarTempos();
   void generateWeekShifts(vector<Driver> *drivers);
-  void reiniciarTurnosSemana(vector<Driver> *drivers);
-  void imprimirTurno();
-  void imprimirPerfil();
+  void resetWeekShifts(vector<Driver> *drivers);
+  void printShift();
+  void printLine();
 };
 
 #endif

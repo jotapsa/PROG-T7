@@ -118,13 +118,13 @@ void Driver::setWorkHours(unsigned int workHours){
 //////////////
 // other methods
 //////////////
-void Driver::imprimirTurno(){
+void Driver::printShift(){
     if(shifts.size() == 0){
         std::cout << "Não tem turnos atribuídos!" << std::endl;
         wait_for_enter();
         return;
     }
-
+    std::cout << "************************ " << "(" << id << ") " << name << " ************************" << std::endl;
     for(Shift s : shifts)
         std::cout << DiadaSemana(s.getStartTime()) << " -> " << hora_string(s.getStartTime()) << " <-> " << hora_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << "| Linha -> " << s.getBusLineId() << std::endl;
     wait_for_enter();
@@ -149,7 +149,7 @@ void Driver::removerTurnosLinha(int idLinha){
     }
 }
 
-void Driver::imprimirPerfil(){
+void Driver::printDriver(){
     std::cout << "(" << id << ") " << name <<std::endl;
     std::cout << "Máximo de Horas por Turno: " << maxHours/60 << std::endl;
     std::cout << "Máximo de Horas por Semana: " << maxWeekWorkingTime/60 << std::endl;

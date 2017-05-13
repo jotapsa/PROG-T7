@@ -25,15 +25,15 @@ int main(int argc, const char * argv[]) {
 
     printf("\033c");
     while(1){
-        op = imprimir_menu(menu);
+        op = printMenu(menu);
         switch(menu){
             case 0:
                 //UPDATE AOS FICHEIROS TXT
                 if(!op){
                     if(update_linhas)
-                        company->atualizarLinhas();
+                        company->updateLines();
                     if(update_condutores)
-                         company->atualizarCondutores();
+                         company->updateDrivers();
                     return 0;
                 }
                 else
@@ -45,17 +45,17 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        company->novaLinha(&update_linhas);
+                        company->newLine(&update_linhas);
                         break;
                     case 2:
-                        company->alterarLinha(&update_linhas);
+                        company->changeLine(&update_linhas);
                         break;
                     case 3:
-                        if(company->removerLinha(&update_linhas))
+                        if(company->removeLine(&update_linhas))
                             printf("\033c");
                         break;
                     case 4:
-                        company->imprimirLinhas();
+                        company->printLines();
                         break;
                 }
                 break;
@@ -65,16 +65,16 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        company->novoCondutor(&update_condutores);
+                        company->newDriver(&update_condutores);
                         break;
                     case 2:
-                        company->alterarCondutor(&update_condutores);
+                        company->changeDriver(&update_condutores);
                         break;
                     case 3:
-                        company->removerCondutor(&update_condutores);
+                        company->removeDriver(&update_condutores);
                         break;
                     case 4:
-                        company->imprimirCondutores();
+                        company->printDrivers();
                         break;
                 }
                 break;
@@ -84,10 +84,10 @@ int main(int argc, const char * argv[]) {
                     menu = 0;
                     break;
                 case 1:
-                        company->gerarTurnos();
+                        company->generateShifts();
                     break;
                 case 2:
-                        company->reiniciarTurnos();
+                        company->resetShifts();
                     break;
                 }
                 break;
@@ -97,29 +97,16 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        company->imprimirHorarios();
+                        company->printSchedules();
                         break;
                     case 2:
-                        company->PercursoParagens();
+                        company->searchTrip();
                         break;
                     case 3:
-                        menu = 5;
+                        company->printShifts();
                 }
                 break;
             case 5:
-                switch(op){
-                    case 0:
-                        menu = 4;
-                        break;
-                    case 1:
-                        company->imprimirTurnoLinha();
-                        break;
-                    case 2:
-                        company->imprimirTurnoCondutor();
-                        break;
-                }
-                break;
-            case 6:
                 wait_for_enter();
                 menu = 0;
                 break;

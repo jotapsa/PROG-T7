@@ -124,7 +124,7 @@ void Line::createShifts(){
   shifts.clear();
 
   //Shift time of Line
-  shiftTime = tripTime(0, busStopList.size(), 1)*2;
+  shiftTime = tripTime(0, busStopList.size()-1, 1)*2;
 
   //Shifts With Only Times and LineId
   for(day=0;day<7;day++){

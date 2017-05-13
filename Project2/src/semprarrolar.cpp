@@ -78,24 +78,24 @@ int printMenu(int menu){
         case 0:
             std::cout << "************************" << " SEMPRARROLAR " << "************************" << std::endl;
             std::cout << "1 - Gestão de Linhas\n" << "2 - Gestão de Condutores\n" << "3 - Gestão de Turnos\n" << "4 - Visualização de Informação\n" << "5 - Créditos\n" << "6 - Sair\n";
-            return option(1,6,1);
+            return option(1,6, true);
         case 1:
             std::cout << "************************" << " Gestão de Linhas " << "************************" << std::endl;
             std::cout << "1 - Criar Linha\n" << "2 - Alterar Linha\n" << "3 - Remover Linha\n" << "4 - Lista de Linhas\n" << "5 - Voltar\n";
-            return option(1,5,1);
+            return option(1,5, true);
         case 2:
             std::cout << "************************" << " Gestão de Condutores " << "************************" << std::endl;
             std::cout << "1 - Criar Condutor\n" << "2 - Alterar Condutor\n" << "3 - Remover Condutor\n" << "4 - Lista de Condutores\n" << "5 - Voltar\n";
-            return option(1,5,1);
+            return option(1,5, true);
         case 3:
             std::cout << "************************" << " Gestão de Turnos " << "************************" << std::endl;
             std::cout << "1 - Gerar Turnos para Linha\n" << "2 - Reiniciar Turnos de Linha\n" << "3 - Voltar\n";
-            return option(1,3,1);
+            return option(1,3, true);
         case 4:
             std::cout << "************************" << " Visualização de Informação " << "************************" << std::endl;
             //            std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Trabalho Condutor\n" << "4 - Voltar\n";
             std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Turnos\n" << "4 - Voltar\n";
-            return option(1,4,1);
+            return option(1,4, true);
         case 5:
             creditos.open("README.txt",std::ios::in);
             if(!creditos.is_open()){

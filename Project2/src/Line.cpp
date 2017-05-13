@@ -343,7 +343,8 @@ int Line::change(bool *changed,vector<Driver> *drivers){
 }
 
 int Line::changeStops(){
-    int i=1,op=0,stop,pos;
+    unsigned int pos;
+    int i=1,op=0,stop;
     std::string nome;
 
     do{
@@ -351,7 +352,7 @@ int Line::changeStops(){
         i=1;
         std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
         std::cout << "1 - Adicionar Paragem\n" << "2 - Mudar Nome de Paragem\n" << "3 - Remover Paragem\n" << "4 - Voltar\n";
-        op = option(1,4, true);
+        op = option(1, 4, true);
         if(!op)
             return 1;
 
@@ -360,7 +361,7 @@ int Line::changeStops(){
             case 1:
                 std::cout << i << " - " << "Início de Linha" << std::endl;
                 i++;
-                for(int j=0;j<busStopList.size()-1;j++){
+                for(unsigned int j=0;j<busStopList.size()-1;j++){
                     std::cout << i << " - Entre " << busStopList.at(j) << " e " << busStopList.at(j+1) << std::endl;
                     i++;
                 }
@@ -368,7 +369,7 @@ int Line::changeStops(){
                 i++;
 
                 std::cout << i << " - " << "Voltar" << std::endl;
-                stop = option(1,i, false);
+                stop = option(1, i, false);
                 if(!stop)
                     continue;
 
@@ -432,7 +433,7 @@ int Line::changeStops(){
 int Line::changeTimes(){
     int i=1,op=0,tempo;
     std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
-    for(int j=0;j<busStopList.size()-1;j++){
+    for(unsigned int j=0;j<busStopList.size()-1;j++){
         std::cout << i << " - Entre " << busStopList.at(j) << " e " << busStopList.at(j+1) << " (" << timesList.at(j) << " minutos)"<< std::endl;
         i++;
     }

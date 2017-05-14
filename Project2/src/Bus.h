@@ -32,7 +32,7 @@ public:
 
   // set methods
   void setLineId(int line);
-  void setdriverIdShift(int id,int start);
+  void setdriverIdShift(int id,unsigned int start);
   // other methods
   void printShift();
   void addShift(Shift *shift);

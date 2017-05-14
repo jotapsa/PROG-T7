@@ -121,7 +121,7 @@ std::string hour_string(int time){
   horas = time/60;
   minutos = time%60;
   sprintf(hora, "%02d:%02dh", horas, minutos);
-  return *new std::string(hora);
+  return std::string(hora);
 }
 
 std::string time_string(int time){
@@ -130,7 +130,7 @@ std::string time_string(int time){
   horas = time/60;
   minutos = time%60;
   sprintf(hora, "%02d:%02dh", horas, minutos);
-  return *new std::string(hora);
+  return std::string(hora);
 }
 
 std::string DayofWeek(int time){

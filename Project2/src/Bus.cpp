@@ -31,7 +31,7 @@ void Bus::setLineId(int line){
   this->lineId = line;
 }
 
-void Bus::setdriverIdShift(int id,int start){
+void Bus::setdriverIdShift(int id,unsigned int start){
   Shift *s;
   for(unsigned int i=0;i< schedule.size();i++){
     s = &schedule.at(i);

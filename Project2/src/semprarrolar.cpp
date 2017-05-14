@@ -20,7 +20,12 @@
 void wait_for_enter(){
   std::cout << std::endl;
   std::cout << "Prima Enter para continuar...\n";
-  system("read");
+  // system("read");
+  if(std::cin.fail()){
+    std::cin.clear();
+    std::cin.ignore(INT_MAX,'\n');
+  }
+  getchar();
   printf("\033c");
 }
 
@@ -35,6 +40,8 @@ void ask_int(std::string string, int *number){
       std::cout << "Introduza um número inteiro!\n";
       continue;
     }
+    std::cin.clear();
+		std::cin.ignore(1000,'\n');
     return;
   }while(1);
 }
@@ -45,7 +52,7 @@ int option(int menor,int maior,bool clear){
   do{
     ask_int("Opção: ",&op);
   }while(op < menor || op > maior);
-  std::cin.ignore(INT_MAX,'\n');
+  // std::cin.ignore(INT_MAX,'\n');
 
   if(clear){
     printf("\033c");

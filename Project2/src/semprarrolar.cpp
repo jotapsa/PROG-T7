@@ -54,7 +54,7 @@ int option(int menor,int maior,bool clear){
   if(op == maior){
     return 0;
   }
-  
+
   return op;
 }
 
@@ -91,8 +91,8 @@ int printMenu(int menu){
       return option(1,5, true);
     case 3:
       std::cout << "************************" << " Gestão de Turnos " << "************************" << std::endl;
-      std::cout << "1 - Gerar Turnos para Linha\n" << "2 - Reiniciar Turnos de Linha\n" << "3 - Voltar\n";
-      return option(1,3, true);
+      std::cout << "1 - Gerar Turnos para Linha\n" << "2 - Reiniciar Turnos de Linha\n" << "3 - Reiniciar Turnos de Condutor\n" << "4 - Voltar\n";
+      return option(1,4, true);
     case 4:
       std::cout << "************************" << " Visualização de Informação " << "************************" << std::endl;
       std::cout << "1 - Horários\n" << "2 - Percursos\n" << "3 - Turnos\n" << "4 - Voltar\n";

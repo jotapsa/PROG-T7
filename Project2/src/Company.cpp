@@ -12,7 +12,7 @@
 
 
 Company::Company(string nome, string fichCondutores, string fichLinhas){
-    this->nome = nome;
+    this->name = nome;
     this->fichCondutores = fichCondutores;
     this->fichLinhas = fichLinhas;
     std::string line;
@@ -46,7 +46,7 @@ Company::Company(string nome, string fichCondutores, string fichLinhas){
 // metodos get
 ///////////////////////////////
 string Company::getNome() const{
-  return nome;
+  return name;
 }
 
 vector<Line> Company::getLines() const{
@@ -544,7 +544,7 @@ int Company::searchTrip(){
     if(!tripsFound)
       std::cout << "Não existe nenhum percurso possível entre " << origem << " e " << destino << "!\n";
     else{
-      std::cout << std::setw(30) << origem << " ----> " << destino << std::endl;
+      std::cout << "    ******************** " << origem << " ----> " << destino << " ********************    " << std::endl;
       for( map<int,std::string>::iterator ii=trips.begin(); ii!=trips.end(); ++ii){
        std::cout << (*ii).second << std::endl;
     }
@@ -603,7 +603,7 @@ void Company::generateShifts(){
     linha->generateWeekShifts(&drivers);
 }
 
-void Company::resetShifts(){
+void Company::resetLineShifts(){
     int i,op;
     Line *linha;
     i = displayLines("Linhas");
@@ -612,6 +612,17 @@ void Company::resetShifts(){
         return;
     linha = &lines.at(op-1);
     linha->resetWeekShifts(&drivers,1);
+}
+
+void Company::resetDriverShifts(){
+    int i,op;
+    Driver *driver;
+    i = displayDrivers();
+    op = option(1,i, false);
+    if(!op)
+        return;
+    driver = &drivers.at(op-1);
+    // driver->resetShifts(&drivers,1);
 }
 
 void Company::printShifts(){
@@ -666,4 +677,16 @@ void Company::printDriverShift(){
         return;
     condutor = &drivers.at(op-1);
     condutor->printShift();
+}
+
+void Company::destroy(){
+
+  // for(Driver d : drivers)
+  //   d.destroy();
+  //
+  // for(Line l : lines)
+  //   l.destroy();
+
+  drivers.clear();
+  lines.clear();
 }

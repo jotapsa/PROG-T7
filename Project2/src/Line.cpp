@@ -512,9 +512,12 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
 }
 
 void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
-
-    for(unsigned int i=0;i<shifts.size();i++)
-        shifts.at(i).setDriverId(0);
+    Bus *bus;
+    for(unsigned int i=0;i<shifts.size();i++){
+      bus = &buses.at(shifts.at(i).getBusOrderNumber()-1);
+      shifts.at(i).setDriverId(0);
+      bus->setdriverIdShift(0,shifts.at(i).getStartTime());
+    }
 
     for(unsigned int i=0;i< drivers->size();i++){
         drivers->at(i).removeShifts(id);
@@ -524,6 +527,18 @@ void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
     if(wait)
       wait_for_enter();
 }
+
+// void Line::resetDriverShifts(int driverID){
+//   Bus *bus;
+//     for(unsigned int i=0;i<shifts.size();i++){
+//
+//       if(shifts.at(i).getDriverId() == driverID){
+//           bus = &buses.at(shifts.at(i).getBusOrderNumber()-1);
+//         shifts.at(i).setDriverId(0);
+//         bus->setdriverIdShift(0,shifts.at(i).getStartTime());
+//       }
+//     }
+// }
 
 void Line::printShift(){
   std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;

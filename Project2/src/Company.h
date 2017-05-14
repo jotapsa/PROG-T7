@@ -20,7 +20,7 @@ using namespace std;
 
 class Company{
  private:
-  string nome;
+  string name;
   vector<Driver> drivers;
   vector<Line> lines;
     string fichCondutores,fichLinhas;
@@ -28,7 +28,7 @@ class Company{
     Company(string nome, string fichCondutores, string fichLinhas);
 
   // get methods
-  string getNome() const;
+    string getNome() const;
     vector<Line> getLines() const;
     vector<Driver> getDrivers() const;
 
@@ -59,10 +59,12 @@ class Company{
     void updateLines();
     void updateDrivers();
     void generateShifts();
-    void resetShifts();
+    void resetLineShifts();
+    void resetDriverShifts();
     void printShifts();
     void printLineShift(int bus);
     void printDriverShift();
+    void destroy();
 };
 
 #endif

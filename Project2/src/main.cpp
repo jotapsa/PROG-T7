@@ -34,6 +34,8 @@ int main(int argc, const char * argv[]) {
                         company->updateLines();
                     if(update_condutores)
                          company->updateDrivers();
+                    company->destroy();
+                    free(company);
                     return 0;
                 }
                 else
@@ -87,7 +89,10 @@ int main(int argc, const char * argv[]) {
                         company->generateShifts();
                     break;
                 case 2:
-                        company->resetShifts();
+                        company->resetLineShifts();
+                    break;
+                case 3:
+                        company->resetDriverShifts();
                     break;
                 }
                 break;

@@ -3,7 +3,6 @@
 #include "semprarrolar.h"
 #include <cmath>
 #include <algorithm> // remove and remove_if
-
 #include "Driver.h"
 
 Driver::Driver(string textLine){
@@ -151,6 +150,17 @@ void Driver::removeShifts(unsigned int idLinha){
     }
   }
 }
+
+// void Driver::resetShifts(vector<Line> *lines,int wait){
+//
+//     for(Line l : lines){
+//       l.resetDriverShifts(id);
+//       removeShifts(l.getId());
+//     }
+//     std::cout << "Turnos do Condutor " << driverID << " reiniciados com sucesso!" << std::endl;
+//     if(wait)
+//       wait_for_enter();
+// }
 
 void Driver::printDriver(){
     std::cout << "(" << id << ") " << name <<std::endl;

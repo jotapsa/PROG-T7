@@ -528,7 +528,7 @@ void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
       wait_for_enter();
 }
 
-void Line::resetDriverShifts(int driverID){
+void Line::resetDriverShifts(unsigned int driverID){
   Bus *bus;
   Shift *s;
   std::cout << "reset driver shifts condutor " << driverID << endl;

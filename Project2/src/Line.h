@@ -58,7 +58,7 @@ public:
   void lineSchedule();
   void generateWeekShifts(vector<Driver> *drivers);
   void resetWeekShifts(vector<Driver> *drivers,int wait);
-  void resetDriverShifts(int driverID);
+  void resetDriverShifts(unsigned int driverID);
   int change(bool *changed,vector<Driver> *drivers);
   int changeStops();
   int changeTimes();

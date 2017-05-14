@@ -14,14 +14,14 @@
 using namespace std;
 
 class Shift{
- private:
+private:
   unsigned int busLineId;
   unsigned int driverId;
   unsigned int busOrderNumber;
   unsigned int startTime;
   unsigned int endTime;
 
- public:
+public:
   Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime);
 
   // get methods

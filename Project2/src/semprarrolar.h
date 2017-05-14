@@ -33,8 +33,8 @@ int option(int menor,int maior,bool clear);
 std::vector<std::string> split(const std::string &s, const char &delim);
 
 /*
- Função responsável pela impressão do menu principal e dos respetivos sub-menus.
- */
+Função responsável pela impressão do menu principal e dos respetivos sub-menus.
+*/
 int printMenu(int menu);
 
 std::string hour_string(int time);

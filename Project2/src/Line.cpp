@@ -120,8 +120,9 @@ void Line::setFreq(unsigned int Freq){
 void Line::createShifts(){
   int i,day,viagens_dia,bus,n;
 
-  //Reset Shifts vector
+  //Reset Shifts and Buses vector
   shifts.clear();
+  buses.clear();
 
   //Shift time of Line
   shiftTime = tripTime(0, busStopList.size()-1, 1)*2;
@@ -140,11 +141,12 @@ void Line::createShifts(){
   for(i=1;i<=n;i++)
       buses.push_back(Bus(i,id));
 
+  //link shifts to buses
   for(day=0;day<7;day++){
       bus=1;
       for(i=0;i<viagens_dia;i++){
           shifts.at(day*viagens_dia + i).setBusOrderNumber(bus);
-          buses.at(bus-1).getSchedule().push_back(shifts.at(day*viagens_dia + i));
+          buses.at(bus-1).addShift(&shifts.at(day*viagens_dia + i));
           bus++;
           if(bus>=n)
               bus = 1;
@@ -331,12 +333,12 @@ int Line::change(bool *changed,vector<Driver> *drivers){
                 break;
         }
         if(!mod){
-            std::cout << "Linha " << id << " alterada com sucesso!" << std::endl;
-            *changed = true;
-            //Reconstruct schedules
-            resetWeekShifts(drivers,0);
-            createShifts();
-            wait_for_enter();
+          std::cout << "Linha " << id << " alterada com sucesso!" << std::endl;
+          *changed = true;
+          //Reconstruct schedules
+          resetWeekShifts(drivers,0);
+          createShifts();
+          wait_for_enter();
         }
     }while(op);
     return 0;
@@ -455,6 +457,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
   Driver *driver;
   unsigned int workHours;
   Shift *shift;
+  Bus *bus;
   int restStart, restEnd;
   vector<bool> workTime;
   bool flag = true;
@@ -467,6 +470,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
       //If he has time
       for (unsigned int j=0; (((workHours+shiftTime)<=driver->getMaxWeekWorkingTime()) && (j<shifts.size())); j++){
         shift = &shifts.at(j);
+        bus = &buses.at(shift->getBusOrderNumber()-1);
 
         if (!shift->getDriverId()){
           restStart = shift->getStartTime()-driver->getMinRestTime();
@@ -491,7 +495,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
 
           if (flag){
             shift->setDriverId(driver->getId());
-
+            bus->setdriverIdShift(driver->getId(),shift->getStartTime());
             driver->addShift(shift);
             driver->sortShifts();
             driver->setWorkHours(workHours+shiftTime);
@@ -545,4 +549,20 @@ void Line::printLine(){
         i++;
     }
     std::cout << std::endl << std::endl;
+}
+
+void Line::printBusShift(){
+  int op;
+  unsigned int j;
+  Bus *bus;
+  std::cout << "************************" << " Autocarros " << "************************" << std::endl;
+  for(j=0;j<buses.size()-1;j++)
+    std::cout << j+1 << " - " << "Autocarro Nº" << j+1 << std::endl;
+
+  op = option(1,j, true);
+  if(!op)
+      return;
+  bus = &buses.at(op-1);
+  std::cout << "************************" << " Linha " << id << " => " << "Autocarro Nº" << bus->getBusOrderInLine() << " ************************" << std::endl;
+  bus->printShift();
 }

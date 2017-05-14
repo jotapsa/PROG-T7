@@ -2,10 +2,10 @@
 
 Shift::Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime){
   // INITIALISATION CODE GOES IN HERE
-    this->busLineId = busLineId;
-    this->startTime = startTime;
-    this->endTime = endTime;
-    this->driverId = 0;
+  this->busLineId = busLineId;
+  this->startTime = startTime;
+  this->endTime = endTime;
+  this->driverId = 0;
 }
 
 // get methods

@@ -63,6 +63,7 @@ public:
   int changeTimes();
   void printShift();
   void printLine();
+  void printBusShift();
 };
 
 #endif

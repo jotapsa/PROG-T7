@@ -1,9 +1,10 @@
 #include "Bus.h"
+#include "semprarrolar.h"
 
 Bus::Bus(unsigned int id, unsigned int line){
   // INITIALISATION CODE GOES IN HERE
-    orderInLine = id;
-    lineId = line;
+  orderInLine = id;
+  lineId = line;
 }
 
 ////////////////////////////////
@@ -11,10 +12,6 @@ Bus::Bus(unsigned int id, unsigned int line){
 ///////////////////////////////
 unsigned int Bus::getBusOrderInLine() const{
   return orderInLine;
-}
-
-unsigned int Bus::getDriverId() const{
-  return driverId;
 }
 
 unsigned int Bus::getLineId() const{
@@ -30,10 +27,39 @@ vector<Shift> Bus::getSchedule() const{
 // set methods
 /////////////////////////////
 
-void Bus::setDriverId(int id) {
-    driverId = id;
-};
+void Bus::setLineId(int line){
+  this->lineId = line;
+}
+
+void Bus::setdriverIdShift(int id,int start){
+  Shift *s;
+  for(unsigned int i=0;i< schedule.size();i++){
+    s = &schedule.at(i);
+    if(s->getStartTime() == start){
+      s->setDriverId(id);
+      return;
+    }
+  }
+}
+
 
 ////////////////////////////
 // other methods
 ///////////////////////////
+
+void Bus::printShift(){
+  Shift *s;
+  for(unsigned int i=0;i< schedule.size();i++){
+    s = &schedule.at(i);
+    std::cout << DayofWeek(s->getStartTime()) << " -> " << hour_string(s->getStartTime()) << " <-> " << hour_string(s->getEndTime());
+    if(s->getDriverId() == 0)
+      std::cout << "| Sem Condutor" << std::endl;
+    else
+      std::cout << "| Condutor -> " << s->getDriverId() << std::endl;
+  }
+  wait_for_enter();
+}
+
+void Bus::addShift(Shift *shift){
+    schedule.push_back(*shift);
+}

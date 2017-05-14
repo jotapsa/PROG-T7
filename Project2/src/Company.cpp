@@ -522,7 +522,7 @@ int Company::searchTrip(){
             b = (int) o.getIndexParagem(s);
             direction = a < b ? 1 : -1;
             //l.printTrip(a, b, sentido);
-            
+
             //SENTIDO B -> C
             c = (int) l.getIndexParagem(s);
             d = (int) l.getIndexParagem(destino);
@@ -596,7 +596,7 @@ void Company::generateShifts(){
     int i,op;
     Line *linha;
     i = displayLines("Linhas");
-    op = option(1,i, true);
+    op = option(1,i, false);
     if(!op)
         return;
     linha = &lines.at(op-1);
@@ -617,9 +617,9 @@ void Company::resetShifts(){
 void Company::printShifts(){
   int op;
   std::cout << "************************" << " Turnos " << "************************" << std::endl;
-  std::cout << "1 - Linha\n" << "2 - Condutor\n" << "3 - Voltar\n";
+  std::cout << "1 - Linha\n" << "2 - Condutor\n" << "3 - Autocarro\n" << "4 - Voltar\n";
 
-  op = option(1,3, true);
+  op = option(1,4,true);
 
   if(!op){
     return;
@@ -627,7 +627,7 @@ void Company::printShifts(){
 
   switch(op){
     case 1:{
-      printLineShift();
+      printLineShift(0);
     }
     break;
 
@@ -635,10 +635,15 @@ void Company::printShifts(){
       printDriverShift();
     }
     break;
+
+    case 3:{
+      printLineShift(1);
+    }
+    break;
   }
 }
 
-void Company::printLineShift(){
+void Company::printLineShift(int bus){
     int i,op;
     Line *linha;
     i = displayLines("Linhas");
@@ -646,7 +651,10 @@ void Company::printLineShift(){
     if(!op)
         return;
     linha = &lines.at(op-1);
-    linha->printShift();
+    if(bus)
+      linha->printBusShift();
+    else
+      linha->printShift();
 }
 
 void Company::printDriverShift(){

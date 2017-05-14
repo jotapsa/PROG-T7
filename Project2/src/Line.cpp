@@ -118,8 +118,8 @@ void Line::setFreq(unsigned int Freq){
 ////////////////
 
 void Line::createShifts(){
-  int i,day,viagens_dia,bus,n;
-
+  int i,day,n;
+  unsigned int bus;
   //Reset Shifts and Buses vector
   shifts.clear();
   buses.clear();
@@ -127,30 +127,29 @@ void Line::createShifts(){
   //Shift time of Line
   shiftTime = tripTime(0, busStopList.size()-1, 1)*2;
 
-  //Shifts With Only Times and LineId
-  for(day=0;day<7;day++){
-      for(i=START_DAY(day);i< END_DAY(day);i+=freq){
-          shifts.push_back(Shift(id,i,i + shiftTime));
-      }
-  }
-
-  viagens_dia = ((END - BEGIN)*60) / freq;
-  n = (int) ((double) shiftTime / freq + 1.0);
-
   //minimum buses
+  n = (int) ((double) shiftTime / freq + 1.0);
   for(i=1;i<=n;i++)
       buses.push_back(Bus(i,id));
 
-  //link shifts to buses
+  //Shifts With Only Times and LineId
   for(day=0;day<7;day++){
-      bus=1;
-      for(i=0;i<viagens_dia;i++){
-          shifts.at(day*viagens_dia + i).setBusOrderNumber(bus);
-          buses.at(bus-1).addShift(&shifts.at(day*viagens_dia + i));
-          bus++;
-          if(bus>=n)
-              bus = 1;
-      }
+    bus=1;
+    for(i=START_DAY(day);i< END_DAY(day);i+=freq){
+        shifts.push_back(Shift(id,i,i + shiftTime,bus));
+        bus++;
+        if(bus>n)
+          bus = 1;
+    }
+  }
+
+  //link shifts to buses
+  bus=1;
+  for(unsigned int j=0;j<shifts.size();j++){
+    buses.at(bus-1).addShift(&shifts.at(j));
+    bus++;
+    if(bus>n)
+      bus = 1;
   }
 }
 
@@ -263,7 +262,6 @@ void Line::printTrip(unsigned int origem,unsigned int destino, int sentido){
 
 
 void Line::lineSchedule(){
-
     //SENTIDO FIRST -> LAST
     std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
     std::cout << std::endl;
@@ -283,8 +281,9 @@ void Line::lineSchedule(){
     wait_for_enter();
 }
 
-int Line::change(bool *changed,vector<Driver> *drivers){
+int Line::change(bool *changed,vector<Driver> *drivers,vector<Line> *lines){
     int op,aux,mod = 1;
+    bool checkforLine=false;
     do{
         std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
         std::cout << "1 - ID\n" << "2 - Frequência\n" << "3 - Paragens\n" << "4 - Tempo entre Paragens\n" << "5 - Voltar\n";
@@ -296,20 +295,25 @@ int Line::change(bool *changed,vector<Driver> *drivers){
         switch(op){
             case 1:
                 do{
+                    checkforLine = false;
                     do{
                         std::cout << "ID atual -> " << id << std::endl;
                         ask_int("ID novo -> ",&aux);
                     }while(aux <=0);
-//                    if(!verificar_linha(aux, Linhas)){
-//                        linha->ID = aux;
-//                        break;
-//                    }
-//                    else
-//                        std::cout << "Linha " << aux << " já existe!" << std::endl;
-                    id = aux;
-                    mod = 0;
-                    break;
-                }while(1);
+
+                    for(Line l : *lines){
+                        if(aux == l.getId())
+                          checkforLine=true;
+                    }
+                    if(checkforLine){
+                      std::cout << "Linha " << aux << " já existe!" << std::endl;
+                    }
+                    else{
+                      resetWeekShifts(drivers,false,false);
+                      id = aux;
+                      mod = 0;
+                    }
+                }while(checkforLine);
                 break;
             case 2:
                 do{
@@ -336,7 +340,7 @@ int Line::change(bool *changed,vector<Driver> *drivers){
           std::cout << "Linha " << id << " alterada com sucesso!" << std::endl;
           *changed = true;
           //Reconstruct schedules
-          resetWeekShifts(drivers,0);
+          resetWeekShifts(drivers,false,true);
           createShifts();
           wait_for_enter();
         }
@@ -511,7 +515,7 @@ void Line::generateWeekShifts(vector<Driver> *drivers){
   wait_for_enter();
 }
 
-void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
+void Line::resetWeekShifts(vector<Driver> *drivers,bool wait,bool message){
     Bus *bus;
     for(unsigned int i=0;i<shifts.size();i++){
       bus = &buses.at(shifts.at(i).getBusOrderNumber()-1);
@@ -523,7 +527,8 @@ void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
         drivers->at(i).removeShifts(id);
     }
 
-    std::cout << "Turnos da Linha " << id << " reiniciados com sucesso!" << std::endl;
+    if(message)
+      std::cout << "Turnos da Linha " << id << " reiniciados com sucesso!" << std::endl;
     if(wait)
       wait_for_enter();
 }
@@ -531,7 +536,6 @@ void Line::resetWeekShifts(vector<Driver> *drivers,int wait){
 void Line::resetDriverShifts(unsigned int driverID){
   Bus *bus;
   Shift *s;
-  std::cout << "reset driver shifts condutor " << driverID << endl;
     for(unsigned int i=0;i<shifts.size();i++){
       s = &shifts.at(i);
       if(s->getDriverId() == driverID){

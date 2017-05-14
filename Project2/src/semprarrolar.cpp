@@ -52,7 +52,6 @@ int option(int menor,int maior,bool clear){
   do{
     ask_int("Opção: ",&op);
   }while(op < menor || op > maior);
-  // std::cin.ignore(INT_MAX,'\n');
 
   if(clear){
     printf("\033c");

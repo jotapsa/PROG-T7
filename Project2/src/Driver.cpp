@@ -148,6 +148,8 @@ void Driver::removeShifts(unsigned int idLinha){
   while (i< shifts.size()){
     if(shifts.at(i).getBusLineId() == idLinha){
       workHours -= (shifts.at(i).getEndTime() - shifts.at(i).getStartTime());
+      for(unsigned int j=shifts.at(i).getStartTime();j<shifts.at(i).getEndTime();j++)
+        workTime.at(j)=false;
       shifts.erase(shifts.begin() + i);
     }
     else{
@@ -155,17 +157,6 @@ void Driver::removeShifts(unsigned int idLinha){
     }
   }
 }
-
-// void Driver::resetShifts(vector<Line> *lines,int wait){
-//
-//     for(Line l : lines){
-//       l.resetDriverShifts(id);
-//       removeShifts(l.getId());
-//     }
-//     std::cout << "Turnos do Condutor " << driverID << " reiniciados com sucesso!" << std::endl;
-//     if(wait)
-//       wait_for_enter();
-// }
 
 void Driver::printDriver(){
     std::cout << "(" << id << ") " << name <<std::endl;

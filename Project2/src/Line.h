@@ -57,9 +57,9 @@ public:
   void printTrip(unsigned int origem,unsigned int destino, int sentido);
   void lineSchedule();
   void generateWeekShifts(vector<Driver> *drivers);
-  void resetWeekShifts(vector<Driver> *drivers,int wait);
+  void resetWeekShifts(vector<Driver> *drivers,bool wait,bool message);
   void resetDriverShifts(unsigned int driverID);
-  int change(bool *changed,vector<Driver> *drivers);
+  int change(bool *changed,vector<Driver> *drivers,vector<Line> *lines);
   int changeStops();
   int changeTimes();
   void printShift();

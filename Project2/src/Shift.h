@@ -22,7 +22,7 @@ private:
   unsigned int endTime;
 
 public:
-  Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime);
+  Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime,unsigned int busOrderNumber);
 
   // get methods
   unsigned int getBusLineId() const;

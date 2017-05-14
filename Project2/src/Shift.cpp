@@ -1,11 +1,12 @@
 #include "Shift.h"
 
-Shift::Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime){
+Shift::Shift(unsigned int busLineId, unsigned int startTime, unsigned int endTime,unsigned int busOrderNumber){
   // INITIALISATION CODE GOES IN HERE
   this->busLineId = busLineId;
   this->startTime = startTime;
   this->endTime = endTime;
   this->driverId = 0;
+  this->busOrderNumber = busOrderNumber;
 }
 
 // get methods

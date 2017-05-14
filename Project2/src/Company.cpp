@@ -19,8 +19,8 @@ Company::Company(string nome, string fichCondutores, string fichLinhas){
     std::fstream file;
     file.open(fichLinhas,std::ios::in);
     if(!file.is_open()){
-        std::cout << "File not found!" << std::endl;
-        return ;
+        std::cout << fichLinhas << " não foi encontrado!" << std::endl;
+        exit(1);
     }
 
     while(getline(file,line)){
@@ -31,8 +31,8 @@ Company::Company(string nome, string fichCondutores, string fichLinhas){
 
     file.open(fichCondutores,std::ios::in);
     if(!file.is_open()){
-        std::cout << "File not found!" << std::endl;
-        return;
+        std::cout << fichCondutores << " não foi encontrado!" << std::endl;
+        exit(1);
     }
 
     while(getline(file,line)){
@@ -138,8 +138,6 @@ int Company::newLine(bool *changed){
         }
     }while(stops < 2);
 
-    std::cin.ignore(INT_MAX,'\n');
-
     for(int i=0;i<stops;i++){
         do{
             std::cout << i+1 << "ª Paragem: ";
@@ -155,6 +153,7 @@ int Company::newLine(bool *changed){
         nova.addTime(tempo);
     }
 
+    nova.createShifts();
     lines.push_back(nova);
     std::cout << "Linha " << nova.getId() << " adicionada com sucesso!" << std::endl;
     *changed = true;
@@ -183,7 +182,7 @@ int Company::changeLine(bool *changed){
         if(!op){
           return 1;
         }
-        lines.at(op-1).change(changed,&drivers);
+        lines.at(op-1).change(changed,&drivers,&lines);
     }while(1);
     return 0;
 
@@ -227,8 +226,6 @@ int Company::newDriver(bool *changed){
     }
     novo.setId(aux);
 
-    std::cin.ignore(INT_MAX,'\n');
-
     do{
         std::cout << "Nome: ";
         getline(std::cin,nome);
@@ -262,14 +259,14 @@ int Company::displayDrivers(){
     int i=1;
     std::cout << "************************" << " Condutores " << "************************" << std::endl;
     for(Driver d : drivers){
-        std::cout << i << " - " << d.getName() << std::endl;
+        std::cout << i << " - " << d.getName() << " (" << d.getId() << ")"<< std::endl;
         i++;
     }
     std::cout << i << " - " << "Voltar" << std::endl;
     return i;
 }
 
-void Company::resetDriverShift(Driver *driver,int wait){
+void Company::resetDriverShift(Driver *driver,bool wait,bool message){
     Line *l;
     for(unsigned int i=0;i<lines.size();i++){
       l = &lines.at(i);
@@ -277,7 +274,8 @@ void Company::resetDriverShift(Driver *driver,int wait){
       driver->removeShifts(l->getId());
     }
 
-    std::cout << "Turnos do Condutor " << driver->getId() << " reiniciados com sucesso!" << std::endl;
+    if(message)
+      std::cout << "Turnos do Condutor " << driver->getId() << " reiniciados com sucesso!" << std::endl;
     if(wait)
       wait_for_enter();
 }
@@ -311,6 +309,7 @@ int Company::changeDriver(bool *changed){
                         continue;
                     }
                     else if(!checkForDriver(aux)){
+                        resetDriverShift(driver,false,false);
                         driver->setId(aux);
                         break;
                     }
@@ -367,10 +366,9 @@ int Company::changeDriver(bool *changed){
                 break;
         }
         std::cout << "Condutor " << driver->getId() << " alterado com sucesso!" << std::endl;
-        resetDriverShift(driver,0);
         *changed = true;
         ordenarCondutores();
-        wait_for_enter();
+        resetDriverShift(driver,true,true);
         return 0;
     }while(1);
 
@@ -625,7 +623,7 @@ void Company::resetLineShifts(){
     if(!op)
         return;
     linha = &lines.at(op-1);
-    linha->resetWeekShifts(&drivers,1);
+    linha->resetWeekShifts(&drivers,true,true);
 }
 
 void Company::resetDriverShifts(){
@@ -636,7 +634,7 @@ void Company::resetDriverShifts(){
     if(!op)
         return;
     driver = &drivers.at(op-1);
-    resetDriverShift(driver,1);
+    resetDriverShift(driver,true,true);
 }
 
 void Company::printShifts(){

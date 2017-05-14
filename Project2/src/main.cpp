@@ -20,7 +20,18 @@ bool update_condutores = false;
  Função main.
  */
 int main(int argc, const char * argv[]) {
-    Company company = Company("Semprarrolar","condutores.txt","linhas.txt");
+    std::string fileDrivers,fileLines;
+
+    //Introduction
+    printf("\033c");
+    std::cout << "************************" << " SEMPRARROLAR " << "************************" << std::endl;
+    std::cout << std::endl << "Ficheiro de Texto com os Condutores -> ";
+    getline(std::cin,fileDrivers);
+    std::cout << std::endl << "Ficheiro de Texto com as Linhas -> ";
+    getline(std::cin,fileLines);
+
+    //Create Company
+    Company company = Company("Semprarrolar",fileDrivers,fileLines);
     int op=0;
 
     printf("\033c");

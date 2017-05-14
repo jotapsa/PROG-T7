@@ -106,7 +106,7 @@ bool Company::checkForLine(unsigned int id){
 }
 
 int Company::newLine(bool *changed){
-    Line *nova = new Line();
+    Line nova = Line();
 
     int stops,tempo,id;
     std::string paragem;
@@ -120,12 +120,12 @@ int Company::newLine(bool *changed){
         wait_for_enter();
         return 1;
     }
-    nova->setId(id);
+    nova.setId(id);
 
     do{
         ask_int("Frequência (minutos): ",&tempo);
     }while(tempo <= 0);
-    nova->setFreq(tempo);
+    nova.setFreq(tempo);
 
     do{
         do{
@@ -144,19 +144,19 @@ int Company::newLine(bool *changed){
         do{
             std::cout << i+1 << "ª Paragem: ";
             getline(std::cin,paragem);
-        }while(paragem.length() <= 0 || nova->checkStop(paragem));
-        nova->addStop(paragem);
+        }while(paragem.length() <= 0 || nova.checkStop(paragem));
+        nova.addStop(paragem);
     }
 
     for(int i=0;i<stops-1;i++){
         do{
-        ask_int("Tempo entre " + nova->getBusStops().at(i) + " e " + nova->getBusStops().at(i+1) + " (minutos): ",&tempo);
+        ask_int("Tempo entre " + nova.getBusStops().at(i) + " e " + nova.getBusStops().at(i+1) + " (minutos): ",&tempo);
         }while(tempo <= 0);
-        nova->addTime(tempo);
+        nova.addTime(tempo);
     }
 
-    lines.push_back(*nova);
-    std::cout << "Linha " << nova->getId() << " adicionada com sucesso!" << std::endl;
+    lines.push_back(nova);
+    std::cout << "Linha " << nova.getId() << " adicionada com sucesso!" << std::endl;
     *changed = true;
     ordenarLinhas();
     wait_for_enter();
@@ -212,7 +212,7 @@ bool Company::checkForDriver(unsigned int id){
 }
 
 int Company::newDriver(bool *changed){
-    Driver *novo = new Driver();
+    Driver novo = Driver();
     std::string nome;
     int aux;
     std::cout << "************************" << " Novo Condutor " << "************************" << std::endl;
@@ -225,7 +225,7 @@ int Company::newDriver(bool *changed){
         wait_for_enter();
         return 1;
     }
-    novo->setId(aux);
+    novo.setId(aux);
 
     std::cin.ignore(INT_MAX,'\n');
 
@@ -233,25 +233,25 @@ int Company::newDriver(bool *changed){
         std::cout << "Nome: ";
         getline(std::cin,nome);
     }while(nome.length() <=0);
-    novo->setName(nome);
+    novo.setName(nome);
 
     do{
         ask_int("Máximo de Horas por Turno: ", &aux);
     }while(aux <= 0);
-    novo->setMaxHours(aux);
+    novo.setMaxHours(aux);
 
     do{
         ask_int("Máximo de Horas por Semana: ", &aux);
     }while(aux <= 0);
-    novo->setMaxWeekWorkingTime(aux);
+    novo.setMaxWeekWorkingTime(aux);
 
     do{
         ask_int("Mínimo de Horas por Descanso: ", &aux);
     }while(aux <= 0);
-    novo->setMinRestTime(aux);
+    novo.setMinRestTime(aux);
 
-    drivers.push_back(*novo);
-    std::cout << "Condutor " << novo->getId() << " adicionado com sucesso!" << std::endl;
+    drivers.push_back(novo);
+    std::cout << "Condutor " << novo.getId() << " adicionado com sucesso!" << std::endl;
     *changed = true;
     ordenarCondutores();
     wait_for_enter();

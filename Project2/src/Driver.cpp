@@ -2,7 +2,7 @@
 #include <sstream>
 #include "semprarrolar.h"
 #include <cmath>
-#include <algorithm>
+#include <algorithm> // remove and remove_if
 
 #include "Driver.h"
 
@@ -140,12 +140,16 @@ void Driver::addShift(Shift *shift){
 }
 
 void Driver::removeShifts(unsigned int idLinha){
-    for(unsigned int i=shifts.size()-1;i>=0;i--){
-        if(shifts.at(i).getBusLineId() == idLinha){
-            workHours -= (shifts.at(i).getEndTime() - shifts.at(i).getStartTime());
-            shifts.erase(shifts.begin() + i);
-        }
+  unsigned int i=0;
+  while (i< shifts.size()){
+    if(shifts.at(i).getBusLineId() == idLinha){
+      workHours -= (shifts.at(i).getEndTime() - shifts.at(i).getStartTime());
+      shifts.erase(shifts.begin() + i);
     }
+    else{
+      i++;
+    }
+  }
 }
 
 void Driver::printDriver(){

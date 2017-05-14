@@ -46,7 +46,7 @@ class Company{
     int displayLines(std::string Title);
     int changeLine(bool *changed);
     int removeLine(bool *changed);
-    bool checkForDriver(int ID);
+    bool checkForDriver(unsigned int id);
     int newDriver(bool *changed);
     int displayDrivers();
     int changeDriver(bool *changed);

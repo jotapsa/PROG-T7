@@ -175,14 +175,14 @@ int Company::displayLines(std::string Title){
 }
 
 int Company::changeLine(bool *changed){
-    int i,op=0,mod=0;
+    int i,op=0;
     do {
         ordenarLinhas();
-        mod=0;
         i = displayLines("Alterar Linha");
         op = option(1,i, true);
-        if(!op)
-            return 1;
+        if(!op){
+          return 1;
+        }
         lines.at(op-1).change(changed,&drivers);
     }while(1);
     return 0;
@@ -203,9 +203,9 @@ int Company::removeLine(bool *changed){
     return 0;
 }
 
-bool Company::checkForDriver(int ID){
+bool Company::checkForDriver(unsigned int id){
     for(Driver d : drivers){
-        if(ID == d.getId())
+        if(id == d.getId())
             return true;
     }
     return false;
@@ -418,7 +418,7 @@ int Company::stopSchedule(){
     std::string paragem;
 
     for(Line l : lines){
-        for(int i=0;i<l.getBusStops().size();i++){
+        for(unsigned int i=0; i<l.getBusStops().size(); i++){
             if(std::find(Paragens.begin(),Paragens.end(),l.getBusStops().at(i)) == Paragens.end())
                 Paragens.push_back(l.getBusStops().at(i));
         }
@@ -554,26 +554,27 @@ int Company::searchTrip(){
 }
 
 void Company::updateLines(){
-    int i;
-    fstream file;
-    file.open(fichLinhas,std::ios::out | std::ios::trunc);
-    if(!file.is_open()){
-        std::cout << "File not found!" << std::endl;
-        return;
-    }
+  unsigned int i;
+  fstream file;
 
-    for(Line l : lines){
-        file << l.getId() << " ; " << l.getFreq() << " ; ";
-        for(i=0;i < l.getBusStops().size()-1;i++)
-            file << l.getBusStops().at(i) << ", ";
-        file << l.getBusStops().at(i) << "; ";
+  file.open(fichLinhas,std::ios::out | std::ios::trunc);
+  if(!file.is_open()){
+    std::cout << "File not found!" << std::endl;
+    return;
+  }
 
-        for(i=0;i < l.getTimings().size()-1;i++)
-            file << l.getTimings().at(i) << ", ";
-        file << l.getTimings().at(i);
-        file << std::endl;
-    }
-    file.close();
+  for(Line l : lines){
+    file << l.getId() << " ; " << l.getFreq() << " ; ";
+    for(i=0; i<l.getBusStops().size()-1; i++)
+    file << l.getBusStops().at(i) << ", ";
+    file << l.getBusStops().at(i) << "; ";
+
+    for(i=0; i<l.getTimings().size()-1; i++)
+    file << l.getTimings().at(i) << ", ";
+    file << l.getTimings().at(i);
+    file << std::endl;
+  }
+  file.close();
 }
 
 void Company::updateDrivers(){

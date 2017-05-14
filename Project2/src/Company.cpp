@@ -500,14 +500,13 @@ int Company::searchTrip(){
           b = (int) l.getIndexParagem(destino);
           direction = a < b ? 1 : -1;
 
-          trip << "*****************" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,direction) << " minutos "<< "************************" << std::endl;
+          trip << "****" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,direction) << " minutos "<< "****" << std::endl;
 
           //l.printTrip(a, b, direction);
           tripsFound++;
           trips[l.tripTime(a,b,direction)] = std::string(trip.str());
           trip.str();
           trip.clear();
-          //trips.insert(std::pair<std::string,int>(,l.tripTime(a,b,direction)))
       }
     }
 
@@ -545,10 +544,10 @@ int Company::searchTrip(){
     if(!tripsFound)
       std::cout << "Não existe nenhum percurso possível entre " << origem << " e " << destino << "!\n";
     else{
+      std::cout << std::setw(25) << origem << " ----> " << destino << std::endl;
       for( map<int,std::string>::iterator ii=trips.begin(); ii!=trips.end(); ++ii){
        std::cout << (*ii).second << std::endl;
-   }
-
+    }
     }
     wait_for_enter();
     return 0;

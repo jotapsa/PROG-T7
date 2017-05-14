@@ -53,7 +53,12 @@ Driver::Driver(string textLine){
 }
 
 Driver::Driver(){
+  maxHours *= 60;
+  maxWeekWorkingTime *= 60;
+  minRestTime *= 60;
+  workHours=0;
 
+  workTime.resize (TOTAL_TIME, false);
 }
 
 //////////////

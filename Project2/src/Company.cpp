@@ -269,6 +269,19 @@ int Company::displayDrivers(){
     return i;
 }
 
+void Company::resetDriverShift(Driver *driver,int wait){
+    Line *l;
+    for(unsigned int i=0;i<lines.size();i++){
+      l = &lines.at(i);
+      l->resetDriverShifts(driver->getId());
+      driver->removeShifts(l->getId());
+    }
+
+    std::cout << "Turnos do Condutor " << driver->getId() << " reiniciados com sucesso!" << std::endl;
+    if(wait)
+      wait_for_enter();
+}
+
 int Company::changeDriver(bool *changed){
     int i=1,op=0,aux,parametro;
     Driver *driver;
@@ -354,6 +367,7 @@ int Company::changeDriver(bool *changed){
                 break;
         }
         std::cout << "Condutor " << driver->getId() << " alterado com sucesso!" << std::endl;
+        resetDriverShift(driver,0);
         *changed = true;
         ordenarCondutores();
         wait_for_enter();
@@ -622,7 +636,7 @@ void Company::resetDriverShifts(){
     if(!op)
         return;
     driver = &drivers.at(op-1);
-    // driver->resetShifts(&drivers,1);
+    resetDriverShift(driver,1);
 }
 
 void Company::printShifts(){

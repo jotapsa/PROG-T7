@@ -49,6 +49,7 @@ class Company{
     bool checkForDriver(unsigned int id);
     int newDriver(bool *changed);
     int displayDrivers();
+    void resetDriverShift(Driver *driver,int wait);
     int changeDriver(bool *changed);
     int removeDriver(bool *changed);
     int printSchedules();

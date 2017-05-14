@@ -678,15 +678,3 @@ void Company::printDriverShift(){
     condutor = &drivers.at(op-1);
     condutor->printShift();
 }
-
-void Company::destroy(){
-
-  // for(Driver d : drivers)
-  //   d.destroy();
-  //
-  // for(Line l : lines)
-  //   l.destroy();
-
-  drivers.clear();
-  lines.clear();
-}

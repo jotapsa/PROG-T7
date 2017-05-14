@@ -64,7 +64,6 @@ class Company{
     void printShifts();
     void printLineShift(int bus);
     void printDriverShift();
-    void destroy();
 };
 
 #endif

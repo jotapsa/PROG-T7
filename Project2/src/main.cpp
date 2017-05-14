@@ -20,7 +20,7 @@ bool update_condutores = false;
  Função main.
  */
 int main(int argc, const char * argv[]) {
-    Company *company = new Company("Semprarrolar","condutores.txt","linhas.txt");
+    Company company = Company("Semprarrolar","condutores.txt","linhas.txt");
     int op=0;
 
     printf("\033c");
@@ -31,11 +31,9 @@ int main(int argc, const char * argv[]) {
                 //UPDATE AOS FICHEIROS TXT
                 if(!op){
                     if(update_linhas)
-                        company->updateLines();
+                        company.updateLines();
                     if(update_condutores)
-                         company->updateDrivers();
-                    company->destroy();
-                    free(company);
+                         company.updateDrivers();
                     return 0;
                 }
                 else
@@ -47,17 +45,17 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        company->newLine(&update_linhas);
+                        company.newLine(&update_linhas);
                         break;
                     case 2:
-                        company->changeLine(&update_linhas);
+                        company.changeLine(&update_linhas);
                         break;
                     case 3:
-                        if(company->removeLine(&update_linhas))
+                        if(company.removeLine(&update_linhas))
                             printf("\033c");
                         break;
                     case 4:
-                        company->printLines();
+                        company.printLines();
                         break;
                 }
                 break;
@@ -67,16 +65,16 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        company->newDriver(&update_condutores);
+                        company.newDriver(&update_condutores);
                         break;
                     case 2:
-                        company->changeDriver(&update_condutores);
+                        company.changeDriver(&update_condutores);
                         break;
                     case 3:
-                        company->removeDriver(&update_condutores);
+                        company.removeDriver(&update_condutores);
                         break;
                     case 4:
-                        company->printDrivers();
+                        company.printDrivers();
                         break;
                 }
                 break;
@@ -86,13 +84,13 @@ int main(int argc, const char * argv[]) {
                     menu = 0;
                     break;
                 case 1:
-                        company->generateShifts();
+                        company.generateShifts();
                     break;
                 case 2:
-                        company->resetLineShifts();
+                        company.resetLineShifts();
                     break;
                 case 3:
-                        company->resetDriverShifts();
+                        company.resetDriverShifts();
                     break;
                 }
                 break;
@@ -102,13 +100,13 @@ int main(int argc, const char * argv[]) {
                         menu = 0;
                         break;
                     case 1:
-                        company->printSchedules();
+                        company.printSchedules();
                         break;
                     case 2:
-                        company->searchTrip();
+                        company.searchTrip();
                         break;
                     case 3:
-                        company->printShifts();
+                        company.printShifts();
                 }
                 break;
             case 5:

@@ -500,7 +500,7 @@ int Company::searchTrip(){
           b = (int) l.getIndexParagem(destino);
           direction = a < b ? 1 : -1;
 
-          trip << "****" << " Linha " << l.getId() << " -> " << l.tripTime(a,b,direction) << " minutos "<< "****" << std::endl;
+          trip << "** " << " Linha " << l.getId() << " => " << origem << " --> " << destino << " ("<< l.tripTime(a,b,direction) << " minutos)" << " **" << std::endl;
 
           //l.printTrip(a, b, direction);
           tripsFound++;
@@ -522,15 +522,15 @@ int Company::searchTrip(){
             b = (int) o.getIndexParagem(s);
             direction = a < b ? 1 : -1;
             //l.printTrip(a, b, sentido);
-
+            
             //SENTIDO B -> C
             c = (int) l.getIndexParagem(s);
             d = (int) l.getIndexParagem(destino);
-            direction2 = a < b ? 1 : -1;
+            direction2 = c < d ? 1 : -1;
 
             if(o.tripTime(a,b,direction) && l.tripTime(c,d,direction2)){
-              trip << "****" << " Linha " << o.getId() << " -> " << o.tripTime(a,b,direction) << " minutos ";
-              trip << " + " << " Linha " <<  l.getId() << " -> " << l.tripTime(c,d,direction2) << " minutos " << "****";
+              trip << "** " << " Linha " << o.getId() << " => " << origem << " --> " << s << " ("<< o.tripTime(a,b,direction) << " minutos)";
+              trip << " + " << " Linha " << l.getId() << " => " << s << " --> " << destino << " ("<< l.tripTime(c,d,direction2) << " minutos)" << " **";
               tripsFound++;
               trips[o.tripTime(a,b,direction) + l.tripTime(c,d,direction2)] = std::string(trip.str());
               trip.str();
@@ -544,7 +544,7 @@ int Company::searchTrip(){
     if(!tripsFound)
       std::cout << "Não existe nenhum percurso possível entre " << origem << " e " << destino << "!\n";
     else{
-      std::cout << std::setw(25) << origem << " ----> " << destino << std::endl;
+      std::cout << std::setw(30) << origem << " ----> " << destino << std::endl;
       for( map<int,std::string>::iterator ii=trips.begin(); ii!=trips.end(); ++ii){
        std::cout << (*ii).second << std::endl;
     }

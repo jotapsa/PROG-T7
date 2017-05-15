@@ -13,6 +13,8 @@ João Pedro Teixeira Pereira de Sá - up201506252
 
 - Alterar QUALQUER parâmetro de um condutor ou de uma linha (desde o seu ID, paragens e aos tempos entre paragens);
 
+- Remover QUALQUER linha ou condutor, removendo também QUAISQUER turnos a que este/esta esteja associada;
+
 - Visualização da lista de TODAS as linhas, com o respetivo ID, frequência, lista de paragens, número de turnos atribuídos e número de turnos por atribuir;
 
 - Visualização da lista de TODOS os condutores, com o respetivo ID, nome, limitações, turnos atribuídos e tempo por atribuir;

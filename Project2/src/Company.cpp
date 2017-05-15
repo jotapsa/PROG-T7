@@ -514,11 +514,10 @@ int Company::searchTrip(){
 
           trip << "** " << " Linha " << l.getId() << " => " << origem << " --> " << destino << " ("<< l.tripTime(a,b,direction) << " minutos)" << " **" << std::endl;
 
-          //l.printTrip(a, b, direction);
           tripsFound++;
           trips[l.tripTime(a,b,direction)] = std::string(trip.str());
-          trip.str();
-          trip.clear();
+          trip.str("");
+          //l.printTrip(a, b, direction);
       }
     }
 
@@ -533,7 +532,6 @@ int Company::searchTrip(){
             a = (int) o.getIndexParagem(origem);
             b = (int) o.getIndexParagem(s);
             direction = a < b ? 1 : -1;
-            //l.printTrip(a, b, sentido);
 
             //SENTIDO B -> C
             c = (int) l.getIndexParagem(s);
@@ -545,10 +543,10 @@ int Company::searchTrip(){
               trip << " + " << " Linha " << l.getId() << " => " << s << " --> " << destino << " ("<< l.tripTime(c,d,direction2) << " minutos)" << " **";
               tripsFound++;
               trips[o.tripTime(a,b,direction) + l.tripTime(c,d,direction2)] = std::string(trip.str());
-              trip.str();
-              trip.clear();
+              trip.str("");
             }
-            //l.printTrip(a, b, sentido);
+            //o.printTrip(a, b, direction);
+            //l.printTrip(c, d, direction2);
           }
         }
       }
@@ -557,9 +555,9 @@ int Company::searchTrip(){
       std::cout << "Não existe nenhum percurso possível entre " << origem << " e " << destino << "!\n";
     else{
       std::cout << "    ******************** " << origem << " ----> " << destino << " ********************    " << std::endl;
-      for( map<int,std::string>::iterator ii=trips.begin(); ii!=trips.end(); ++ii){
-       std::cout << (*ii).second << std::endl;
-    }
+      for (auto& x: trips) {
+        std::cout << x.second << '\n';
+      }
     }
     wait_for_enter();
     return 0;

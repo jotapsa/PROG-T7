@@ -81,7 +81,6 @@ void Company::ordenarCondutores(){
 
 void Company::printLines(){
     std::cout << "************************" << " Linhas " << "************************" << std::endl;
-    std::cout << std::endl;
     for(Line l : lines){
         l.printLine();
     }
@@ -190,11 +189,14 @@ int Company::changeLine(bool *changed){
 
 int Company::removeLine(bool *changed){
     int op,i;
+    Line *l;
     i = displayLines("Remover Linha");
     op = option(1,i, false);
     if(!op)
         return 1;
 
+    l = &lines.at(op-1);
+    l->resetWeekShifts(&drivers,false,false);
     lines.erase(lines.begin() + (op-1));
     std::cout << "Linha removida com sucesso!" << std::endl;
     *changed = true;
@@ -376,11 +378,14 @@ int Company::changeDriver(bool *changed){
 
 int Company::removeDriver(bool *changed){
     int op=0,i;
+    Driver *d;
     i = displayDrivers();
     op = option(1,i, false);
     if(!op)
         return 1;
 
+    d = &drivers.at(op-1);
+    resetDriverShift(d,false,false);
     drivers.erase(drivers.begin() + (op-1));
     std::cout << "Condutor removido com sucesso!" << std::endl;
     *changed = true;

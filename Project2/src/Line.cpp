@@ -560,7 +560,8 @@ void Line::printShift(){
 }
 
 void Line::printLine(){
-    int i=0;
+    unsigned int i=0;
+    std::cout << std::endl;
     std::cout << "Linha " << id << std::endl;
     std::cout << "Frequência = " << freq << " minutos" << std::endl;
     for(std::string s : busStopList){
@@ -570,7 +571,13 @@ void Line::printLine(){
             std::cout << s;
         i++;
     }
-    std::cout << std::endl << std::endl;
+    i=0;
+    for(Shift s : shifts){
+      if(s.getDriverId() != 0)
+        i++;
+    }
+    std::cout << std::endl << "Turnos Atribuídos: " << i << std::endl;
+    std::cout << "Turnos Por Atribuir: " << (shifts.size() - i) << std::endl;
 }
 
 void Line::printBusShift(){

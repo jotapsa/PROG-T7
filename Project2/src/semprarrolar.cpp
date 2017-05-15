@@ -150,17 +150,17 @@ std::string DayofWeek(int time){
     case 0:
       return "Segunda-feira";
     case 1:
-      return "Terça-feira";
+      return "  Terça-feira";
     case 2:
-      return "Quarta-feira";
+      return " Quarta-feira";
     case 3:
-      return "Quinta-feira";
+      return " Quinta-feira";
     case 4:
-      return "Sexta-feira";
+      return "  Sexta-feira";
     case 5:
-      return "Sábado";
+      return "       Sábado";
     case 6:
-      return "Domingo";
+      return "      Domingo";
     default:
       return "";
   }

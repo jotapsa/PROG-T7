@@ -3,6 +3,7 @@
 #include "semprarrolar.h"
 #include <cmath>
 #include <algorithm> // remove and remove_if
+#include <iomanip>
 #include "Driver.h"
 
 Driver::Driver(string textLine){
@@ -129,8 +130,10 @@ void Driver::printShift(){
         wait_for_enter();
         return;
     }
-    for(Shift s : shifts)
-        std::cout << DayofWeek(s.getStartTime()) << " -> " << hour_string(s.getStartTime()) << " <-> " << hour_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber() << "| Linha -> " << s.getBusLineId() << std::endl;
+    for(Shift s : shifts){
+      std::cout.width(13);
+      std::cout << DayofWeek(s.getStartTime()) << " -> " << hour_string(s.getStartTime()) << " <-> " << hour_string(s.getEndTime()) << " --- Autocarro " << std::setw(2) << s.getBusOrderNumber() << "| Linha -> " << s.getBusLineId() << std::endl;
+    }
     wait_for_enter();
 }
 

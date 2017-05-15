@@ -549,7 +549,8 @@ void Line::resetDriverShifts(unsigned int driverID){
 void Line::printShift(){
   std::cout << "************************" << " Linha " << id << " " << "************************" << std::endl;
     for(Shift s : shifts){
-        std::cout << DayofWeek(s.getStartTime()) << " -> " << hour_string(s.getStartTime()) << " <-> " << hour_string(s.getEndTime()) << " --- Autocarro " << s.getBusOrderNumber();
+        std::cout.width(13);
+        std::cout << DayofWeek(s.getStartTime()) << " -> " << hour_string(s.getStartTime()) << " <-> " << hour_string(s.getEndTime()) << " --- Autocarro " << std::setw(2) << s.getBusOrderNumber();
         if(s.getDriverId() == 0)
           std::cout << "| Sem Condutor" << std::endl;
         else

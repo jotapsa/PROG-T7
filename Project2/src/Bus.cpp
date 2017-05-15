@@ -1,5 +1,6 @@
 #include "Bus.h"
 #include "semprarrolar.h"
+#include <iomanip>
 
 Bus::Bus(unsigned int id, unsigned int line){
   // INITIALISATION CODE GOES IN HERE
@@ -51,6 +52,7 @@ void Bus::printShift(){
   Shift *s;
   for(unsigned int i=0;i< schedule.size();i++){
     s = &schedule.at(i);
+    std::cout.width(13);
     std::cout << DayofWeek(s->getStartTime()) << " -> " << hour_string(s->getStartTime()) << " <-> " << hour_string(s->getEndTime());
     if(s->getDriverId() == 0)
       std::cout << "| Sem Condutor" << std::endl;

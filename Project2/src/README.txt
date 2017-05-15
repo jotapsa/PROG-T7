@@ -23,17 +23,17 @@ João Pedro Teixeira Pereira de Sá - up201506252
 
 - Reiniciar Turnos para QUALQUER condutor, reiniciando também os turnos das linhas atribuídas a esse condutor;
 
-- Visualização do Horário Formatado de QUALQUER linha, em ambos os sentidos, com os respetivos tempos em cada paragem;
+- Visualização Formatada do Horário de QUALQUER linha, em ambos os sentidos, com os respetivos tempos em cada paragem;
 
-- Visualização do Horário Formatado de QUALQUER paragem, em ambos os sentidos, com os respetivos tempos a partir dessa mesma paragem, em todas as linhas a que esta pertence;
+- Visualização Formatada do Horário de QUALQUER paragem, em ambos os sentidos, com os respetivos tempos a partir dessa mesma paragem, em todas as linhas a que esta pertence;
 
 - Visualização de um Percurso entre duas QUAISQUER paragens, apresentando os percursos, se possíveis, com as respetivas durações e trajetos, desde a linha às paragens de escala (se existirem);
 
-- Visualização dos Turnos de QUALQUER linha, de Segunda-feira a Domingo, com os respetivos tempos, autocarros e condutores (se estiverem atribuídos);
+- Visualização Formatada dos Turnos de QUALQUER linha, de Segunda-feira a Domingo, com os respetivos tempos, autocarros e condutores (se estiverem atribuídos);
 
-- Visualização dos Turnos de QUALQUER condutor (se estiverem atribuídos), de Segunda-feira a Domingo, com os respetivos tempos, autocarros e linhas;
+- Visualização Formatada dos Turnos de QUALQUER condutor (se estiverem atribuídos), de Segunda-feira a Domingo, com os respetivos tempos, autocarros e linhas;
 
-- Visualização dos Turnos de QUALQUER autocarro, de QUALQUER linha, de Segunda-feira a Domingo, com os respetivos tempos e condutores;
+- Visualização Formatada dos Turnos de QUALQUER autocarro, de QUALQUER linha, de Segunda-feira a Domingo, com os respetivos tempos e condutores;
 
 -------------------- Melhorias/Decisões --------------------
 
